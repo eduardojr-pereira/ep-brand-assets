@@ -5,7 +5,8 @@
 
 <a href="{{website}}" title="Personal website — {{name}}"><img src="{{logo_src}}" alt="EP logo — {{name}}" height="90"></a>
 
-**{{name}}**  
+**{{name}}**
+
 *{{tagline}}*
 
 <a href="mailto:{{email}}"><img src="{{gmail_src}}" alt="Email" height="27"></a>&nbsp;&nbsp;
