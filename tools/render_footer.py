@@ -91,6 +91,13 @@ def replace_footer(original, footer):
     return prefix + footer
 
 
+def render_web_css():
+    """Return design-system variables before component styles, preserving CSS order."""
+    paths = [ROOT / 'styles' / name for name in ('colors.css', 'typography.css', 'layout.css')]
+    paths.append(ROOT / 'components/web/footer.css')
+    return '\n'.join(path.read_text(encoding='utf-8').rstrip() for path in paths) + '\n'
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     sub = p.add_subparsers(dest='mode', required=True)
@@ -105,7 +112,7 @@ def main():
     args = p.parse_args()
     if args.mode == 'web':
         if args.css:
-            print((ROOT / 'components/web/footer.css').read_text(encoding='utf-8'), end='')
+            print(render_web_css(), end='')
         else:
             print(substitute((ROOT / 'components/web/footer.html').read_text(encoding='utf-8'),
                              brand_values(embed=args.embed_assets)), end='')

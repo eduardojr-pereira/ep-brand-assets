@@ -54,6 +54,14 @@ class FooterTests(unittest.TestCase):
         self.assertIn('@media(max-width:520px)', css)
         self.assertIn('prefers-reduced-motion', css)
 
+    def test_shared_styles_in_web_css(self):
+        css = mod.render_web_css()
+        self.assertIn('--ep-color-accent: #67d8e9', css)
+        self.assertIn('--ep-container-footer: 67.5rem', css)
+        self.assertIn('var(--ep-color-accent, #67d8e9)', css)
+        self.assertLess(css.index('--ep-color-accent: #67d8e9'), css.index('.ep-footer{'))
+        self.assertIn('prefers-reduced-motion', css)
+
 
 if __name__ == '__main__':
     unittest.main()

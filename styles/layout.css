@@ -1,0 +1,14 @@
+/* EP Design System — layout tokens based on existing published components.
+   No global resets or selectors are applied. */
+:root {
+  --ep-container-main: 70rem; /* 1120px at 16px root */
+  --ep-container-footer: 67.5rem; /* 1080px at 16px root */
+  --ep-radius-card: 1rem;
+  --ep-radius-footer-card: 0.75rem;
+  --ep-space-1: 0.25rem;
+  --ep-space-2: 0.5rem;
+  --ep-space-3: 0.75rem;
+  --ep-space-4: 1rem;
+  --ep-space-6: 1.5rem;
+  --ep-space-8: 2rem;
+}
