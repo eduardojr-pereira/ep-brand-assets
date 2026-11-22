@@ -1,0 +1,50 @@
+name: Propagate EP Design System updates
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/**'
+      - 'styles/**'
+      - 'components/**'
+      - 'config/**'
+      - 'tools/**'
+      - 'tests/**'
+      - '.github/workflows/notify-portfolio.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ep-brand-notify
+  cancel-in-progress: false
+
+jobs:
+  validate-and-notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out EP Design System
+        uses: actions/checkout@v4
+
+      - name: Validate shared components
+        run: |
+          python3 -m unittest discover -s tests -v
+          python3 tools/render_footer.py readme --kind portfolio --lang en > /dev/null
+          python3 tools/render_footer.py readme --kind knowledge-base --lang pt-BR > /dev/null
+
+      - name: Notify portfolio to rebuild GitHub Pages
+        env:
+          DISPATCH_TOKEN: ${{ secrets.PORTFOLIO_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$DISPATCH_TOKEN" ]; then
+            echo 'Missing repository secret PORTFOLIO_DISPATCH_TOKEN' >&2
+            exit 1
+          fi
+          curl --fail-with-body --silent --show-error \
+            -X POST \
+            -H 'Accept: application/vnd.github+json' \
+            -H "Authorization: Bearer $DISPATCH_TOKEN" \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            https://api.github.com/repos/eduardojr-pereira/data-science-portfolio/dispatches \
+            -d '{"event_type":"ep_brand_updated"}'
