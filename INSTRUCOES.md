@@ -5,7 +5,7 @@ Pacote **aditivo**: não substitui `README.md`, logo ou ícones já existentes n
 ## Arquivos
 
 - `config/brand.json`: URLs e informações centrais.
-- `components/readme/footer.en.md` e `footer.pt-BR.md`: modelos A.
+- `components/markdown/footer.en.md` e `footer.pt-BR.md`: modelos A.
 - `components/web/footer.html` e `footer.css`: modelo B.
 - `tools/render_footer.py`: prévia/geração em modo somente leitura por padrão.
 - `tests/test_components.py`: testes de regressão.

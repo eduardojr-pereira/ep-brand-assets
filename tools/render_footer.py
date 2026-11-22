@@ -64,7 +64,7 @@ def links(kind, lang, brand):
 
 def render_readme(kind, lang):
     name = 'footer.en.md' if lang == 'en' else 'footer.pt-BR.md'
-    template = (ROOT / 'components/readme' / name).read_text(encoding='utf-8')
+    template = (ROOT / 'components/markdown' / name).read_text(encoding='utf-8')
     values = brand_values()
     values['related_links'] = links(kind, lang, values)
     return substitute(template, values).rstrip() + '\n'
