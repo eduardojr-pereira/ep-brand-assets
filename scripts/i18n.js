@@ -18,6 +18,7 @@ let active='en';try{if(localStorage.getItem('ep_locale')==='pt-BR')active='pt-BR
 function render(){
  const strings=translations[active];document.documentElement.lang=active;
  document.querySelectorAll('[data-i18n]').forEach(node=>{const value=strings[node.dataset.i18n];if(typeof value==='string')node.textContent=value;});
+ document.querySelectorAll('[data-i18n-en][data-i18n-pt]').forEach(node=>{node.textContent=active==='pt-BR'?node.dataset.i18nPt:node.dataset.i18nEn;});
  document.querySelectorAll('[data-language-toggle]').forEach(button=>{button.textContent=active==='en'?'PT-BR':'EN';button.setAttribute('aria-label',active==='en'?'Mudar para português':'Switch to English');});document.querySelectorAll('[data-language-select]').forEach(select=>{select.value=active;select.setAttribute('aria-label',strings.language);});
  document.querySelectorAll('[data-theme-toggle]').forEach(button=>{button.dataset.lightLabel=strings.light;button.dataset.darkLabel=strings.dark;const light=document.documentElement.getAttribute('data-theme')==='light';if(!button.classList.contains('ep-header__theme-switch'))button.textContent=light?strings.dark:strings.light;button.setAttribute('aria-label',active==='pt-BR'?(light?'Ativar tema escuro':'Ativar tema claro'):(light?'Switch to dark theme':'Switch to light theme'));if(button.getAttribute('role')==='switch')button.setAttribute('aria-checked',String(light));});
  document.querySelectorAll('[data-current]').forEach(node=>{node.textContent=`${active} · ${document.documentElement.getAttribute('data-theme')}`;});
