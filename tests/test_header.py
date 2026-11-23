@@ -35,7 +35,7 @@ class HeaderTests(unittest.TestCase):
     def test_approved_v04_structure(self):
         markup, css = mod.render_header([])
         for expected in ('class="ep-header"', 'data-i18n="navProjects"',
-                         'data-i18n="navGithub"', 'data-language-select',
+                         'data-i18n="navGithub"', 'data-language-choice',
                          'data-theme-toggle', 'role="switch"',
                          'href="#projects" data-i18n="allProjects"'):
             with self.subTest(expected=expected):
@@ -93,7 +93,7 @@ class HeaderTests(unittest.TestCase):
         complete = mod.render_header_css()
         component = mod.render_header_css(include_portfolio_bridge=False)
         self.assertIn(".ep-header", complete)
-        self.assertIn(".site-header{display:none", complete)
+        self.assertNotIn(".site-header{display:none", complete)
         self.assertNotIn(".site-header{display:none", component)
         self.assertTrue(complete.startswith(component))
 

@@ -25,10 +25,13 @@
       </nav>
     </div>
     <div class="ep-header__controls" aria-label="Display preferences">
-      <label class="ep-header__language-control">
-        <span class="ep-header__sr-only" data-i18n="language">Language</span>
-        <select data-language-select aria-label="Language"><option value="en">EN</option><option value="pt-BR">PT-BR</option></select>
-      </label>
+      <details class="ep-header__dropdown ep-header__language-control" aria-label="Language selector">
+        <summary aria-label="Language"><span data-language-current>EN</span><span class="ep-header__caret" aria-hidden="true">⌄</span></summary>
+        <div class="ep-header__menu" aria-label="Languages">
+          <button type="button" data-language-choice="en" lang="en">English</button>
+          <button type="button" data-language-choice="pt-BR" lang="pt-BR">Português (Brasil)</button>
+        </div>
+      </details>
       <button class="ep-header__theme-switch" type="button" data-theme-toggle role="switch" aria-checked="false" aria-label="Switch to light theme">
         <span class="ep-header__theme-option ep-header__theme-option--dark" data-i18n="dark">Dark</span>
         <span class="ep-header__theme-option ep-header__theme-option--light" data-i18n="light">Light</span>

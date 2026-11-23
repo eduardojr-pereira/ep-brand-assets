@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the approved EP Header V04 from the canonical ep-brand-assets checkout.
+"""Render the approved EP Header from the canonical ep-brand-assets checkout.
 
 This module is deliberately independent of render_footer.py. It produces the
 HTML and CSS used by the portfolio builder without modifying project files.
@@ -121,7 +121,7 @@ def render_header(
 
     template = _HEADER_TEMPLATE.read_text(encoding="utf-8")
     if template.count(_ALL_PROJECTS_ANCHOR) != 1:
-        raise ValueError("Approved V04 All Projects link not found exactly once")
+        raise ValueError("Approved All Projects link not found exactly once")
     replacement = f'href="{_valid_href(all_projects_href)}" data-i18n="allProjects"'
     template = template.replace(_ALL_PROJECTS_ANCHOR, replacement, 1)
 

@@ -1,4 +1,4 @@
-/* EP Header v0.4 — no Lottie, no SVG, original EP navbar hover animation */
+/* EP Header — no Lottie, no SVG, original EP navbar hover animation */
 .ep-header,.ep-header *{box-sizing:border-box}
 .ep-header{position:relative;z-index:50;width:100%;background:var(--ep-color-bg);color:var(--ep-color-text);border-bottom:1px solid var(--ep-color-border);font-family:var(--ep-font-sans,"Source Sans 3",sans-serif)}
 .ep-header__inner{width:min(100% - 48px,1120px);min-height:76px;margin:auto;display:flex;align-items:center;gap:26px;justify-content:space-between}
@@ -9,9 +9,10 @@
 .ep-header__dropdown{position:relative}
 .ep-header__dropdown>summary{position:relative;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 1px;list-style:none;border:0;background:transparent;color:var(--ep-color-text);font:600 13px/1.2 var(--ep-font-sans,"Source Sans 3",sans-serif);white-space:nowrap;cursor:pointer}
 .ep-header__dropdown>summary::-webkit-details-marker{display:none}
-.ep-header__dropdown>summary::after{content:"";position:absolute;left:0;right:0;bottom:5px;height:2px;background:var(--ep-color-accent);transform:scaleX(0);transform-origin:right center;transition:transform .3s ease-in-out}
+.ep-header__dropdown>summary::after{content:"";position:absolute;left:0;right:0;bottom:5px;height:2px;background:var(--ep-color-link-hover);transform:scaleX(0);transform-origin:right center;transition:transform .3s ease-in-out}
 .ep-header__dropdown>summary:hover::after,.ep-header__dropdown>summary:focus-visible::after,.ep-header__dropdown[open]>summary::after{transform:scaleX(1);transform-origin:left center}
 .ep-header__dropdown[open]>summary{color:var(--ep-color-accent)}
+.ep-header__dropdown[open]>summary::after{background:var(--ep-color-accent)}
 .ep-header__caret{font-size:17px;line-height:1;opacity:.85;display:inline-block;transition:transform .2s ease}
 .ep-header__dropdown[open] .ep-header__caret{transform:rotate(180deg)}
 .ep-header__menu{position:absolute;top:calc(100% + 5px);left:0;z-index:65;min-width:232px;display:grid;gap:2px;padding:7px;background:var(--ep-color-surface);border:1px solid var(--ep-color-border);border-radius:10px;box-shadow:0 15px 35px rgba(0,0,0,.23)}
@@ -19,8 +20,18 @@
 .ep-header__menu a:hover,.ep-header__menu a:focus-visible{background:var(--ep-color-bg);color:var(--ep-color-accent)}
 .ep-header__separator{height:1px;margin:5px 8px;background:var(--ep-color-border)}
 .ep-header__controls{display:flex;align-items:center;gap:13px;margin-left:auto;flex:none}
-.ep-header__language-control{display:flex;align-items:center}
-.ep-header__language-control select{min-width:77px;min-height:36px;padding:7px 10px;border:1px solid var(--ep-color-border);border-radius:7px;cursor:pointer;background:var(--ep-color-surface);color:var(--ep-color-text);font:600 12px/1.3 var(--ep-font-sans,"Source Sans 3",sans-serif)}
+/* The language menu shares the native details interaction of Projects/GitHub. */
+.ep-header__language-control{position:relative;display:flex;align-items:center}
+.ep-header__language-control>summary{min-width:79px;min-height:36px;padding:8px 9px;display:flex;align-items:center;justify-content:space-between;gap:6px;border:1px solid var(--ep-color-border);border-radius:7px;background:var(--ep-color-surface);color:var(--ep-color-text);font:600 12px/1.3 var(--ep-font-sans,"Source Sans 3",sans-serif)}
+.ep-header__language-control>summary::after{display:none}
+.ep-header__language-control>summary:hover,.ep-header__language-control>summary:focus-visible{border-color:var(--ep-color-accent)}
+.ep-header__language-control[open]>summary{border-color:var(--ep-color-accent);color:var(--ep-color-text)}
+.ep-header__language-control .ep-header__menu{right:0;left:auto;min-width:128px}
+.ep-header__language-control .ep-header__menu button{width:100%;border:0;background:transparent;color:var(--ep-color-text);text-align:left;white-space:nowrap;font:500 13px/1.35 var(--ep-font-sans,"Source Sans 3",sans-serif);padding:10px 12px;border-radius:6px;cursor:pointer;transition:background .18s ease,color .18s ease}
+.ep-header__language-control .ep-header__menu button:hover,.ep-header__language-control .ep-header__menu button:focus-visible{background:var(--ep-color-bg);color:var(--ep-color-accent)}
+.ep-header__language-control .ep-header__menu button[aria-current="true"]{color:var(--ep-color-accent);font-weight:700}
+.ep-header__language-control .ep-header__menu button[aria-current="true"]::after{content:"✓";float:right;margin-left:9px}
+
 .ep-header__theme-switch{position:relative;isolation:isolate;display:grid;grid-template-columns:1fr 1fr;align-items:center;width:112px;height:36px;padding:3px;border-radius:999px;border:1px solid var(--ep-color-border);background:var(--ep-color-surface);cursor:pointer;overflow:hidden;appearance:none;color:var(--ep-color-muted);font-family:var(--ep-font-sans,"Source Sans 3",sans-serif)}
 .ep-header__theme-switch::before{content:"";position:absolute;z-index:-1;left:3px;top:3px;bottom:3px;width:calc(50% - 3px);border-radius:999px;background:var(--ep-color-accent);transform:translateX(0);transition:transform .24s cubic-bezier(.2,.8,.2,1)}
 html[data-theme="light"] .ep-header__theme-switch::before{transform:translateX(calc(100% - 0px))}
@@ -41,5 +52,5 @@ html:not([data-theme="light"]) .ep-header__theme-option--light,html[data-theme="
  .ep-header__dropdown>summary{font-size:12px;min-height:35px}
  .ep-header__menu{min-width:min(235px,calc(100vw - 35px))}
 }
-@media(max-width:380px){.ep-header__inner{width:calc(100% - 22px)}.ep-header__language-control select{min-width:68px;padding:7px 6px}.ep-header__theme-switch{width:94px}.ep-header__controls{gap:5px}}
-@media(prefers-reduced-motion:reduce){.ep-header__dropdown>summary::after,.ep-header__caret,.ep-header__menu a,.ep-header__theme-switch::before,.ep-header__theme-option{transition:none}}
+@media(max-width:380px){.ep-header__inner{width:calc(100% - 22px)}.ep-header__language-control>summary{min-width:68px;padding:7px 6px}.ep-header__theme-switch{width:94px}.ep-header__controls{gap:5px}}
+@media(prefers-reduced-motion:reduce){.ep-header__dropdown>summary::after,.ep-header__caret,.ep-header__menu a,.ep-header__theme-switch::before,.ep-header__theme-option,.ep-header__language-control .ep-header__menu button{transition:none}}
