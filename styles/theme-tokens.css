@@ -1,0 +1,29 @@
+/* EP Design System — Phase 01 staging. Do not overwrite production without review. */
+:root, :root[data-theme="dark"] {
+  color-scheme: dark;
+  --ep-color-bg:#242424;
+  --ep-color-surface:#333230;
+  --ep-color-footer-bg:#242424;
+  --ep-color-footer-surface:#333230;
+  --ep-color-border:#4C4945;
+  --ep-color-text:#F4F0E9;
+  --ep-color-muted:#C5BEB5;
+  --ep-color-accent:#C98D62;
+  --ep-color-focus:#E3AB82;
+  --ep-color-on-accent:#242424;
+  --ep-color-link-hover:#FFFFFF;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --ep-color-bg:#F4F0E9;
+  --ep-color-surface:#FFFFFF;
+  --ep-color-footer-bg:#F4F0E9;
+  --ep-color-footer-surface:#FFFFFF;
+  --ep-color-border:#D9D1C7;
+  --ep-color-text:#242424;
+  --ep-color-muted:#5B554E;
+  --ep-color-accent:#9D603B;
+  --ep-color-focus:#9D603B;
+  --ep-color-on-accent:#FFFFFF;
+  --ep-color-link-hover:#242424;
+}

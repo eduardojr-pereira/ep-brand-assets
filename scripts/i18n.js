@@ -1,0 +1,28 @@
+/* EP i18n — shared interface strings. Project content is translated by the catalog layer. */
+(function(){
+'use strict';
+const translations={
+'en':{
+site:'EP Design System',headline:'Data Science Portfolio',description:'Language and theme persist when you navigate between pages.',other:'Open second page',back:'Back to start',second:'Second page: preferences preserved',secondDescription:'Try changing the controls and navigating back.',theme:'Theme',language:'Language',current:'Current preferences',dark:'Dark',light:'Light',
+navProjects:'Projects',navGithub:'GitHub',personalWebsite:'Website',backToShowcase:'Back to Showcase',allProjects:'All projects',githubPortfolio:'Portfolio repository',knowledgeBase:'Knowledge Base',brandAssets:'EP Brand Assets',githubProfile:'GitHub Profile',
+heroLabel:'Data Science · Analytics · Applied Projects',lead:'Explore applied analyses, interactive reports and reproducible methods. Each project connects a practical question to evidence, results and limitations, with source code and documentation available on GitHub.',
+exploreTitle:'Explore by category',exploreSubtitle:'Filter projects by area or collection. Only published reports are shown.',collectionLabel:'Collection',selectedProjects:'Selected Projects',learningLabs:'Learning Labs',area:'Area',projectsReports:'Projects & reports',empty:'No published projects match these filters. Choose another category or collection.',code:'Code',documentation:'Documentation',view:'View'
+},
+'pt-BR':{
+site:'EP Design System',headline:'Portfólio de Ciência de Dados',description:'Idioma e tema permanecem ao navegar entre páginas.',other:'Abrir segunda página',back:'Voltar ao início',second:'Segunda página: preferências preservadas',secondDescription:'Altere os controles e volte à primeira página.',theme:'Tema',language:'Idioma',current:'Preferências atuais',dark:'Escuro',light:'Claro',
+navProjects:'Projetos',navGithub:'GitHub',personalWebsite:'Website',backToShowcase:'Voltar à vitrine',allProjects:'Todos os projetos',githubPortfolio:'Repositório do portfólio',knowledgeBase:'Base de Conhecimento',brandAssets:'EP Brand Assets',githubProfile:'Perfil GitHub',
+heroLabel:'Ciência de Dados · Analytics · Projetos aplicados',lead:'Explore análises aplicadas, relatórios interativos e métodos reproduzíveis. Cada projeto conecta uma questão prática a evidências, resultados e limitações, com código-fonte e documentação disponíveis no GitHub.',
+exploreTitle:'Explore por categoria',exploreSubtitle:'Filtre os projetos por área ou coleção. Apenas relatórios publicados são exibidos.',collectionLabel:'Coleção',selectedProjects:'Projetos selecionados',learningLabs:'Laboratórios de aprendizado',area:'Área',projectsReports:'Projetos e relatórios',empty:'Nenhum projeto publicado corresponde a esses filtros. Escolha outra categoria ou coleção.',code:'Código',documentation:'Documentação',view:'Visualizar'
+}};
+let active='en';try{if(localStorage.getItem('ep_locale')==='pt-BR')active='pt-BR';}catch(_){}
+function render(){
+ const strings=translations[active];document.documentElement.lang=active;
+ document.querySelectorAll('[data-i18n]').forEach(node=>{const value=strings[node.dataset.i18n];if(typeof value==='string')node.textContent=value;});
+ document.querySelectorAll('[data-language-toggle]').forEach(button=>{button.textContent=active==='en'?'PT-BR':'EN';button.setAttribute('aria-label',active==='en'?'Mudar para português':'Switch to English');});document.querySelectorAll('[data-language-select]').forEach(select=>{select.value=active;select.setAttribute('aria-label',strings.language);});
+ document.querySelectorAll('[data-theme-toggle]').forEach(button=>{button.dataset.lightLabel=strings.light;button.dataset.darkLabel=strings.dark;const light=document.documentElement.getAttribute('data-theme')==='light';if(!button.classList.contains('ep-header__theme-switch'))button.textContent=light?strings.dark:strings.light;button.setAttribute('aria-label',active==='pt-BR'?(light?'Ativar tema escuro':'Ativar tema claro'):(light?'Switch to dark theme':'Switch to light theme'));if(button.getAttribute('role')==='switch')button.setAttribute('aria-checked',String(light));});
+ document.querySelectorAll('[data-current]').forEach(node=>{node.textContent=`${active} · ${document.documentElement.getAttribute('data-theme')}`;});
+}
+function apply(locale){active=locale==='pt-BR'?'pt-BR':'en';try{localStorage.setItem('ep_locale',active);}catch(_){}render();document.dispatchEvent(new CustomEvent('ep:languagechange',{detail:{locale:active}}));}
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('[data-language-toggle]').forEach(button=>button.addEventListener('click',()=>apply(active==='en'?'pt-BR':'en')));document.querySelectorAll('[data-language-select]').forEach(select=>select.addEventListener('change',()=>apply(select.value)));document.addEventListener('ep:themechange',render);render();});
+window.EPI18n=Object.freeze({apply,get current(){return active;}});
+})();

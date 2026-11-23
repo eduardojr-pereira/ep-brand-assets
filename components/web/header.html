@@ -1,0 +1,38 @@
+<header class="ep-header" aria-label="Site header">
+  <div class="ep-header__inner">
+    <div class="ep-header__left">
+      <a class="ep-header__brand" href="{{website}}" target="_blank" rel="noopener noreferrer" aria-label="Eduardo Pereira — Website">
+        <img src="{{logo_src}}" width="43" height="43" alt="EP">
+      </a>
+      <nav class="ep-header__nav" aria-label="Main navigation">
+        <details class="ep-header__dropdown">
+          <summary><span data-i18n="navProjects">Projects</span><span class="ep-header__caret" aria-hidden="true">⌄</span></summary>
+          <div class="ep-header__menu">
+            <a href="#projects" data-i18n="allProjects">All projects</a>
+            <div class="ep-header__separator" role="separator" aria-hidden="true"></div>
+            {{projects_menu}}
+          </div>
+        </details>
+        <details class="ep-header__dropdown ep-header__dropdown--github">
+          <summary><span data-i18n="navGithub">GitHub</span><span class="ep-header__caret" aria-hidden="true">⌄</span></summary>
+          <div class="ep-header__menu">
+            <a href="{{github}}" target="_blank" rel="noopener noreferrer" data-i18n="githubProfile">GitHub Profile</a>
+            <div class="ep-header__separator" role="separator" aria-hidden="true"></div>
+            <a href="{{portfolio}}" target="_blank" rel="noopener noreferrer" data-i18n="githubPortfolio">Portfolio repository</a>
+            <a href="{{knowledge_base}}" target="_blank" rel="noopener noreferrer" data-i18n="knowledgeBase">Knowledge Base</a>
+          </div>
+        </details>
+      </nav>
+    </div>
+    <div class="ep-header__controls" aria-label="Display preferences">
+      <label class="ep-header__language-control">
+        <span class="ep-header__sr-only" data-i18n="language">Language</span>
+        <select data-language-select aria-label="Language"><option value="en">EN</option><option value="pt-BR">PT-BR</option></select>
+      </label>
+      <button class="ep-header__theme-switch" type="button" data-theme-toggle role="switch" aria-checked="false" aria-label="Switch to light theme">
+        <span class="ep-header__theme-option ep-header__theme-option--dark" data-i18n="dark">Dark</span>
+        <span class="ep-header__theme-option ep-header__theme-option--light" data-i18n="light">Light</span>
+      </button>
+    </div>
+  </div>
+</header>
