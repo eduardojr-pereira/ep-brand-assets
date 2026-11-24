@@ -1,6 +1,6 @@
 /* EP Report Navigation — common visual treatment, shared by reports.
    Project generators own the HTML structure and positioning, not link effects. */
-.ep-report-nav__link,
+:is(.ep-report-nav__link,.ep-external-link),
 .ep-report-nav__back {
   position: relative;
   display: inline-flex;
@@ -12,7 +12,7 @@
   text-decoration: none;
   white-space: nowrap;
 }
-.ep-report-nav__link::after {
+:is(.ep-report-nav__link,.ep-external-link)::after {
   content: "";
   position: absolute;
   left: 9px;
@@ -25,24 +25,24 @@
   transition: transform .55s cubic-bezier(.76,0,.24,1), background-color .2s ease;
   pointer-events: none;
 }
-.ep-report-nav__link:hover,
-.ep-report-nav__link:focus-visible { color: var(--ep-color-link-hover); }
-.ep-report-nav__link:hover::after,
-.ep-report-nav__link:focus-visible::after {
+:is(.ep-report-nav__link,.ep-external-link):hover,
+:is(.ep-report-nav__link,.ep-external-link):focus-visible { color: var(--ep-color-link-hover); }
+:is(.ep-report-nav__link,.ep-external-link):hover::after,
+:is(.ep-report-nav__link,.ep-external-link):focus-visible::after {
   transform: scaleX(1);
   transform-origin: left center;
 }
-.ep-report-nav__link.is-active,
-.ep-report-nav__link.is-active:hover,
-.ep-report-nav__link.is-active:focus-visible { color: var(--ep-color-accent); }
-.ep-report-nav__link.is-active::after,
-.ep-report-nav__link.is-active:hover::after,
-.ep-report-nav__link.is-active:focus-visible::after {
+:is(.ep-report-nav__link,.ep-external-link).is-active,
+:is(.ep-report-nav__link,.ep-external-link).is-active:hover,
+:is(.ep-report-nav__link,.ep-external-link).is-active:focus-visible { color: var(--ep-color-accent); }
+:is(.ep-report-nav__link,.ep-external-link).is-active::after,
+:is(.ep-report-nav__link,.ep-external-link).is-active:hover::after,
+:is(.ep-report-nav__link,.ep-external-link).is-active:focus-visible::after {
   background: var(--ep-color-accent);
   transform: scaleX(1);
   transform-origin: left center;
 }
-.ep-report-nav__link:focus-visible,
+:is(.ep-report-nav__link,.ep-external-link):focus-visible,
 .ep-report-nav__back:focus-visible {
   outline: 2px solid var(--ep-color-focus);
   outline-offset: 3px;
@@ -100,7 +100,7 @@
   transform: translate3d(0,-200%,0);
 }
 @media (prefers-reduced-motion: reduce) {
-  .ep-report-nav__link::after,
+  :is(.ep-report-nav__link,.ep-external-link)::after,
   .ep-report-nav__back::before,
   .ep-report-nav__back::after,
   .ep-report-nav__back > span { transition: none; }
@@ -108,4 +108,54 @@
   .ep-report-nav__back:focus-visible > span { transform: none; }
   .ep-report-nav__back:hover::after,
   .ep-report-nav__back:focus-visible::after { display: none; }
+}
+
+
+/* EP responsive report sections — canonical dropdown reuse */
+.ep-report-nav__sections {
+  display: none;
+}
+
+@media (max-width: 670px) {
+  .ep-report-nav__section-layout {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .ep-report-nav__sections {
+    display: block;
+  }
+
+  .ep-report-nav__sections > summary {
+    min-height: 44px;
+  }
+
+  .ep-report-nav__sections .ep-header__menu {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .ep-report-nav__sections .ep-header__menu a {
+    min-height: 44px;
+  }
+
+  .ep-report-nav__sections .ep-report-nav__link.is-active {
+    color: var(--ep-color-accent);
+    background: var(--ep-color-bg);
+  }
+
+  .ep-report-nav__sections .ep-report-nav__link::after {
+    display: none;
+  }
+
+  .ep-report-nav__sections > summary:focus-visible {
+    outline: 2px solid var(--ep-color-focus);
+    outline-offset: 3px;
+  }
+
+  .ep-report-nav__section-layout > .ep-report-nav__back {
+    margin-left: auto;
+    min-height: 44px;
+  }
 }

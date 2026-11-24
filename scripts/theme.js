@@ -15,8 +15,9 @@
       if(!button.classList.contains('ep-header__theme-switch')){
         button.textContent=isLight?(button.dataset.darkLabel||'Dark'):(button.dataset.lightLabel||'Light');
       }
-      const pt=document.documentElement.lang.toLowerCase().startsWith('pt');
-      button.setAttribute('aria-label',pt?(isLight?'Ativar tema escuro':'Ativar tema claro'):(isLight?'Switch to dark theme':'Switch to light theme'));
+      button.setAttribute('aria-label',isLight
+        ? (button.dataset.darkAria||'Switch to dark theme')
+        : (button.dataset.lightAria||'Switch to light theme'));
     });
   }
   function apply(theme){
@@ -30,5 +31,6 @@
     document.querySelectorAll('[data-theme-toggle]').forEach(button=>button.addEventListener('click',()=>apply(current()==='dark'?'light':'dark')));
     apply(current());
   });
-  window.EPTheme=Object.freeze({current,apply});
+  document.addEventListener('ep:languagechange',()=>syncButtons(current()));
+  window.EPTheme=Object.freeze({current,apply,refresh:()=>syncButtons(current())});
 })();

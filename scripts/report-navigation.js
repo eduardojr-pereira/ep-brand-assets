@@ -1,17 +1,17 @@
 /* Shared contextual navigation: locale-aware return and accurate active section. */
 (function () {
   'use strict';
-  const nav = document.querySelector('.bike-local-nav');
-  const backLabels = {en: 'Back to Projects', 'pt-BR': 'Voltar aos Projetos'};
+  const nav = document.querySelector('nav.ep-report-nav');
+  const backLabels = {en: 'Back to Portfolio', 'pt-BR': 'Voltar ao portfólio'};
 
   function syncLabels() {
     const locale = document.documentElement.lang === 'pt-BR' ? 'pt-BR' : 'en';
     document.querySelectorAll('.ep-report-nav__back:not(.ep-footer__top)').forEach(link => {
       const value = backLabels[locale];
-      link.dataset.replace = value;
+      link.dataset.replace = '← ' + value;
       link.setAttribute('aria-label', value);
       const span = link.querySelector('span');
-      if (span) span.textContent = value;
+      if (span) span.textContent = '← ' + value;
       // Existing report structure places the homepage three levels above the report.
       const target = new URL(link.getAttribute('href'), document.baseURI);
       if (target.pathname.endsWith('/index.html') && !target.hash) link.hash = '#projects';
@@ -25,6 +25,54 @@
   const entries = links.map(link => ({link, section: document.getElementById(link.hash.slice(1))}))
     .filter(entry => entry.section);
   if (!entries.length) return;
+
+  // EP responsive report sections — canonical dropdown reuse.
+  const layout = links[0].parentElement;
+  layout.classList.add('ep-report-nav__section-layout');
+  nav.dataset.i18nAria = 'reportSectionsAria';
+
+  const dropdown = document.createElement('details');
+  dropdown.className =
+    'ep-header__dropdown ep-report-nav__sections';
+
+  const summary = document.createElement('summary');
+
+  const label = document.createElement('span');
+  label.dataset.i18n = 'reportSections';
+  label.textContent = 'Sections';
+
+  const caret = document.createElement('span');
+  caret.className = 'ep-header__caret';
+  caret.setAttribute('aria-hidden', 'true');
+  caret.textContent = '⌄';
+
+  summary.append(label, caret);
+
+  const panel = document.createElement('div');
+  panel.className = 'ep-header__menu';
+
+  dropdown.append(summary, panel);
+
+  // Preserve a reference to the original position.
+  const anchor = document.createComment('EP report sections');
+  layout.insertBefore(anchor, links[0]);
+  layout.insertBefore(dropdown, anchor);
+
+  const mobile = window.matchMedia('(max-width: 670px)');
+
+  function syncLayout() {
+    dropdown.open = false;
+
+    if (mobile.matches) {
+      links.forEach(link => panel.append(link));
+    } else {
+      links.forEach(link => layout.insertBefore(link, anchor));
+    }
+  }
+
+  mobile.addEventListener('change', syncLayout);
+  syncLayout();
+
   let targetId = null;
   let unlockTimer = null;
   let pendingFrame = false;
@@ -63,6 +111,10 @@
     // reapply the previous active item during smooth scrolling.
     event.preventDefault();
     event.stopImmediatePropagation();
+    if (mobile.matches) {
+      dropdown.open = false;
+      summary.focus({preventScroll: true});
+    }
     targetId = section.id;
     select(targetId);
     if (unlockTimer !== null) clearTimeout(unlockTimer);

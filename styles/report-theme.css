@@ -20,3 +20,19 @@ html.ep-report-document {
 .ep-report-page .bike-local-nav { z-index:30; }
 .ep-report-page section[id] { scroll-margin-top: 100px; }
 @media(max-width:720px){.ep-report-page section[id]{scroll-margin-top:120px}}
+
+/* Keep analytical outputs readable in both themes. */
+
+.ep-report-page .gallery span {
+    color: var(--ep-color-muted);
+}
+
+.ep-report-page .card p {
+    color: var(--ep-color-muted);
+}
+
+.ep-report-page .callout {
+    background: var(--ep-color-surface);
+    color: var(--ep-color-text);
+    border-color: var(--ep-color-accent);
+}

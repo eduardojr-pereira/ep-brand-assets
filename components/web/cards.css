@@ -2,7 +2,40 @@
 .project-card{display:flex;flex-direction:column;gap:12px;position:relative;padding:26px;background:var(--ep-color-surface);border:1px solid var(--ep-color-border);border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.10);transform:translate3d(0,0,0);transition:transform .42s cubic-bezier(.22,1,.36,1),border-color .32s ease,box-shadow .42s cubic-bezier(.22,1,.36,1)}
 .project-card h3{font-size:23px;line-height:1.3;letter-spacing:-.025em;margin:0;color:var(--ep-color-text)}
 .project-card p{font-size:14px;line-height:1.65;margin:0;flex:1;color:var(--ep-color-muted)}
-.project-card .pill,.project-card .tech{font-size:11px;padding:5px 9px;border-radius:6px;background:color-mix(in srgb,var(--ep-color-accent) 13%,var(--ep-color-surface));color:var(--ep-color-text)}
+/* Canonical non-interactive technology tags. */
+
+.project-card .pill,
+.project-card .tech,
+.ep-project-intro .tag,
+.ep-reference-license {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 13px;
+    border: 1px solid var(--ep-color-border);
+    border-radius: 999px;
+    background: var(--ep-color-surface);
+    color: var(--ep-color-text);
+    font-family: var(--ep-font-sans, sans-serif);
+    font-size: .82rem;
+    font-weight: 500;
+    line-height: 1.35;
+    cursor: default;
+    white-space: nowrap;
+}
+
+.project-card .pill::before,
+.project-card .tech::before,
+.ep-project-intro .tag::before,
+.ep-reference-license::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    flex: 0 0 6px;
+    border-radius: 50%;
+    background: var(--ep-color-accent);
+}
 .project-card .card-links{display:grid;grid-template-columns:repeat(2,max-content);justify-content:center;justify-items:center;column-gap:18px;row-gap:14px;text-align:center;border-top:1px solid var(--ep-color-border);padding-top:18px}
 .project-card .card-links>a{display:inline-block;position:relative;width:max-content;max-width:100%;min-width:0;justify-self:center;align-self:center;padding:0 0 4px;font-size:13px;font-weight:650;text-decoration:none;color:var(--ep-color-accent);white-space:normal}
 .project-card .card-links>a.report-cta{grid-column:1/-1;justify-self:center;font-weight:750}

@@ -19,7 +19,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 import json
 from render_header import render_header, logo_data_uri
-from render_footer import brand_values, substitute, render_web_css
+from render_footer import render_web_footer, render_web_css
 from publish_assets import copy_shared_assets
 from report_pages import integrate_report
 import shutil
@@ -31,9 +31,7 @@ ROOT: Path = Path.cwd()  # The actual source is supplied with --source to main()
 
 def render_footer() -> tuple[str, str]:
     """Use the approved, independent render_footer module from EP Brand."""
-    html = substitute((BRAND_ROOT / 'components/web/footer.html').read_text(encoding='utf-8'),
-                      brand_values(embed=True))
-    return html, render_web_css()
+    return render_web_footer(embed=True), render_web_css()
 
 
 def read_project_catalog(source_root: Path) -> dict[str, dict]:
@@ -124,7 +122,12 @@ def discover_reports() -> list[Path]:
 
 def ensure_valid_local_links(source_html: Path, parser: PageLinks) -> None:
     for url in parser.urls:
-        if url in {"../../../index.html", "../../../../index.html"}:
+        if url in {
+            "../../../index.html",
+            "../../../../index.html",
+            "../../../index.html#projects",
+            "../../../../index.html#projects",
+        }:
             continue  # Homepage created by the Pages builder
         parsed = urlsplit(url)
         if parsed.scheme or parsed.netloc or not parsed.path or parsed.path.startswith("/"):
@@ -139,13 +142,22 @@ def ensure_valid_local_links(source_html: Path, parser: PageLinks) -> None:
 
 def make_homepage(reports: list[dict[str, object]]) -> str:
     topics = sorted({t for p in reports for t in p["topics"]})
+    topic_keys = {
+        "Python Programming": "topicPython",
+        "Data Analytics": "topicAnalytics",
+        "Machine Learning": "topicML",
+    }
+
+    def topic_attr(topic):
+        key = topic_keys.get(topic)
+        return f' data-i18n="{key}"' if key else ''
     filters = ['<button class="filter is-active" type="button" data-topic="all" aria-pressed="true" data-i18n="allProjects">All projects</button>']
-    filters += [f'<button class="filter" type="button" data-topic="{escape(t, quote=True)}" aria-pressed="false">{escape(t)}</button>' for t in topics]
+    filters += [f'<button class="filter" type="button" data-topic="{escape(t, quote=True)}" aria-pressed="false"{topic_attr(t)}>{escape(t)}</button>' for t in topics]
     cards = []
     for p in reports:
         collection = str(p["collection"])
         kind = "Selected Project" if collection == "selected_projects" else "Learning Lab"
-        topic_tags = "".join(f'<span class="pill">{escape(str(t))}</span>' for t in p["topics"])
+        topic_tags = "".join(f'<span class="pill"{topic_attr(t)}>{escape(str(t))}</span>' for t in p["topics"])
         tech_tags = "".join(f'<span class="tech">{escape(str(t))}</span>' for t in p["technologies"])
         document_links = []
         if p["notebook"]:
@@ -153,13 +165,14 @@ def make_homepage(reports: list[dict[str, object]]) -> str:
         if p["readme"]:
             document_links.append(f'<a href="{escape(str(p["readme"]), quote=True)}"><span data-i18n="documentation">Documentation</span> <span aria-hidden="true">↗</span></a>')
         document_links.append(f'<a class="report-cta" href="{escape(str(p["report"]), quote=True)}"><span data-i18n="view">View</span> <span aria-hidden="true">↗</span></a>')
-        label = "Featured · " if p["featured"] else ""
+        label = '<span data-i18n="featured">Featured</span> · ' if p["featured"] else ""
+        kind_key = "selectedProject" if collection == "selected_projects" else "learningLab"
         cards.append(f'''<article class="project-card" data-collection="{escape(collection, quote=True)}" data-topics="{escape('|'.join(p['topics']), quote=True)}">
-  <div class="card-head"><span class="eyebrow">{label}{kind}</span></div>
+  <div class="card-head"><span class="eyebrow">{label}<span data-i18n="{kind_key}">{kind}</span></span></div>
   <h3 data-i18n-en="{escape(str(p['name']), quote=True)}" data-i18n-pt="{escape(str(p['name_pt']), quote=True)}">{escape(str(p['name']))}</h3>
   <p data-i18n-en="{escape(str(p['description']), quote=True)}" data-i18n-pt="{escape(str(p['description_pt']), quote=True)}">{escape(str(p['description']))}</p>
-  <div class="tag-row" aria-label="Project categories">{topic_tags}</div>
-  <div class="tag-row technologies" aria-label="Technologies">{tech_tags}</div>
+  <div class="tag-row" aria-label="Project categories" data-i18n-aria="categoriesAria">{topic_tags}</div>
+  <div class="tag-row technologies" aria-label="Technologies" data-i18n-aria="technologiesAria">{tech_tags}</div>
   <div class="card-links">{' '.join(document_links)}</div>
 </article>''')
     markup = '\n'.join(cards)
@@ -218,7 +231,7 @@ h2{{font-size:25px;letter-spacing:-.025em;margin:0 0 12px}}
 <label class="collection-option"><input type="radio" name="collection" value="selected_projects"> <span data-i18n="selectedProjects">Selected Projects</span></label>
 <label class="collection-option"><input type="radio" name="collection" value="learning_labs"> <span data-i18n="learningLabs">Learning Labs</span></label>
 </fieldset>
-<div class="area-filters"><h3 data-i18n="area">Area</h3><div class="filters" role="group" aria-label="Project areas">{''.join(filters)}</div></div>
+<div class="area-filters"><h3 data-i18n="area">Area</h3><div class="filters" role="group" aria-label="Project areas" data-i18n-aria="areasAria">{''.join(filters)}</div></div>
 </section>
 <section class="section" aria-labelledby="projects-title"><h2 id="projects-title" data-i18n="projectsReports">Projects &amp; reports</h2><p class="section-subtitle" id="result-count" aria-live="polite"></p><div class="projects" id="projects">{markup}</div><p class="empty" id="empty" hidden data-i18n="empty">No published projects match these filters. Choose another category or collection.</p></section>
 </main>
@@ -233,22 +246,11 @@ let topic='all',collection='all';
 const requestedCollection=new URLSearchParams(location.search).get('collection');
 if(['selected_projects','learning_labs'].includes(requestedCollection)){{collection=requestedCollection;const input=document.querySelector(`input[name="collection"][value="${{requestedCollection}}"]`);if(input)input.checked=true;}}
 const cards=Array.from(document.querySelectorAll('.project-card'));
-const githubMenu=document.querySelector('.github-dropdown');
-if(githubMenu){{
-  const githubToggle=githubMenu.querySelector('summary');
-  /* Native <details> toggles on click, Enter and Space. Never toggle on hover. */
-  document.addEventListener('pointerdown',event=>{{
-    if(!githubMenu.contains(event.target))githubMenu.open=false;
-  }});
-  document.addEventListener('keydown',event=>{{
-    if(event.key==='Escape' && githubMenu.open){{
-      githubMenu.open=false;
-      githubToggle.focus();
-    }}
-  }});
-}}
-function apply() {{let visible=0;cards.forEach(card=>{{const topics=card.dataset.topics.split('|');const show=(topic==='all'||topics.includes(topic))&&(collection==='all'||card.dataset.collection===collection);card.hidden=!show;if(show)visible++;}});document.getElementById('empty').hidden=visible!==0;document.getElementById('result-count').textContent=visible+' published '+(visible===1?'project':'projects')+' shown';}}
-document.querySelectorAll('button[data-topic]').forEach(button=>button.addEventListener('click',()=>{{topic=button.dataset.topic;document.querySelectorAll('button[data-topic]').forEach(b=>{{let selected=b===button;b.classList.toggle('is-active',selected);b.setAttribute('aria-pressed',String(selected));}});apply();}}));document.querySelectorAll('input[name="collection"]').forEach(input=>input.addEventListener('change',()=>{{if(input.checked){{collection=input.value;apply();}}}}));apply();
+/* Header dropdown behavior is owned by header.js. */
+function apply() {{let visible=0;cards.forEach(card=>{{const topics=card.dataset.topics.split('|');const show=(topic==='all'||topics.includes(topic))&&(collection==='all'||card.dataset.collection===collection);card.hidden=!show;if(show)visible++;}});document.getElementById('empty').hidden=visible!==0;document.getElementById('result-count').textContent=(document.documentElement.lang==='pt-BR'
+        ? visible+' '+(visible===1?'projeto publicado exibido':'projetos publicados exibidos')
+        : visible+' published '+(visible===1?'project':'projects')+' shown');}}
+document.querySelectorAll('button[data-topic]').forEach(button=>button.addEventListener('click',()=>{{topic=button.dataset.topic;document.querySelectorAll('button[data-topic]').forEach(b=>{{let selected=b===button;b.classList.toggle('is-active',selected);b.setAttribute('aria-pressed',String(selected));}});apply();}}));document.querySelectorAll('input[name="collection"]').forEach(input=>input.addEventListener('change',()=>{{if(input.checked){{collection=input.value;apply();}}}}));document.addEventListener('ep:languagechange',apply);document.addEventListener('DOMContentLoaded',apply);apply();
 }})();
 </script></body></html>'''
 

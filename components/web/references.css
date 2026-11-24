@@ -1,0 +1,29 @@
+/* Canonical EP references layout. */
+.ep-references__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.ep-reference-card{min-width:0;padding:22px;background:var(--ep-color-surface);border:1px solid var(--ep-color-border);border-radius:14px;color:var(--ep-color-text)}
+.ep-reference-card--full,.ep-reference-card:only-child{grid-column:1/-1}
+.ep-reference-card:has(+.ep-reference-card--full):first-child:nth-last-child(2){grid-column:1/-1}
+.ep-reference-card__heading{display:flex;align-items:center;gap:12px;margin-bottom:15px}
+.ep-reference-card__heading h3{font:inherit;font-size:1.12rem;font-weight:700;margin:0;color:var(--ep-color-text)}
+.ep-reference-card__heading svg{width:26px;height:26px;flex:none;color:var(--ep-color-accent)}
+.ep-reference-card p,.ep-reference-card li{color:var(--ep-color-muted);line-height:1.6}
+.ep-reference-card p{margin:8px 0}
+.ep-reference-links{padding-left:0;list-style:none;display:grid;gap:12px}
+.ep-reference-link{overflow-wrap:anywhere}
+.ep-reference-link:hover,.ep-reference-link:focus-visible{color:var(--ep-color-link-hover)}
+.ep-reference-steps{padding-left:25px;display:grid;gap:16px;margin:18px 0}
+.ep-reference-step::marker{font-weight:700;color:var(--ep-color-accent)}
+.ep-reference-command{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:var(--ep-color-bg);border:1px solid var(--ep-color-border);border-radius:9px;padding:10px 12px;margin-top:8px}
+.ep-reference-command pre{flex:1;min-width:0;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ep-color-text);font-size:.84rem}
+.ep-reference-copy{display:inline-flex;align-items:center;gap:6px;border:1px solid transparent;border-radius:6px;background:transparent;color:var(--ep-color-muted);padding:6px;cursor:pointer;font:inherit;font-size:.78rem}
+.ep-reference-copy[hidden]{display:none}
+.ep-reference-copy svg{width:16px;height:16px;flex:none}
+.ep-reference-copy svg:nth-of-type(2){display:none}
+.ep-reference-copy:hover,.ep-reference-copy:focus-visible{color:var(--ep-color-accent);border-color:var(--ep-color-border)}
+.ep-reference-copy:focus-visible{outline:2px solid var(--ep-color-focus);outline-offset:2px}
+.ep-reference-copy[data-state="copied"]{color:var(--ep-color-success,var(--ep-color-accent))}
+.ep-reference-copy[data-state="copied"] svg:first-of-type{display:none}
+.ep-reference-copy[data-state="copied"] svg:nth-of-type(2){display:block}
+.ep-reference-copy__status{width:100%;font-size:.78rem;color:var(--ep-color-muted)}
+.ep-reference-copy__status:empty{display:none}
+@media(max-width:670px){.ep-references__grid{grid-template-columns:1fr}.ep-reference-card{padding:17px}}

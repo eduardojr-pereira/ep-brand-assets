@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 import os
 from render_header import render_header
-from render_footer import brand_values, substitute
+from render_footer import render_web_footer
 
 
 class _HeaderLocator(HTMLParser):
@@ -74,7 +74,7 @@ def _replace_bike_legacy(markup: str) -> str:
       <a class="ep-report-nav__link" href="#models">Models</a>
       <a class="ep-report-nav__link" href="#findings">Conclusions</a>
       <a class="ep-report-nav__link" href="#outputs">Outputs</a>
-      <a class="ep-report-nav__back bike-local-nav__back" href="../../../index.html" aria-label="Back to Showcase" data-replace="Back to Showcase"><span>Back to Showcase</span></a>
+      <a class="ep-report-nav__back bike-local-nav__back" href="../../../index.html" aria-label="Back to Portfolio" data-replace="Back to Portfolio"><span>Back to Portfolio</span></a>
     </div></div>
   </nav>'''
     markup=markup[:start]+nav+markup[finish:]
@@ -90,8 +90,7 @@ def integrate_report(report_file: Path, published: list[dict], output_root: Path
         raise ValueError(f'Unexpected report document structure: {report_file}')
     # Render the same canonical Footer used by the homepage at build time.
     # Never edit the project report source or copy the Footer's implementation.
-    footer_template = Path(__file__).resolve().parents[1] / 'components/web/footer.html'
-    footer_html = substitute(footer_template.read_text(encoding='utf-8'), brand_values(embed=True))
+    footer_html = render_web_footer(embed=True)
     footer_pattern = r'<footer\b[^>]*\bclass="ep-footer"[^>]*>.*?</footer\s*>'
     footers = list(re.finditer(footer_pattern, markup, flags=re.S | re.I))
     if len(footers) > 1:
@@ -149,6 +148,10 @@ def integrate_report(report_file: Path, published: list[dict], output_root: Path
 <link rel="stylesheet" href="{base}assets/components/web/footer.css">
 <link rel="stylesheet" href="{base}assets/styles/report-navigation.css">
 <link rel="stylesheet" href="{base}assets/styles/report-theme.css">
+<link rel="stylesheet" href="{base}assets/components/web/project-intro.css">
+<link rel="stylesheet" href="{base}assets/components/web/cards.css">
+<link rel="stylesheet" href="{base}assets/components/web/links.css">
+<link rel="stylesheet" href="{base}assets/components/web/buttons.css">
 '''
     head=head.replace('{base}', prefix)
     # Styles after legacy inline report styles, so tokens override fixed legacy vars.
@@ -169,5 +172,21 @@ def integrate_report(report_file: Path, published: list[dict], output_root: Path
 '''
     scripts=scripts.replace('{base}', prefix)
     scripts += f'<script src="{prefix}assets/scripts/report-language.js" defer></script>\n'
+    if 'data-ep-plotly-i18n' in markup:
+        scripts += f'<script src="{prefix}assets/scripts/plotly-i18n.js" defer></script>\n'
+        scripts += f'<script src="{prefix}assets/scripts/plotly-theme.js" defer></script>\n'
+        markup = markup.replace(
+            '</head>',
+            f'<link rel="stylesheet" href="{prefix}assets/styles/plotly-theme.css">\n</head>',
+            1
+        )
+    if 'class="ep-references"' in markup:
+        markup = markup.replace('</head>', f'<link rel="stylesheet" href="{prefix}assets/components/web/references.css">\n</head>', 1)
+        scripts += f'<script src="{prefix}assets/scripts/references.js" defer></script>\n'
+    if 'class="ep-outputs"' in markup:
+        markup = markup.replace('</head>', f'<link rel="stylesheet" href="{prefix}assets/components/web/outputs.css">\n</head>', 1)
+        scripts += f'<script src="{prefix}assets/scripts/outputs.js" defer></script>\n'
+    if 'class="ep-project-links"' in markup:
+        scripts += f'<script src="{prefix}assets/scripts/project-links.js" defer></script>\n'
     markup=markup.replace('</body>',scripts+'</body>',1)
     report_file.write_text(markup,encoding='utf-8')

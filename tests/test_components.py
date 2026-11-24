@@ -64,10 +64,16 @@ class FooterTests(unittest.TestCase):
 
     def test_shared_styles_in_web_css(self):
         css = mod.render_web_css()
-        self.assertIn('--ep-color-accent: #67d8e9', css)
-        self.assertIn('--ep-container-footer: 67.5rem', css)
+        self.assertIn('#C98D62', css)
+        self.assertIn('#9D603B', css)
+        self.assertIn('#242424', css)
+        self.assertIn('#F4F0E9', css)
+        self.assertIn('Playfair Display', css)
+        self.assertIn('Source Sans 3', css)
         self.assertIn('var(--ep-color-accent)', css)
-        self.assertLess(css.index('--ep-color-accent: #67d8e9'), css.index('.ep-footer{'))
+        self.assertLess(css.index('#C98D62'), css.index('.ep-footer{'))
+        self.assertNotIn('#67d8e9', css)
+        self.assertIn('.ep-report-nav__back--vertical', css)
         self.assertIn('prefers-reduced-motion', css)
 
 

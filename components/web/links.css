@@ -1,0 +1,6 @@
+/* Shared external link composition. Underline motion comes from report-navigation.css. */
+.ep-external-link {min-height:0;padding:0 0 4px;font:inherit;color:var(--ep-color-accent);white-space:normal;gap:.4em;max-width:100%;align-items:baseline}
+.ep-external-link::after {left:0;right:0;bottom:0;background:var(--ep-color-accent)}
+.ep-external-link .ep-editorial-arrow {display:inline-block;flex:none;font-size:1em}
+.ep-external-link:hover .ep-editorial-arrow,.ep-external-link:focus-visible .ep-editorial-arrow {transform:translate(3px,-3px)}
+@media(prefers-reduced-motion:reduce){.ep-external-link:hover .ep-editorial-arrow,.ep-external-link:focus-visible .ep-editorial-arrow{transform:none;transition:none}}

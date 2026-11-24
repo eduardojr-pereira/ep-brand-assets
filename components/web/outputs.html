@@ -1,0 +1,27 @@
+<section id="outputs" class="ep-outputs" aria-labelledby="ep-outputs-title">
+  <h2 id="ep-outputs-title" class="section-heading">$title</h2>
+  <p class="hint">$intro</p>
+  <div class="ep-outputs__heading"><span>$artifact</span><span>$format</span></div>
+  <ol class="ep-editorial-list ep-outputs__list">$items</ol>
+  $figures
+</section>
+<!-- EP-OUTPUT-ITEM -->
+<li><a class="ep-editorial-item ep-output-item" href="$url" download>
+  <span class="ep-editorial-number">$number</span>
+  <span class="ep-editorial-content"><strong>$name</strong><small>$origin · $description</small></span>
+  <span class="ep-output-format">$format</span><span class="ep-editorial-arrow ep-output-download" aria-hidden="true">
+  <svg width="18" height="18" viewBox="0 0 24 24"
+       fill="none" stroke="currentColor" stroke-width="1.7"
+       stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3v12m-5-5 5 5 5-5"/>
+    <path d="M5 17v4h14v-4"/>
+  </svg>
+</span>
+</a></li>
+<!-- EP-OUTPUT-FIGURES -->
+<div class="ep-output-figures"><h3>$title</h3><p class="hint">$intro</p><div class="ep-output-figures__grid">$cards</div></div>
+<!-- EP-OUTPUT-FIGURE -->
+<article class="ep-output-figure">
+  <a class="ep-output-figure__image" href="$url" target="_blank" rel="noopener noreferrer" aria-label="$alt"><img loading="lazy" src="$url" alt="$alt"></a>
+  <div class="ep-output-figure__body"><h4>$name</h4><p>$description</p><a class="ep-external-link" href="$url" target="_blank" rel="noopener noreferrer">$view<span class="ep-editorial-arrow" aria-hidden="true">↗</span></a></div>
+</article>

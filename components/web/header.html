@@ -1,10 +1,10 @@
-<header class="ep-header" aria-label="Site header">
+<header class="ep-header" aria-label="Site header" data-i18n-aria="headerAria">
   <div class="ep-header__inner">
     <div class="ep-header__left">
-      <a class="ep-header__brand" href="{{website}}" target="_blank" rel="noopener noreferrer" aria-label="Eduardo Pereira — Website">
+      <a class="ep-header__brand" href="{{website}}" target="_blank" rel="noopener noreferrer" aria-label="{{name}} — Website" data-i18n-aria-en="{{name}} — Website" data-i18n-aria-pt="{{name}} — Site pessoal">
         <img src="{{logo_src}}" width="43" height="43" alt="EP">
       </a>
-      <nav class="ep-header__nav" aria-label="Main navigation">
+      <nav class="ep-header__nav" aria-label="Main navigation" data-i18n-aria="navAria">
         <details class="ep-header__dropdown">
           <summary><span data-i18n="navProjects">Projects</span><span class="ep-header__caret" aria-hidden="true">⌄</span></summary>
           <div class="ep-header__menu">
@@ -24,12 +24,12 @@
         </details>
       </nav>
     </div>
-    <div class="ep-header__controls" aria-label="Display preferences">
-      <details class="ep-header__dropdown ep-header__language-control" aria-label="Language selector">
-        <summary aria-label="Language"><span data-language-current>EN</span><span class="ep-header__caret" aria-hidden="true">⌄</span></summary>
-        <div class="ep-header__menu" aria-label="Languages">
-          <button type="button" data-language-choice="en" lang="en">English</button>
-          <button type="button" data-language-choice="pt-BR" lang="pt-BR">Português (Brasil)</button>
+    <div class="ep-header__controls" aria-label="Display preferences" data-i18n-aria="displayAria">
+      <details class="ep-header__dropdown ep-header__language-control" aria-label="Language selector" data-i18n-aria="languageSelectorAria">
+        <summary aria-label="Language"><span data-language-current>EN-US</span><span class="ep-header__caret" aria-hidden="true">⌄</span></summary>
+        <div class="ep-header__menu" aria-label="Languages" data-i18n-aria="languagesAria">
+          <button type="button" data-language-choice="en" lang="en"><span aria-hidden="true" class="ep-language-flag ep-language-flag--us"></span><span>English</span></button>
+          <button type="button" data-language-choice="pt-BR" lang="pt-BR"><span aria-hidden="true" class="ep-language-flag ep-language-flag--br"></span><span>Português</span></button>
         </div>
       </details>
       <button class="ep-header__theme-switch" type="button" data-theme-toggle role="switch" aria-checked="false" aria-label="Switch to light theme">

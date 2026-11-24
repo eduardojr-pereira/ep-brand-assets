@@ -1,54 +1,54 @@
 <!-- EP Brand canonical Footer. Content, markup and links belong here only. -->
-<footer class="ep-footer" id="ep-footer" aria-label="Portfolio footer">
+<footer class="ep-footer" id="ep-footer" aria-label="Portfolio footer" data-i18n-aria="footerAria">
   <div class="ep-footer__inner">
     <div class="ep-footer__layout">
       <section class="ep-footer__about" aria-labelledby="ep-footer-title">
-        <a class="ep-footer__brand" href="{{website}}" target="_blank" rel="noopener noreferrer" aria-label="{{name}} — personal website">
+        <a class="ep-footer__brand" href="{{website}}" target="_blank" rel="noopener noreferrer" aria-label="{{name}} — personal website" data-i18n-aria-en="{{name}} — personal website" data-i18n-aria-pt="{{name}} — site pessoal">
           <img class="ep-footer__logo" src="{{logo_src}}" width="70" height="70" alt="" aria-hidden="true">
           <span class="ep-footer__brand-text">
             <strong id="ep-footer-title" class="ep-footer__brand-name">{{name}}</strong>
-            <span class="ep-footer__role">Economics · Data Science · Analytics</span>
+            <span class="ep-footer__role" data-i18n="footerRole">Economics · Data Science · Analytics</span>
           </span>
         </a>
-        <h2 class="ep-footer__about-label">About Me</h2>
+        <h2 class="ep-footer__about-label" data-i18n="footerAbout">About Me</h2>
         <div class="ep-footer__about-copy">
-          <p>Economist by training and data scientist by practice. I combine econometrics, machine learning, and business knowledge to turn data into decisions.</p>
-          <p>My work spans statistical analysis, predictive modeling, and interactive dashboards built with Python, SQL, and Power BI/Tableau. I focus on questions where analytical rigor meets business impact, such as forecasting, pricing, and customer analytics.</p>
-          <p>Open to connecting with teams that value data-driven decision-making.</p>
+          <p data-i18n="footerBio1">Economist by training and data scientist by practice. I combine econometrics, machine learning, and business knowledge to turn data into decisions.</p>
+          <p data-i18n="footerBio2">My work spans statistical analysis, predictive modeling, and interactive dashboards built with Python, SQL, and Power BI/Tableau. I focus on questions where analytical rigor meets business impact, such as forecasting, pricing, and customer analytics.</p>
+          <p data-i18n="footerBio3">Open to connecting with teams that value data-driven decision-making.</p>
         </div>
-        <a class="ep-footer__learn" href="{{website}}" target="_blank" rel="noopener noreferrer">Learn more <span aria-hidden="true">↗</span></a>
+        <a class="ep-footer__learn" href="{{website}}" target="_blank" rel="noopener noreferrer"><span data-i18n="footerLearn">Learn more</span> <span aria-hidden="true">↗</span></a>
       </section>
       <div class="ep-footer__spacer" aria-hidden="true"></div>
-      <section class="ep-footer__editorial" aria-label="Explore and connect">
-        <span class="ep-footer__watermark" aria-hidden="true">EXPLORE</span>
-        <nav class="ep-footer__index" aria-label="Explore">
+      <section class="ep-footer__editorial" aria-label="Explore and connect" data-i18n-aria="footerEditorialAria">
+        <span class="ep-footer__watermark" data-i18n="footerExplore" aria-hidden="true">EXPLORE</span>
+        <nav class="ep-footer__index" aria-label="Explore" data-i18n-aria="exploreAria">
           <a class="ep-footer__index-item" href="{{portfolio}}" data-ep-footer-route="home">
-            <span class="ep-footer__index-number">01</span><span class="ep-footer__index-content"><strong>Home</strong><small>Return to the portfolio</small></span><span class="ep-footer__index-arrow" aria-hidden="true">↗</span>
+            <span class="ep-footer__index-number">01</span><span class="ep-footer__index-content"><strong data-i18n="footerHome">Home</strong><small data-i18n="footerHomeDesc">Return to the portfolio</small></span><span class="ep-footer__index-arrow" aria-hidden="true">↗</span>
           </a>
           <a class="ep-footer__index-item" href="{{portfolio}}/tree/main/selected_projects" data-ep-footer-route="selected">
-            <span class="ep-footer__index-number">02</span><span class="ep-footer__index-content"><strong>Selected Projects</strong><small>Applied data science &amp; insights</small></span><span class="ep-footer__index-arrow" aria-hidden="true">↗</span>
+            <span class="ep-footer__index-number">02</span><span class="ep-footer__index-content"><strong data-i18n="selectedProjects">Selected Projects</strong><small data-i18n="footerSelectedDesc">Applied data science &amp; insights</small></span><span class="ep-footer__index-arrow" aria-hidden="true">↗</span>
           </a>
           <a class="ep-footer__index-item" href="{{portfolio}}/tree/main/learning_labs" data-ep-footer-route="labs">
-            <span class="ep-footer__index-number">03</span><span class="ep-footer__index-content"><strong>Learning Labs</strong><small>Programming &amp; experiments</small></span><span class="ep-footer__index-arrow" aria-hidden="true">↗</span>
+            <span class="ep-footer__index-number">03</span><span class="ep-footer__index-content"><strong data-i18n="learningLabs">Learning Labs</strong><small data-i18n="footerLabsDesc">Programming &amp; experiments</small></span><span class="ep-footer__index-arrow" aria-hidden="true">↗</span>
           </a>
           <a class="ep-footer__index-item" href="{{knowledge_base}}" target="_blank" rel="noopener noreferrer">
-            <span class="ep-footer__index-number">04</span><span class="ep-footer__index-content"><strong>Knowledge Base</strong><small>Research, notes &amp; documentation</small></span><span class="ep-footer__index-arrow" aria-hidden="true">↗</span>
+            <span class="ep-footer__index-number">04</span><span class="ep-footer__index-content"><strong data-i18n="knowledgeBase">Knowledge Base</strong><small data-i18n="footerKnowledgeDesc">Research, notes &amp; documentation</small></span><span class="ep-footer__index-arrow" aria-hidden="true">↗</span>
           </a>
         </nav>
         <div class="ep-footer__social">
-          <h2 class="ep-footer__social-label">Follow &amp; Connect</h2>
+          <h2 class="ep-footer__social-label" data-i18n="footerSocial">Follow &amp; Connect</h2>
           <div class="ep-footer__icons">
             <a class="ep-footer__icon" href="{{linkedin}}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><span class="ep-footer__lottie" data-ep-footer-lottie="linkedin" aria-hidden="true">in</span></a>
             <a class="ep-footer__icon" href="{{github}}" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><span class="ep-footer__lottie" data-ep-footer-lottie="github" aria-hidden="true">GH</span></a>
-            <a class="ep-footer__icon" href="mailto:{{email}}" aria-label="Email"><span class="ep-footer__lottie" data-ep-footer-lottie="gmail" aria-hidden="true">✉</span></a>
-            <a class="ep-footer__icon" href="https://discord.com/users/533043855122235393" target="_blank" rel="noopener noreferrer" aria-label="Discord"><span class="ep-footer__lottie" data-ep-footer-lottie="discord" aria-hidden="true">◉</span></a>
+            <a class="ep-footer__icon" href="mailto:{{email}}" aria-label="Email" data-i18n-aria="emailAria"><span class="ep-footer__lottie" data-ep-footer-lottie="gmail" aria-hidden="true">✉</span></a>
+            <a class="ep-footer__icon" href="{{discord}}" target="_blank" rel="noopener noreferrer" aria-label="Discord"><span class="ep-footer__lottie" data-ep-footer-lottie="discord" aria-hidden="true">◉</span></a>
           </div>
         </div>
       </section>
     </div>
     <div class="ep-footer__bottom">
       <small>© {{year}} {{name}}</small>
-      <a class="ep-footer__top ep-report-nav__back ep-report-nav__back--vertical" href="#top" data-replace="Back to Top ↑" aria-label="Back to Top"><span>Back to Top ↑</span></a>
+      <a class="ep-footer__top ep-report-nav__back ep-report-nav__back--vertical" href="#top" data-replace="Back to Top ↑" data-i18n-replace="footerTop" aria-label="Back to Top" data-i18n-aria="footerTopAria"><span data-i18n="footerTop">Back to Top ↑</span></a>
     </div>
   </div>
 </footer>

@@ -1,0 +1,43 @@
+/* Shared editorial output list and supplementary figures. */
+.ep-outputs__heading {display:flex;justify-content:space-between;padding:0 30px 8px 2px;color:var(--ep-color-muted);font-size:.74rem;text-transform:uppercase;letter-spacing:.08em}
+.ep-outputs__list {list-style:none;margin:0;padding:0}
+.ep-outputs .ep-output-item {grid-template-columns:28px minmax(0,1fr) 48px 24px;min-height:72px}
+.ep-outputs .ep-output-format {font-size:.75rem;color:var(--ep-color-muted);text-align:right}
+.ep-outputs .ep-output-item:focus-visible {outline:2px solid var(--ep-color-focus);outline-offset:3px}
+.ep-output-figures {margin-top:36px}
+.ep-output-figures h3 {margin:0 0 8px;font-size:1.25rem;color:var(--ep-color-text)}
+.ep-output-figures__grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ep-output-figure {min-width:0;overflow:hidden;background:var(--ep-color-surface);border:1px solid var(--ep-color-border);border-radius:12px;display:flex;flex-direction:column}
+.ep-output-figure__image {display:block;background:#fff}
+.ep-output-figure__image img {display:block;width:100%;height:190px;object-fit:contain;background:#fff}
+.ep-output-figure__body {padding:14px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;flex:1}
+.ep-output-figure__body h4 {margin:0;color:var(--ep-color-text);font-size:1rem}
+.ep-output-figure__body p {margin:0;color:var(--ep-color-muted);font-size:.85rem;flex:1}
+@media(max-width:850px){.ep-output-figures__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:670px){.ep-output-figures__grid{grid-template-columns:1fr}.ep-outputs .ep-output-item{grid-template-columns:23px minmax(0,1fr) 35px 18px;column-gap:7px}.ep-output-figure__image img{height:220px}}
+
+
+/* EP-OUTPUT-DOWNLOAD */
+.ep-output-item .ep-output-download {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ep-color-accent);
+    transition: transform .25s ease;
+}
+
+.ep-output-item:hover .ep-output-download,
+.ep-output-item:focus-visible .ep-output-download {
+    transform: translateY(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ep-output-item .ep-output-download {
+        transition: none;
+    }
+
+    .ep-output-item:hover .ep-output-download,
+    .ep-output-item:focus-visible .ep-output-download {
+        transform: none;
+    }
+}

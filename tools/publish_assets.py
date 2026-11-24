@@ -14,6 +14,17 @@ SHARED_FILES = (
     "components/web/footer.css", "components/web/cards.css", "components/web/buttons.css",
     "scripts/theme-init.js", "scripts/theme.js", "scripts/i18n.js", "scripts/header.js",
     "scripts/report-navigation.js", "scripts/report-language.js", "scripts/footer.js",
+    "scripts/plotly-i18n.js", "scripts/plotly-theme.js",
+    "styles/plotly-theme.css",
+    "components/web/project-intro.css", "scripts/project-links.js",
+    "components/web/links.css", "components/web/outputs.css", "scripts/outputs.js",
+    "assets/icons/flag_us.svg", "assets/icons/flag_br.svg",
+    "components/web/references.css", "scripts/references.js",
+    "assets/icons/data_source_icon.svg",
+    "assets/icons/knowledge_base_icon.svg",
+    "assets/icons/reproducibility_icon.svg",
+    "assets/icons/copy_icon.svg",
+    "assets/icons/check_icon.svg",
 )
 
 

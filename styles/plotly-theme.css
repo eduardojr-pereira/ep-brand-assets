@@ -1,0 +1,22 @@
+/* EP Brand — shared analytical chart headings. */
+
+.ep-report-document .ep-chart-heading,
+.ep-report-document .chart-heading {
+    font-family: var(--ep-font-sans, "Source Sans 3", sans-serif);
+    font-size: 1.07rem;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -.015em;
+    color: var(--ep-color-text);
+    margin: 10px 12px 8px;
+    overflow-wrap: anywhere;
+}
+
+.ep-report-document .chart-subheading {
+    color: var(--ep-color-muted);
+    margin: 0 12px 8px;
+}
+
+.ep-report-document .plotly-graph-div {
+    max-width: 100%;
+}

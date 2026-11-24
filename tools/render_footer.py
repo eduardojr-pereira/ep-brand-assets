@@ -91,9 +91,18 @@ def replace_footer(original, footer):
     return prefix + footer
 
 
+def render_web_footer(embed=True):
+    """Render the canonical web footer."""
+    template = (ROOT / 'components/web/footer.html').read_text(
+        encoding='utf-8'
+    )
+    return substitute(template, brand_values(embed=embed))
+
+
 def render_web_css():
     """Return design-system variables before component styles, preserving CSS order."""
-    paths = [ROOT / 'styles' / name for name in ('colors.css', 'typography.css', 'layout.css')]
+    paths = [ROOT / 'styles' / name for name in ('theme-tokens.css', 'typography-v2.css')]
+    paths.append(ROOT / 'styles/report-navigation.css')
     paths.append(ROOT / 'components/web/footer.css')
     return '\n'.join(path.read_text(encoding='utf-8').rstrip() for path in paths) + '\n'
 
@@ -114,8 +123,7 @@ def main():
         if args.css:
             print(render_web_css(), end='')
         else:
-            print(substitute((ROOT / 'components/web/footer.html').read_text(encoding='utf-8'),
-                             brand_values(embed=args.embed_assets)), end='')
+            print(render_web_footer(embed=args.embed_assets), end='')
         return
     footer = render_readme(args.kind, args.lang)
     if not args.file:

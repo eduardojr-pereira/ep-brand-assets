@@ -11,6 +11,8 @@
   --ep-color-accent:#C98D62;
   --ep-color-focus:#E3AB82;
   --ep-color-on-accent:#242424;
+  --ep-color-success:#8BD5AB;
+  --ep-color-danger:#F0A0A8;
   --ep-color-link-hover:#FFFFFF;
 }
 :root[data-theme="light"] {
@@ -25,5 +27,7 @@
   --ep-color-accent:#9D603B;
   --ep-color-focus:#9D603B;
   --ep-color-on-accent:#FFFFFF;
+  --ep-color-success:#256B48;
+  --ep-color-danger:#A13C48;
   --ep-color-link-hover:#242424;
 }
