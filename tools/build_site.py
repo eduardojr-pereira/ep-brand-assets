@@ -203,6 +203,7 @@ h2{{font-size:25px;letter-spacing:-.025em;margin:0 0 12px}}
 </style>
 <link rel="stylesheet" href="assets/components/web/header.css">
 <link rel="stylesheet" href="assets/components/web/footer.css">
+<link rel="stylesheet" href="assets/styles/report-navigation.css">
 <link rel="stylesheet" href="assets/components/web/cards.css">
 <link rel="stylesheet" href="assets/components/web/buttons.css">
 <link rel="stylesheet" href="assets/styles/portfolio-theme.css">
@@ -225,9 +226,12 @@ h2{{font-size:25px;letter-spacing:-.025em;margin:0 0 12px}}
 <script src="assets/scripts/theme.js" defer></script>
 <script src="assets/scripts/i18n.js" defer></script>
 <script src="assets/scripts/header.js" defer></script>
+<script src="assets/scripts/footer.js" defer></script>
 <script>
 (function() {{
 let topic='all',collection='all';
+const requestedCollection=new URLSearchParams(location.search).get('collection');
+if(['selected_projects','learning_labs'].includes(requestedCollection)){{collection=requestedCollection;const input=document.querySelector(`input[name="collection"][value="${{requestedCollection}}"]`);if(input)input.checked=true;}}
 const cards=Array.from(document.querySelectorAll('.project-card'));
 const githubMenu=document.querySelector('.github-dropdown');
 if(githubMenu){{

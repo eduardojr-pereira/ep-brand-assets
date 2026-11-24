@@ -13,7 +13,7 @@ SHARED_FILES = (
     "styles/report-navigation.css", "styles/report-theme.css", "components/web/header.css",
     "components/web/footer.css", "components/web/cards.css", "components/web/buttons.css",
     "scripts/theme-init.js", "scripts/theme.js", "scripts/i18n.js", "scripts/header.js",
-    "scripts/report-navigation.js", "scripts/report-language.js",
+    "scripts/report-navigation.js", "scripts/report-language.js", "scripts/footer.js",
 )
 
 

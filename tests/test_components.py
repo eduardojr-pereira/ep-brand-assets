@@ -53,12 +53,20 @@ class FooterTests(unittest.TestCase):
         self.assertIn('mailto:eduardojr.pereira@gmail.com', html)
         self.assertIn('@media(max-width:520px)', css)
         self.assertIn('prefers-reduced-motion', css)
+        self.assertIn('ep-footer__layout', html)
+        self.assertIn('ep-footer__watermark', html)
+        self.assertIn('>EXPLORE</span>', html)
+        self.assertNotIn('INDEX / 01', html)
+        self.assertNotIn('Code License', html)
+        self.assertIn('grid-template-columns:minmax(0,5fr)', css)
+        self.assertNotIn('#34516d', css)
+        self.assertNotIn('#36506a', css)
 
     def test_shared_styles_in_web_css(self):
         css = mod.render_web_css()
         self.assertIn('--ep-color-accent: #67d8e9', css)
         self.assertIn('--ep-container-footer: 67.5rem', css)
-        self.assertIn('var(--ep-color-accent, #67d8e9)', css)
+        self.assertIn('var(--ep-color-accent)', css)
         self.assertLess(css.index('--ep-color-accent: #67d8e9'), css.index('.ep-footer{'))
         self.assertIn('prefers-reduced-motion', css)
 

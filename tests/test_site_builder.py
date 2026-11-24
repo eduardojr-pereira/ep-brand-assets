@@ -95,6 +95,9 @@ class SiteBuilderTests(unittest.TestCase):
         self.assertIn('assets/scripts/header.js', homepage)
         self.assertIn('href="https://eduardo-pereira.webflow.io/"', homepage)
         self.assertTrue((dest / 'selected_projects/example/reports/index.html').is_file())
+        report_html = (dest / 'selected_projects/example/reports/index.html').read_text(encoding='utf-8')
+        self.assertIn(builder.render_footer()[0], report_html)
+        self.assertEqual(report_html.count('class="ep-footer"'), 1)
         self.assertFalse((dest / 'selected_projects/example/notebook.ipynb').exists())
         self.assertTrue((dest / '.nojekyll').is_file())
         # Never rewrite portfolio-owned original HTML.

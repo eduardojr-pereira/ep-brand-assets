@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 import os
 from render_header import render_header
+from render_footer import brand_values, substitute
 
 
 class _HeaderLocator(HTMLParser):
@@ -87,6 +88,22 @@ def integrate_report(report_file: Path, published: list[dict], output_root: Path
     markup = report_file.read_text(encoding='utf-8')
     if markup.count('<body>')!=1 or markup.count('</head>')!=1 or markup.count('</body>')!=1:
         raise ValueError(f'Unexpected report document structure: {report_file}')
+    # Render the same canonical Footer used by the homepage at build time.
+    # Never edit the project report source or copy the Footer's implementation.
+    footer_template = Path(__file__).resolve().parents[1] / 'components/web/footer.html'
+    footer_html = substitute(footer_template.read_text(encoding='utf-8'), brand_values(embed=True))
+    footer_pattern = r'<footer\b[^>]*\bclass="ep-footer"[^>]*>.*?</footer\s*>'
+    footers = list(re.finditer(footer_pattern, markup, flags=re.S | re.I))
+    if len(footers) > 1:
+        raise ValueError(f'Multiple EP footers in report: {report_file}')
+    if footers:
+        old = footers[0]
+        markup = markup[:old.start()] + footer_html + markup[old.end():]
+    elif re.search(r'<footer\b', markup, flags=re.I):
+        raise ValueError(f'Unexpected noncanonical footer in report: {report_file}')
+    else:
+        # Synthetic/minimal reports may omit a footer entirely.
+        markup = markup.replace('</body>', footer_html + '\n</body>', 1)
     if 'class="ep-header"' in markup: raise ValueError('Already has shared header')
     # Migrates legacy Bike markup on published copy without generating Plotly again.
     if 'class="nav" aria-label="Main navigation"' in markup:
@@ -147,6 +164,7 @@ def integrate_report(report_file: Path, published: list[dict], output_root: Path
     scripts='''<script src="{base}assets/scripts/theme.js" defer></script>
 <script src="{base}assets/scripts/i18n.js" defer></script>
 <script src="{base}assets/scripts/header.js" defer></script>
+<script src="{base}assets/scripts/footer.js" defer></script>
 <script src="{base}assets/scripts/report-navigation.js" defer></script>
 '''
     scripts=scripts.replace('{base}', prefix)

@@ -87,6 +87,18 @@
 .ep-report-nav__back:focus-visible::after { transform: translate3d(0,0,0); }
 .ep-report-nav__back:hover > span,
 .ep-report-nav__back:focus-visible > span { transform: translate3d(-200%,0,0); }
+/* Vertical variant for back-to-top controls. */
+.ep-report-nav__back--vertical::after {
+  transform: translate3d(0,200%,0);
+}
+.ep-report-nav__back--vertical:hover::after,
+.ep-report-nav__back--vertical:focus-visible::after {
+  transform: translate3d(0,0,0);
+}
+.ep-report-nav__back--vertical:hover > span,
+.ep-report-nav__back--vertical:focus-visible > span {
+  transform: translate3d(0,-200%,0);
+}
 @media (prefers-reduced-motion: reduce) {
   .ep-report-nav__link::after,
   .ep-report-nav__back::before,

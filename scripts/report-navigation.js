@@ -6,7 +6,7 @@
 
   function syncLabels() {
     const locale = document.documentElement.lang === 'pt-BR' ? 'pt-BR' : 'en';
-    document.querySelectorAll('.ep-report-nav__back').forEach(link => {
+    document.querySelectorAll('.ep-report-nav__back:not(.ep-footer__top)').forEach(link => {
       const value = backLabels[locale];
       link.dataset.replace = value;
       link.setAttribute('aria-label', value);
