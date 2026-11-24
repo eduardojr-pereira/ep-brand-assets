@@ -110,9 +110,6 @@ Source attribution does not constitute a grant of additional rights.
 
 ## Website integration
 
-The original 48-badge library is extended with nine text-only
-badges for existing website technologies, categories and methods.
-
 The current library contains 80 SVG badges.
 
 | Category | Badge | Path |
@@ -154,4 +151,63 @@ Revisão visual local: imagens diretas (incluindo PyTorch), ícones PyPI genéri
 
 ## Approved category rules
 
-Topics: 11 Knowledge Base areas, EN/PT-BR; existing `data_analytics` path is retained for area 02. Topics use EP LipariS Adapted index 4, Methods use EP Muted Pastel index 0. Methods and Technologies expand through the manifest only, with no predetermined cap. Technology lists are stably partitioned (icons first, text-only last). License prefixes switch white/black with theme; both identifiers use EP LipariS Adapted index 4 (mineral blue). Partial uses approved soft yellow #E8D58A with graphite text, an explicit exception to analytical colormaps. Pending uses EP LipariS Adapted dark index 5. Standalone SVG uses `prefers-color-scheme`; HTML uses the explicit EP theme. GitHub's selected theme may not match the browser color scheme; verify in GitHub after publishing. No README paths are removed.
+| Category | READMEs | Showcase and report HTML | Current SVG count |
+|---|---|---|---:|
+| Technologies | Yes | Yes | 48 |
+| Licenses | Yes | Yes | 2 |
+| Status | Yes | Yes | 6 |
+| Topics | No | Yes | 22 |
+| Methods | No | Yes | 2 |
+| Total | | | 80 |
+
+Topics are limited to the eleven official Knowledge Base areas (00–10), with EN/PT-BR pairs. Numbers identify areas in the catalog, not in badge labels. Keep the existing `data_analytics` path for area 02. Methods describe actual methods used in a project; create EN/PT-BR pairs only as needed. Technologies and Methods are extensible without a predetermined limit. Do not add Topics or Methods to README badge displays. The inventory above describes the approved baseline, not a maximum.
+
+### Approved color specification
+
+Each cell lists background / foreground. Colors are case-insensitive hex values.
+
+| Element | Light | Dark | Origin |
+|---|---|---|---|
+| License identifier (both licenses) | `#505B7A` / `#FFFFFF` | `#9EA7C4` / `#242424` | EP LipariS Adapted, index 4 (zero-based) |
+| License prefix | `#000000` / `#FFFFFF` | `#FFFFFF` / `#000000` | Inverse monochrome |
+| Topics | `#505B7A` / `#FFFFFF` | `#9EA7C4` / `#242424` | EP LipariS Adapted, index 4 |
+| Methods | `#427C83` / `#FFFFFF` | `#7CA5A8` / `#242424` | EP Muted Pastel, index 0 |
+| Passed / Aprovado | `#26733C` / `#FFFFFF` | `#26733C` / `#FFFFFF` | Existing semantic status color |
+| Partial / Parcial | `#E8D58A` / `#242424` | `#E8D58A` / `#242424` | Approved exception to analytical colormaps |
+| Pending / Pendente | `#D86E5E` / `#242424` | `#D86E5E` / `#242424` | EP LipariS Adapted, dark index 5 |
+| Text-only technology | `#9D603B` / `#FFFFFF` | `#9D603B` / `#FFFFFF` | EP copper |
+
+Both license identifiers use mineral blue; the labels Code License and Content License distinguish them. Technologies with artwork retain their individually approved colors from `config/badges.json`. The icon tile is white. Direct artwork uses a white background. Do not extend the copper rule to Licenses, Topics, Methods or Status.
+
+### Technology formats and order
+
+- **Icon + name (42):** preferred when suitable artwork exists. Use a 24 px white tile and a 14 × 14 px icon box; preserve artwork proportions and approved colors. The existing manifest modes include `original`, `compacto`, `recorte de teste` and `cropped artwork`.
+- **Direct image (5):** `image_direct`; use the approved complete artwork without repeating the name as rendered text. Current entries: BeautifulSoup, openpyxl, PyTorch, scikit-learn and spaCy. Preserve proportions; the SVG is 20 px high and the image is contained within an 18 px high area with padding. Keep an accessible text label in metadata.
+- **Text only (1):** `text`; no icon, EP copper and white text. Use when no suitable logo or authorized generic symbol is available and the text-only design is approved. Surprise is the current example.
+
+The generic PyPI symbol is explicitly approved for ipykernel, ipywidgets, nbformat and NLTK; it is not their official logo. Other ecosystem substitutions require explicit approval and provenance. Joblib uses the isolated grey gear plus its name, not the previous direct image. The original artwork is retained.
+
+Deduplicate technologies by canonical ID. Stably partition the input list into entries with artwork (including direct images), followed by entries without artwork. Preserve the original relative order within both groups; do not alphabetize or use CSS ordering. HTML uses `tools/badge_html.py::technologies`; apply the same rule to README lists.
+
+### Themes, localization and consumers
+
+Standalone SVGs use `prefers-color-scheme`; the HTML renderer emits explicit light/dark variants selected by shared CSS and the EP theme. Localized badges use `_en` and `_pt_br` IDs/paths and the document language. Use `image(ident)` or `localized(ident)` from the shared HTML renderer as appropriate, and `topic(label)` for Topics. Never maintain an independent source of artwork in a consumer. Regenerate embedded HTML after catalog changes. README references retain canonical published paths; updates depend on publication and caching. GitHub's selected theme may differ from the browser color scheme: validate both after publication; this is not yet confirmed. No existing README paths are removed.
+
+## Adding or updating a badge
+
+1. Search `config/badges.json` for the canonical ID, label, aliases and path before creating an entry. Reuse an existing badge when possible. Identify the category and the allowed consumers. Add Methods or Technologies only when needed; do not expand the official Topics list without an approved area change.
+2. Select the appropriate technology format or localized category. Obtain suitable artwork from a traceable source. Check the license and trademark terms before public use; a source URL alone does not grant rights. Preserve the original under `assets/icons/technologies/originals/` and the prepared PNG under `assets/icons/technologies/`. Record the original SHA-256, any crop and the rights-review status. Do not misrepresent generic artwork as an official logo.
+3. Follow the visual specification and category colors above. Keep a 20 px SVG height, suitable variable width and 11 px text; avoid clipping, distortion and redundant names. For text-only technology, set `icon` to null, `mode` to `text`, and `approved_text_only` to true only after approval. For direct artwork, use `image_direct` and a prepared PNG. For localized Topics, Methods and Status, preserve paired EN/PT-BR entries.
+4. Add or update the manifest entry, using the same schema as a comparable existing entry: `id`, `category`, `path`, `label`, `background`, `foreground`, `contrast`, `width`, `icon`, `mode`, `source`, `source_path`, `source_sha256`, `visible_icon_size_px`, `crop`, `note`, `rights_review`, `approved_text_only`. For adaptive colors also use `theme_colors`, `theme_palette` and `dark_contrast`; for split licenses use `prefix`, `prefix_width` and `theme_prefix`; Topics include `area`. Calculate contrast from actual colors, not copied metadata. Keep IDs and paths stable and unique. Do not silently rename a published badge.
+5. From the EP Brand repository root, regenerate and test in the active Python environment:
+
+   ```bash
+   python tools/render_badges.py
+   python -m unittest discover -s tests -p 'test_badge_library.py' -v
+   git diff --check
+   git status -sb
+   ```
+
+6. Check the generated SVGs against the manifest, including uniqueness of IDs, labels and paths, 20 px height, artwork proportions, text fit, readable foreground/background contrast (at least 4.5:1 for text), light/dark variants, and localized pairs. Preview both themes and languages where applicable. Check stable ordering and aliases. Review all affected README and HTML references, rebuild HTML consumers, and test their actual theme/language switches.
+7. Update this document's inventory, source/rights table and category details as applicable. Extend regression tests if a new rule, alias or format needs coverage; the existing tests already iterate over manifest entries and enforce the official eleven-area Topics set. Review any other fixed-count validation in packaging scripts rather than treating the baseline count as a permanent limit.
+8. Obtain visual approval, resolve rights issues before public use, and commit only the approved catalog, original/prepared assets, generated SVGs, relevant tests/documentation and necessary consumer changes. Coordinate publication of the central assets before dependent references. Verify public URLs and both GitHub themes after publication. Do not publish or push without authorization.

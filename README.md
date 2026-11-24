@@ -47,10 +47,10 @@ See [animations](./assets/animations/) and [theme tokens](./styles/theme-tokens.
 
 ### Badge Library
 
-The centralized badge library is intended to standardize technology, license and status indicators across the EP ecosystem.
+The centralized library contains 80 SVG badges: 48 technologies, 2 licenses, 6 statuses, 22 topics and 2 methods. Technologies, Licenses and Status may be used in READMEs and HTML; Topics and Methods are reserved for showcase and report HTML. See the [badge library documentation](./docs/badges.md).
 
 > [!NOTE]
-> The badge library is pending local integration and validation. Its availability in the published repository has not yet been confirmed.
+> The library has been integrated and committed locally. Integrated consumer validation and coordinated publication remain pending.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
@@ -143,17 +143,24 @@ ep-brand-assets/
 ├── README.pt-BR.md
 ├── assets/
 │   ├── animations/
+│   ├── badges/
 │   ├── icons/
+│   │   └── technologies/
 │   └── logos/
 ├── components/
 │   ├── markdown/
 │   └── web/
 ├── config/
+│   └── badges.json
 ├── docs/
+│   └── badges.md
 ├── scripts/
 ├── styles/
 ├── tests/
+│   └── test_badge_library.py
 └── tools/
+    ├── badge_html.py
+    └── render_badges.py
 ```
 
 </details>
@@ -166,7 +173,7 @@ ep-brand-assets/
 - `tests/` — Automated regression tests.
 - `tools/` — Rendering, composition and publication utilities.
 
-The tree includes the proposed root license files and reflects the local cleanup. Pending badge-library files are not shown as existing.
+The tree includes the badge library and reflects the local structure; coordinated publication remains pending.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 

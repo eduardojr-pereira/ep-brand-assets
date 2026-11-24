@@ -47,10 +47,10 @@ Consulte as [animações](./assets/animations/) e [tokens de tema](./styles/them
 
 ### Biblioteca de Badges
 
-A biblioteca centralizada de badges destina-se a padronizar os indicadores de tecnologias, licenças e status no ecossistema EP.
+A biblioteca centralizada contém 80 badges SVG: 48 de tecnologias, 2 de licenças, 6 de status, 22 de tópicos e 2 de métodos. Technologies, Licenses e Status podem ser utilizados em READMEs e HTMLs; Topics e Methods são exclusivos dos HTMLs da vitrine e dos relatórios. Consulte a [documentação da biblioteca](./docs/badges.md).
 
 > [!NOTE]
-> A biblioteca de badges aguarda integração local e validação. Sua disponibilidade no repositório publicado ainda não foi confirmada.
+> A biblioteca foi integrada e versionada localmente. A validação integrada dos consumidores e a publicação coordenada permanecem pendentes.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
@@ -143,17 +143,24 @@ ep-brand-assets/
 ├── README.pt-BR.md
 ├── assets/
 │   ├── animations/
+│   ├── badges/
 │   ├── icons/
+│   │   └── technologies/
 │   └── logos/
 ├── components/
 │   ├── markdown/
 │   └── web/
 ├── config/
+│   └── badges.json
 ├── docs/
+│   └── badges.md
 ├── scripts/
 ├── styles/
 ├── tests/
+│   └── test_badge_library.py
 └── tools/
+    ├── badge_html.py
+    └── render_badges.py
 ```
 
 </details>
@@ -166,7 +173,7 @@ ep-brand-assets/
 - `tests/` — Testes automatizados de regressão.
 - `tools/` — Utilitários de renderização, composição e publicação.
 
-A árvore inclui os arquivos de licença propostos para a raiz e reflete a limpeza local. Os arquivos pendentes da biblioteca de badges não são apresentados como existentes.
+A árvore inclui a biblioteca de badges e reflete a estrutura local; a publicação coordenada permanece pendente.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
