@@ -141,6 +141,7 @@ def ensure_valid_local_links(source_html: Path, parser: PageLinks) -> None:
 
 
 def make_homepage(reports: list[dict[str, object]]) -> str:
+    from badge_html import topic, technologies
     topics = sorted({t for p in reports for t in p["topics"]})
     topic_keys = {
         "Python Programming": "topicPython",
@@ -157,8 +158,8 @@ def make_homepage(reports: list[dict[str, object]]) -> str:
     for p in reports:
         collection = str(p["collection"])
         kind = "Selected Project" if collection == "selected_projects" else "Learning Lab"
-        topic_tags = "".join(f'<span class="pill"{topic_attr(t)}>{escape(str(t))}</span>' for t in p["topics"])
-        tech_tags = "".join(f'<span class="tech">{escape(str(t))}</span>' for t in p["technologies"])
+        topic_tags = "".join(topic(t) for t in p["topics"])
+        tech_tags = technologies(p["technologies"])
         document_links = []
         if p["notebook"]:
             document_links.append(f'<a href="{escape(str(p["notebook"]), quote=True)}"><span data-i18n="code">Code</span> <span aria-hidden="true">↗</span></a>')
@@ -183,6 +184,8 @@ def make_homepage(reports: list[dict[str, object]]) -> str:
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/png" href="assets/assets/logos/favicon.png">
+<link rel="apple-touch-icon" href="assets/assets/logos/webclip.png">
 <script src="assets/scripts/theme-init.js"></script>
 <link rel="stylesheet" href="assets/styles/theme-tokens.css">
 <link rel="stylesheet" href="assets/styles/typography-v2.css">
@@ -247,7 +250,7 @@ const requestedCollection=new URLSearchParams(location.search).get('collection')
 if(['selected_projects','learning_labs'].includes(requestedCollection)){{collection=requestedCollection;const input=document.querySelector(`input[name="collection"][value="${{requestedCollection}}"]`);if(input)input.checked=true;}}
 const cards=Array.from(document.querySelectorAll('.project-card'));
 /* Header dropdown behavior is owned by header.js. */
-function apply() {{let visible=0;cards.forEach(card=>{{const topics=card.dataset.topics.split('|');const show=(topic==='all'||topics.includes(topic))&&(collection==='all'||card.dataset.collection===collection);card.hidden=!show;if(show)visible++;}});document.getElementById('empty').hidden=visible!==0;document.getElementById('result-count').textContent=(document.documentElement.lang==='pt-BR'
+function apply() {{let visible=0;cards.forEach(card=>{{const topics=card.dataset.topics.split('|');const show=(topic==='all'||topics.includes(topic))&&(collection==='all'||card.dataset.collection===collection);card.hidden=!show;if(show)visible++;}});document.getElementById('empty').hidden=visible!==0;document.getElementById('result-count').textContent=((window.EPI18n?.current || document.documentElement.lang)==='pt-BR'
         ? visible+' '+(visible===1?'projeto publicado exibido':'projetos publicados exibidos')
         : visible+' published '+(visible===1?'project':'projects')+' shown');}}
 document.querySelectorAll('button[data-topic]').forEach(button=>button.addEventListener('click',()=>{{topic=button.dataset.topic;document.querySelectorAll('button[data-topic]').forEach(b=>{{let selected=b===button;b.classList.toggle('is-active',selected);b.setAttribute('aria-pressed',String(selected));}});apply();}}));document.querySelectorAll('input[name="collection"]').forEach(input=>input.addEventListener('change',()=>{{if(input.checked){{collection=input.value;apply();}}}}));document.addEventListener('ep:languagechange',apply);document.addEventListener('DOMContentLoaded',apply);apply();

@@ -1,0 +1,2218 @@
+{
+  "status": "design_approved_integration_review_pending",
+  "style": {
+    "height": 20,
+    "icon_box": 14,
+    "font_size": 11,
+    "font_family": "Verdana,DejaVu Sans,sans-serif",
+    "light_icon_tile": true,
+    "shape": "flat-square"
+  },
+  "entries": [
+    {
+      "id": "altair",
+      "category": "technologies",
+      "path": "assets/badges/technologies/altair.svg",
+      "label": "Altair",
+      "background": "#3875a8",
+      "foreground": "#ffffff",
+      "contrast": 4.91,
+      "width": 63,
+      "icon": "assets/icons/technologies/altair.png",
+      "mode": "original",
+      "source": "https://raw.githubusercontent.com/vega/altair/main/design/altair-logo-light.svg",
+      "source_path": "assets/icons/technologies/originals/altair.svg",
+      "source_sha256": "12d1cc4abdaf36e30451497eba859215723973dac2dcd6ae363fdc78f80acee1",
+      "visible_icon_size_px": [
+        14.0,
+        12.17
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "apache_cassandra",
+      "category": "technologies",
+      "path": "assets/badges/technologies/apache_cassandra.svg",
+      "label": "Apache Cassandra",
+      "background": "#176b7d",
+      "foreground": "#ffffff",
+      "contrast": 6.11,
+      "width": 136,
+      "icon": "assets/icons/technologies/apache_cassandra.png",
+      "mode": "original",
+      "source": "https://s3.amazonaws.com/webflow-prod-assets/65e8b43dbacbfb739916dc49/65eabb02a15a8b694c889044_cassandra-logo.jpg",
+      "source_path": "assets/icons/technologies/originals/apache_cassandra.jpg",
+      "source_sha256": "a88412ad560202c3fdd32ee8568c2eb4ce1e1d2ff191214d115240676433a146",
+      "visible_icon_size_px": [
+        14.0,
+        9.33
+      ],
+      "crop": null,
+      "note": "JPG com olho isolado; descartado o SVG horizontal.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "apache_hadoop",
+      "category": "technologies",
+      "path": "assets/badges/technologies/apache_hadoop.svg",
+      "label": "Apache Hadoop",
+      "background": "#e8c847",
+      "foreground": "#000000",
+      "contrast": 12.78,
+      "width": 120,
+      "icon": "assets/icons/technologies/apache_hadoop.png",
+      "mode": "recorte de teste",
+      "source": "https://s3.amazonaws.com/webflow-prod-assets/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d50_icon-hadoop.png",
+      "source_path": "assets/icons/technologies/originals/apache_hadoop.png",
+      "source_sha256": "f37246a8cd875adcdbb5077129672d789ee6d12fe18e09311543f0fda746e80a",
+      "visible_icon_size_px": [
+        14.0,
+        9.17
+      ],
+      "crop": [
+        140,
+        275,
+        530,
+        530
+      ],
+      "note": "Recorte experimental do elefante; pode exigir um símbolo oficial isolado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "apache_spark",
+      "category": "technologies",
+      "path": "assets/badges/technologies/apache_spark.svg",
+      "label": "Apache Spark",
+      "background": "#b94c16",
+      "foreground": "#ffffff",
+      "contrast": 5.11,
+      "width": 110,
+      "icon": "assets/icons/technologies/apache_spark.png",
+      "mode": "compacto",
+      "source": "https://github.com/devicons/devicon/blob/master/icons/apachespark/apachespark-original.svg",
+      "source_path": "assets/icons/technologies/originals/apache_spark.svg",
+      "source_sha256": "46ad104361c6be1bd8b7eb4bc797aa600d3df2979d3706c5a2f12fc53add7d8e",
+      "visible_icon_size_px": [
+        13.67,
+        14.0
+      ],
+      "crop": null,
+      "note": "",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "bokeh",
+      "category": "technologies",
+      "path": "assets/badges/technologies/bokeh.svg",
+      "label": "Bokeh",
+      "background": "#2659a2",
+      "foreground": "#ffffff",
+      "contrast": 6.92,
+      "width": 67,
+      "icon": "assets/icons/technologies/bokeh.png",
+      "mode": "original",
+      "source": "https://bokeh.org/img/bokeh-icon.svg",
+      "source_path": "assets/icons/technologies/originals/bokeh.svg",
+      "source_sha256": "2aef3fb6fe35b711ecb69e788a35c447bf26a698ec30e1f8e3a393cdfb73b90c",
+      "visible_icon_size_px": [
+        14.0,
+        14.0
+      ],
+      "crop": null,
+      "note": "Símbolo sem texto; conferir limites de tamanho da marca.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "dlib",
+      "category": "technologies",
+      "path": "assets/badges/technologies/dlib.svg",
+      "label": "dlib",
+      "background": "#314b64",
+      "foreground": "#ffffff",
+      "contrast": 9.05,
+      "width": 54,
+      "icon": "assets/icons/technologies/dlib.png",
+      "mode": "compacto",
+      "source": "https://github.com/simple-icons/simple-icons/blob/develop/icons/dlib.svg",
+      "source_path": "assets/icons/technologies/originals/dlib.svg",
+      "source_sha256": "ea8b485d234ca2a10ce04f433c65edffb400d45628b7a828e255caf4a65b9dfe",
+      "visible_icon_size_px": [
+        9.67,
+        14.0
+      ],
+      "crop": null,
+      "note": "",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "docker_compose",
+      "category": "technologies",
+      "path": "assets/badges/technologies/docker_compose.svg",
+      "label": "Docker Compose",
+      "background": "#17699c",
+      "foreground": "#ffffff",
+      "contrast": 5.94,
+      "width": 127,
+      "icon": "assets/icons/technologies/docker_compose.png",
+      "mode": "compacto",
+      "source": "https://github.com/simple-icons/simple-icons/blob/develop/icons/docker.svg",
+      "source_path": "assets/icons/technologies/originals/docker_compose.svg",
+      "source_sha256": "ea4915906d0423ae731035373605f051551ef60881272f34b8fe4b4ea4172f31",
+      "visible_icon_size_px": [
+        14.0,
+        10.0
+      ],
+      "crop": null,
+      "note": "Símbolo Docker (ecossistema); variante monocromática. Cor aplicada somente para prévia.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "ipykernel",
+      "category": "technologies",
+      "path": "assets/badges/technologies/ipykernel.svg",
+      "label": "ipykernel",
+      "background": "#343434",
+      "foreground": "#ffffff",
+      "contrast": 12.45,
+      "width": 84,
+      "icon": "assets/icons/technologies/badge_pypi_generic.png",
+      "mode": "original",
+      "source": "Ícone PyPI fornecido pelo autor do portfólio",
+      "source_path": "assets/icons/technologies/originals/badge_pypi_generic.png",
+      "source_sha256": "f4d412d39d432874a6fb41e0873aba2b38015b1f1084de1e7fde78ea6a019623",
+      "visible_icon_size_px": [
+        14,
+        12.3
+      ],
+      "crop": null,
+      "note": "Ícone genérico PyPI; não representa o logotipo oficial desta biblioteca.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "ipython",
+      "category": "technologies",
+      "path": "assets/badges/technologies/ipython.svg",
+      "label": "IPython",
+      "background": "#276c95",
+      "foreground": "#ffffff",
+      "contrast": 5.73,
+      "width": 75,
+      "icon": "assets/icons/technologies/ipython.png",
+      "mode": "original",
+      "source": "https://ipython.org/ipython-logo.png",
+      "source_path": "assets/icons/technologies/originals/ipython.png",
+      "source_sha256": "1d40aa06ba6401d9ffa6b9ad2b57a4538589b7d25215e135af7758823458449d",
+      "visible_icon_size_px": [
+        14.0,
+        13.0
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "ipywidgets",
+      "category": "technologies",
+      "path": "assets/badges/technologies/ipywidgets.svg",
+      "label": "ipywidgets",
+      "background": "#343434",
+      "foreground": "#ffffff",
+      "contrast": 12.45,
+      "width": 93,
+      "icon": "assets/icons/technologies/badge_pypi_generic.png",
+      "mode": "original",
+      "source": "Ícone PyPI fornecido pelo autor do portfólio",
+      "source_path": "assets/icons/technologies/originals/badge_pypi_generic.png",
+      "source_sha256": "f4d412d39d432874a6fb41e0873aba2b38015b1f1084de1e7fde78ea6a019623",
+      "visible_icon_size_px": [
+        14,
+        12.3
+      ],
+      "crop": null,
+      "note": "Ícone genérico PyPI; não representa o logotipo oficial desta biblioteca.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "java",
+      "category": "technologies",
+      "path": "assets/badges/technologies/java.svg",
+      "label": "Java",
+      "background": "#a63e31",
+      "foreground": "#ffffff",
+      "contrast": 6.26,
+      "width": 57,
+      "icon": "assets/icons/technologies/java.png",
+      "mode": "compacto",
+      "source": "https://github.com/devicons/devicon/blob/master/icons/java/java-original.svg",
+      "source_path": "assets/icons/technologies/originals/java.svg",
+      "source_sha256": "7582e518a9c02425f97155e5a3bd39d1a3a7d421b78caf9c8df7443dad3edc5d",
+      "visible_icon_size_px": [
+        10.33,
+        14.0
+      ],
+      "crop": null,
+      "note": "Direitos Oracle pendentes; não publicar sem conferência.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "joblib",
+      "category": "technologies",
+      "path": "assets/badges/technologies/joblib.svg",
+      "label": "joblib",
+      "background": "#565E6B",
+      "foreground": "#FFFFFF",
+      "contrast": 6.54,
+      "width": 65,
+      "icon": "assets/icons/technologies/badge_joblib.png",
+      "mode": "cropped artwork",
+      "source": "Asset PNG fornecido pelo autor do portfólio",
+      "source_path": "assets/icons/technologies/originals/badge_joblib.png",
+      "source_sha256": "4e7df0c61b0bb27bff68ad4c6314483146f24f038260f8188e1479f267c0681d",
+      "visible_icon_size_px": [
+        14.0,
+        14.0
+      ],
+      "crop": {
+        "bbox_original_px": [
+          165,
+          0,
+          801,
+          637
+        ],
+        "selection": "upper grey gear only; orange and lower wordmark excluded"
+      },
+      "note": "Large grey gear isolated from supplied Joblib artwork; original retained.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "jupyterlab",
+      "category": "technologies",
+      "path": "assets/badges/technologies/jupyterlab.svg",
+      "label": "JupyterLab",
+      "background": "#b44c13",
+      "foreground": "#ffffff",
+      "contrast": 5.27,
+      "width": 93,
+      "icon": "assets/icons/technologies/jupyterlab.png",
+      "mode": "compacto",
+      "source": "https://github.com/devicons/devicon/blob/master/icons/jupyter/jupyter-original.svg",
+      "source_path": "assets/icons/technologies/originals/jupyterlab.svg",
+      "source_sha256": "9b246fe756a3b600f68a7af1f17702033a1cdb6417da3a9f695337f584b5d545",
+      "visible_icon_size_px": [
+        10.67,
+        14.0
+      ],
+      "crop": null,
+      "note": "Símbolo do ecossistema Jupyter.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "keras",
+      "category": "technologies",
+      "path": "assets/badges/technologies/keras.svg",
+      "label": "Keras",
+      "background": "#b21f27",
+      "foreground": "#ffffff",
+      "contrast": 6.73,
+      "width": 64,
+      "icon": "assets/icons/technologies/keras.png",
+      "mode": "original",
+      "source": "https://s3.amazonaws.com/webflow-prod-assets/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d5d_keras-logo.svg",
+      "source_path": "assets/icons/technologies/originals/keras.svg",
+      "source_sha256": "dd260c8e01bc798b838f92588f2bc89f35f53ea91c4ebcb430811133144ef79f",
+      "visible_icon_size_px": [
+        14.0,
+        14.0
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "markdown",
+      "category": "technologies",
+      "path": "assets/badges/technologies/markdown.svg",
+      "label": "Markdown",
+      "background": "#333333",
+      "foreground": "#ffffff",
+      "contrast": 12.63,
+      "width": 90,
+      "icon": "assets/icons/technologies/markdown.png",
+      "mode": "original",
+      "source": "https://raw.githubusercontent.com/dcurtis/markdown-mark/master/svg/markdown-mark.svg",
+      "source_path": "assets/icons/technologies/originals/markdown.svg",
+      "source_sha256": "1b287c8c0693bc8ea39146531fdb4e31ecbe10d23ac4bae01fc725e9b720e625",
+      "visible_icon_size_px": [
+        14.0,
+        8.67
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "matplotlib",
+      "category": "technologies",
+      "path": "assets/badges/technologies/matplotlib.svg",
+      "label": "Matplotlib",
+      "background": "#236680",
+      "foreground": "#ffffff",
+      "contrast": 6.4,
+      "width": 88,
+      "icon": "assets/icons/technologies/matplotlib.png",
+      "mode": "compacto",
+      "source": "https://github.com/matplotlib/matplotlib/blob/main/lib/matplotlib/mpl-data/images/matplotlib.svg",
+      "source_path": "assets/icons/technologies/originals/matplotlib.svg",
+      "source_sha256": "4224c872a950c066953ed1ec124fafb66264d70c70652be28e1a817bf6fd5422",
+      "visible_icon_size_px": [
+        14.0,
+        14.0
+      ],
+      "crop": null,
+      "note": "Arquivo distribuído no pacote Python.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "mongodb",
+      "category": "technologies",
+      "path": "assets/badges/technologies/mongodb.svg",
+      "label": "MongoDB",
+      "background": "#236d42",
+      "foreground": "#ffffff",
+      "contrast": 6.29,
+      "width": 86,
+      "icon": "assets/icons/technologies/mongodb.png",
+      "mode": "original",
+      "source": "https://s3.amazonaws.com/webflow-prod-assets/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d3e_icon50-mongodb.png",
+      "source_path": "assets/icons/technologies/originals/mongodb.png",
+      "source_sha256": "77cd7ccfb34e34072a24f361714c611be827239607c5fd14e669bb4999ead5c4",
+      "visible_icon_size_px": [
+        12.67,
+        14.0
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "nbformat",
+      "category": "technologies",
+      "path": "assets/badges/technologies/nbformat.svg",
+      "label": "nbformat",
+      "background": "#343434",
+      "foreground": "#ffffff",
+      "contrast": 12.45,
+      "width": 84,
+      "icon": "assets/icons/technologies/badge_pypi_generic.png",
+      "mode": "original",
+      "source": "Ícone PyPI fornecido pelo autor do portfólio",
+      "source_path": "assets/icons/technologies/originals/badge_pypi_generic.png",
+      "source_sha256": "f4d412d39d432874a6fb41e0873aba2b38015b1f1084de1e7fde78ea6a019623",
+      "visible_icon_size_px": [
+        14,
+        12.3
+      ],
+      "crop": null,
+      "note": "Ícone genérico PyPI; não representa o logotipo oficial desta biblioteca.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "nltk",
+      "category": "technologies",
+      "path": "assets/badges/technologies/nltk.svg",
+      "label": "NLTK",
+      "background": "#9D603B",
+      "foreground": "#ffffff",
+      "contrast": 5.04,
+      "width": 60,
+      "icon": "assets/icons/technologies/badge_pypi_generic.png",
+      "mode": "original",
+      "source": "Ícone PyPI fornecido pelo autor do portfólio",
+      "source_path": "assets/icons/technologies/originals/badge_pypi_generic.png",
+      "source_sha256": "f4d412d39d432874a6fb41e0873aba2b38015b1f1084de1e7fde78ea6a019623",
+      "visible_icon_size_px": [
+        14,
+        12.3
+      ],
+      "crop": null,
+      "note": "Ícone genérico PyPI compartilhado com nbformat; não é logotipo oficial do NLTK.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "numpy",
+      "category": "technologies",
+      "path": "assets/badges/technologies/numpy.svg",
+      "label": "NumPy",
+      "background": "#295778",
+      "foreground": "#ffffff",
+      "contrast": 7.7,
+      "width": 73,
+      "icon": "assets/icons/technologies/numpy.png",
+      "mode": "original",
+      "source": "https://s3.amazonaws.com/webflow-prod-assets/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d5f_numpy-logo.png",
+      "source_path": "assets/icons/technologies/originals/numpy.png",
+      "source_sha256": "52a1c9ff3261c3ca65e1a64b813edacb4d740ae2d4072c81086d1c86360e1164",
+      "visible_icon_size_px": [
+        13.0,
+        14.0
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "onnx_runtime",
+      "category": "technologies",
+      "path": "assets/badges/technologies/onnx_runtime.svg",
+      "label": "ONNX Runtime",
+      "background": "#176b75",
+      "foreground": "#ffffff",
+      "contrast": 6.18,
+      "width": 116,
+      "icon": "assets/icons/technologies/onnx_runtime.png",
+      "mode": "original",
+      "source": "https://onnxruntime.ai/images/logos/onnxruntime/ORT_icon_for_light_bg.svg",
+      "source_path": "assets/icons/technologies/originals/onnx_runtime.svg",
+      "source_sha256": "d508462ca1a9be94a85a8ff71d8901ee3a4eb6aa711aff3ccf08aef82d459468",
+      "visible_icon_size_px": [
+        14.0,
+        13.33
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "opencv",
+      "category": "technologies",
+      "path": "assets/badges/technologies/opencv.svg",
+      "label": "OpenCV",
+      "background": "#4855a4",
+      "foreground": "#ffffff",
+      "contrast": 6.75,
+      "width": 78,
+      "icon": "assets/icons/technologies/opencv.png",
+      "mode": "recorte de teste",
+      "source": "https://s3.amazonaws.com/webflow-prod-assets/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d69_openCV-logo.png",
+      "source_path": "assets/icons/technologies/originals/opencv.png",
+      "source_sha256": "b1171dedd15b34b89df39134842a0b42782d3fec3f0d77f83ebf9488ca9f3c74",
+      "visible_icon_size_px": [
+        14.0,
+        13.0
+      ],
+      "crop": [
+        0,
+        0,
+        600,
+        570
+      ],
+      "note": "Recorte exploratório: validar permissão e integridade visual.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "openpyxl",
+      "category": "technologies",
+      "path": "assets/badges/technologies/openpyxl.svg",
+      "label": "openpyxl",
+      "background": "#ffffff",
+      "foreground": "#242424",
+      "contrast": null,
+      "width": 97,
+      "icon": "assets/icons/technologies/badge_openpyxl.png",
+      "mode": "image_direct",
+      "source": "Asset PNG fornecido pelo autor do portfólio",
+      "source_path": "assets/icons/technologies/originals/badge_openpyxl.png",
+      "source_sha256": "5e1e09f5f5a5d7ae7c50b9832633e36030bc2c02d8823bcb68e3d3c2dd49e596",
+      "visible_icon_size_px": [
+        92.06,
+        18
+      ],
+      "crop": null,
+      "note": "Imagem integral fornecida pelo autor; proporção e cores preservadas; fundo branco para contraste nos dois temas.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "pandas",
+      "category": "technologies",
+      "path": "assets/badges/technologies/pandas.svg",
+      "label": "pandas",
+      "background": "#24144c",
+      "foreground": "#ffffff",
+      "contrast": 16.41,
+      "width": 74,
+      "icon": "assets/icons/technologies/pandas.png",
+      "mode": "compacto",
+      "source": "https://github.com/devicons/devicon/blob/master/icons/pandas/pandas-original.svg",
+      "source_path": "assets/icons/technologies/originals/pandas.svg",
+      "source_sha256": "783d5c9d0e3ea0cb24a0269da211b5ddf6b84b9fb2ff4e7e65526d411617d26d",
+      "visible_icon_size_px": [
+        8.83,
+        14.0
+      ],
+      "crop": null,
+      "note": "",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "plotly",
+      "category": "technologies",
+      "path": "assets/badges/technologies/plotly.svg",
+      "label": "Plotly",
+      "background": "#383d99",
+      "foreground": "#ffffff",
+      "contrast": 9.15,
+      "width": 64,
+      "icon": "assets/icons/technologies/plotly.png",
+      "mode": "recorte de teste",
+      "source": "https://s3.amazonaws.com/webflow-prod-assets/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d7a_Plotly-logo.png",
+      "source_path": "assets/icons/technologies/originals/plotly.png",
+      "source_sha256": "d7c5f68752a600dd0d89b0083178f853d7c72fcf1e31fcc520a392502183b1a9",
+      "visible_icon_size_px": [
+        14.0,
+        14.0
+      ],
+      "crop": [
+        187,
+        99,
+        433,
+        333
+      ],
+      "note": "Recorte exploratório: validar permissão e integridade visual.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "polars",
+      "category": "technologies",
+      "path": "assets/badges/technologies/polars.svg",
+      "label": "Polars",
+      "background": "#365bc4",
+      "foreground": "#ffffff",
+      "contrast": 6.09,
+      "width": 67,
+      "icon": "assets/icons/technologies/polars.png",
+      "mode": "original",
+      "source": "https://raw.githubusercontent.com/pola-rs/polars-static/master/logos/polars_logo_blue.svg",
+      "source_path": "assets/icons/technologies/originals/polars.svg",
+      "source_sha256": "656b43c7f88f9a524fd3e1a4c0834e63d59ee63ebae07a10efd5622441669074",
+      "visible_icon_size_px": [
+        14.0,
+        7.0
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "postgresql",
+      "category": "technologies",
+      "path": "assets/badges/technologies/postgresql.svg",
+      "label": "PostgreSQL",
+      "background": "#336791",
+      "foreground": "#ffffff",
+      "contrast": 6.02,
+      "width": 96,
+      "icon": "assets/icons/technologies/postgresql.png",
+      "mode": "original",
+      "source": "https://www.postgresql.org/media/img/about/press/elephant.png",
+      "source_path": "assets/icons/technologies/originals/postgresql.png",
+      "source_sha256": "ff92fb5d12a7fa6b23c2eb403d2edf4fbc58ced802021e1f02c3583cb70957be",
+      "visible_icon_size_px": [
+        13.5,
+        14.0
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "pyspark",
+      "category": "technologies",
+      "path": "assets/badges/technologies/pyspark.svg",
+      "label": "PySpark",
+      "background": "#b94c16",
+      "foreground": "#ffffff",
+      "contrast": 5.11,
+      "width": 78,
+      "icon": "assets/icons/technologies/pyspark.png",
+      "mode": "compacto",
+      "source": "https://github.com/devicons/devicon/blob/master/icons/apachespark/apachespark-original.svg",
+      "source_path": "assets/icons/technologies/originals/apache_spark.svg",
+      "source_sha256": "46ad104361c6be1bd8b7eb4bc797aa600d3df2979d3706c5a2f12fc53add7d8e",
+      "visible_icon_size_px": [
+        13.67,
+        14.0
+      ],
+      "crop": null,
+      "note": "Símbolo Apache Spark compartilhado; não é marca exclusiva PySpark.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "python",
+      "category": "technologies",
+      "path": "assets/badges/technologies/python.svg",
+      "label": "Python",
+      "background": "#3776ab",
+      "foreground": "#ffffff",
+      "contrast": 4.84,
+      "width": 72,
+      "icon": "assets/icons/technologies/python.png",
+      "mode": "original",
+      "source": "https://s3.amazonaws.com/webflow-prod-assets/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d6c_python-logo.png",
+      "source_path": "assets/icons/technologies/originals/python.png",
+      "source_sha256": "8c6401cad40a58529149a92e2abd242c02843619d9137e1c92ffa8df787bbe83",
+      "visible_icon_size_px": [
+        14.0,
+        13.67
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "scikit_image",
+      "category": "technologies",
+      "path": "assets/badges/technologies/scikit_image.svg",
+      "label": "scikit-image",
+      "background": "#596e9b",
+      "foreground": "#ffffff",
+      "contrast": 5.09,
+      "width": 100,
+      "icon": "assets/icons/technologies/scikit_image.png",
+      "mode": "compacto",
+      "source": "https://scikit-image.org/docs/stable/api/skimage.data.html#skimage.data.logo",
+      "source_path": "assets/icons/technologies/originals/scikit_image.png",
+      "source_sha256": "f2c57fe8af089f08b5ba523d95573c26e62904ac5967f4c8851b27d033690168",
+      "visible_icon_size_px": [
+        14.0,
+        14.0
+      ],
+      "crop": null,
+      "note": "Arquivo distribuído no pacote Python.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "scikit_learn",
+      "category": "technologies",
+      "path": "assets/badges/technologies/scikit_learn.svg",
+      "label": "scikit-learn",
+      "background": "#ffffff",
+      "foreground": "#242424",
+      "contrast": null,
+      "width": 56,
+      "icon": "assets/icons/technologies/badge_scikit_learn.png",
+      "mode": "image_direct",
+      "source": "https://cdn.prod.website-files.com/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d6f_scikit-learn-logo.png",
+      "source_path": "assets/icons/technologies/originals/badge_scikit_learn.png",
+      "source_sha256": "6910d3b64c34fc604219bf44ec92c1cc35de129da959ae77a410b40082ed6cfc",
+      "visible_icon_size_px": [
+        51.71,
+        18
+      ],
+      "crop": null,
+      "note": "Imagem integral fornecida pelo autor; proporção e cores preservadas; fundo branco para contraste nos dois temas.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "scipy",
+      "category": "technologies",
+      "path": "assets/badges/technologies/scipy.svg",
+      "label": "SciPy",
+      "background": "#375c9e",
+      "foreground": "#ffffff",
+      "contrast": 6.59,
+      "width": 63,
+      "icon": "assets/icons/technologies/scipy.png",
+      "mode": "original",
+      "source": "https://scipy.org/images/logo.svg",
+      "source_path": "assets/icons/technologies/originals/scipy.svg",
+      "source_sha256": "77c9f3007b0f564745900dd05a62d9298e491ec48dc1124b75a08268e3383015",
+      "visible_icon_size_px": [
+        14.0,
+        13.33
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "seaborn",
+      "category": "technologies",
+      "path": "assets/badges/technologies/seaborn.svg",
+      "label": "seaborn",
+      "background": "#3a6e79",
+      "foreground": "#ffffff",
+      "contrast": 5.7,
+      "width": 78,
+      "icon": "assets/icons/technologies/seaborn.png",
+      "mode": "recorte de teste",
+      "source": "https://s3.amazonaws.com/webflow-prod-assets/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d6e_seaborn-logo.svg",
+      "source_path": "assets/icons/technologies/originals/seaborn.svg",
+      "source_sha256": "da6bfec16889d9c4fe12b1fcda78bdd1c27a6367e5f735b4434d035b212c07bd",
+      "visible_icon_size_px": [
+        14.0,
+        14.0
+      ],
+      "crop": [
+        43,
+        30,
+        557,
+        549
+      ],
+      "note": "Recorte exploratório: validar permissão e integridade visual.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "spacy",
+      "category": "technologies",
+      "path": "assets/badges/technologies/spacy.svg",
+      "label": "spaCy",
+      "background": "#ffffff",
+      "foreground": "#242424",
+      "contrast": null,
+      "width": 62,
+      "icon": "assets/icons/technologies/badge_spacy.png",
+      "mode": "image_direct",
+      "source": "https://cdn.prod.website-files.com/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d71_SpaCy-logo.png",
+      "source_path": "assets/icons/technologies/originals/badge_spacy.png",
+      "source_sha256": "1a94716297ef266929544c1fdf7d95dc616854b7cfb877002f6f6fd8ca9b6fa5",
+      "visible_icon_size_px": [
+        57.04,
+        18
+      ],
+      "crop": null,
+      "note": "Imagem integral fornecida pelo autor; proporção e cores preservadas; fundo branco para contraste nos dois temas.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "sqlite",
+      "category": "technologies",
+      "path": "assets/badges/technologies/sqlite.svg",
+      "label": "SQLite",
+      "background": "#145d82",
+      "foreground": "#ffffff",
+      "contrast": 7.2,
+      "width": 69,
+      "icon": "assets/icons/technologies/sqlite.png",
+      "mode": "compacto",
+      "source": "https://github.com/devicons/devicon/blob/master/icons/sqlite/sqlite-original.svg",
+      "source_path": "assets/icons/technologies/originals/sqlite.svg",
+      "source_sha256": "1f68a37bac132e96671e36eb7af5c4a6996fd70155aeb194a1c0d61f5ae30f86",
+      "visible_icon_size_px": [
+        12.5,
+        14.0
+      ],
+      "crop": null,
+      "note": "",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "statsmodels",
+      "category": "technologies",
+      "path": "assets/badges/technologies/statsmodels.svg",
+      "label": "statsmodels",
+      "background": "#385775",
+      "foreground": "#ffffff",
+      "contrast": 7.53,
+      "width": 100,
+      "icon": "assets/icons/technologies/statsmodels.png",
+      "mode": "original",
+      "source": "https://www.statsmodels.org/devel/_static/statsmodels-logo-v2-no-text.svg",
+      "source_path": "assets/icons/technologies/originals/statsmodels.svg",
+      "source_sha256": "89346bbb28f163284280a5084bb554d3486c02ca7c7605334de1531ab357cd73",
+      "visible_icon_size_px": [
+        14.0,
+        14.0
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "surprise",
+      "category": "technologies",
+      "path": "assets/badges/technologies/surprise.svg",
+      "label": "Surprise",
+      "background": "#9D603B",
+      "foreground": "#ffffff",
+      "contrast": 5.04,
+      "width": 56,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Badge tipográfica: cobre EP, texto branco, sem logotipo.",
+      "rights_review": "not_applicable",
+      "approved_text_only": true
+    },
+    {
+      "id": "tensorflow",
+      "category": "technologies",
+      "path": "assets/badges/technologies/tensorflow.svg",
+      "label": "TensorFlow",
+      "background": "#b9510c",
+      "foreground": "#ffffff",
+      "contrast": 4.95,
+      "width": 94,
+      "icon": "assets/icons/technologies/tensorflow.png",
+      "mode": "original",
+      "source": "https://s3.amazonaws.com/webflow-prod-assets/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d76_tensorflow-logo.png",
+      "source_path": "assets/icons/technologies/originals/tensorflow.png",
+      "source_sha256": "3bbaa84f89711cee1ad94b3a70059bf876eed6e65ce8154bc59e402c81ea8306",
+      "visible_icon_size_px": [
+        13.0,
+        14.0
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "html5",
+      "category": "technologies",
+      "path": "assets/badges/technologies/html5.svg",
+      "label": "HTML5",
+      "background": "#b74921",
+      "foreground": "#ffffff",
+      "contrast": 5.27,
+      "width": 71,
+      "icon": "assets/icons/technologies/html5.png",
+      "mode": "original",
+      "source": "https://www.w3.org/html/logo/downloads/HTML5_Badge.svg",
+      "source_path": "assets/icons/technologies/originals/html5.svg",
+      "source_sha256": "c62bf88b08aabe3f04950aa858e45201453c67095df4a1c23fe1166f1249aa38",
+      "visible_icon_size_px": [
+        12.33,
+        14.0
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "javascript",
+      "category": "technologies",
+      "path": "assets/badges/technologies/javascript.svg",
+      "label": "JavaScript",
+      "background": "#f7df1e",
+      "foreground": "#000000",
+      "contrast": 15.53,
+      "width": 89,
+      "icon": "assets/icons/technologies/javascript.png",
+      "mode": "original",
+      "source": "https://raw.githubusercontent.com/voodootikigod/logo.js/master/js.svg",
+      "source_path": "assets/icons/technologies/originals/javascript.svg",
+      "source_sha256": "a70a3d8d36ea6b0e614a04ec30d5a4fb2bf36d515492cb84050ded2b84d14393",
+      "visible_icon_size_px": [
+        14.0,
+        14.0
+      ],
+      "crop": null,
+      "note": "Preservadas as cores do arquivo recuperado.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "mit",
+      "category": "licenses",
+      "path": "assets/badges/licenses/mit.svg",
+      "label": "MIT",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 122,
+      "icon": null,
+      "mode": "license_split",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Approved split license: mineral blue (EP LipariS Adapted index 4); inverse monochrome prefix by theme.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "prefix": "Code License",
+      "prefix_width": 88,
+      "theme_prefix": {
+        "light": {
+          "background": "#000000",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#FFFFFF",
+          "foreground": "#000000"
+        }
+      },
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "cc_by_nc_4_0",
+      "category": "licenses",
+      "path": "assets/badges/licenses/cc_by_nc_4_0.svg",
+      "label": "CC BY-NC 4.0",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 190,
+      "icon": null,
+      "mode": "license_split",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Approved split license: mineral blue (EP LipariS Adapted index 4); inverse monochrome prefix by theme.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "prefix": "Content License",
+      "prefix_width": 103,
+      "theme_prefix": {
+        "light": {
+          "background": "#000000",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#FFFFFF",
+          "foreground": "#000000"
+        }
+      },
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "partial_en",
+      "category": "status",
+      "path": "assets/badges/status/partial_en.svg",
+      "label": "Partial",
+      "background": "#E8D58A",
+      "foreground": "#242424",
+      "contrast": 10.58,
+      "width": 45,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Approved semantic status yellow (#E8D58A); explicit exception to analytical colormaps. Localized path preserved.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false
+    },
+    {
+      "id": "partial_pt_br",
+      "category": "status",
+      "path": "assets/badges/status/partial_pt_br.svg",
+      "label": "Parcial",
+      "background": "#E8D58A",
+      "foreground": "#242424",
+      "contrast": 10.58,
+      "width": 47,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Approved semantic status yellow (#E8D58A); explicit exception to analytical colormaps. Localized path preserved.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false
+    },
+    {
+      "id": "passed_en",
+      "category": "status",
+      "path": "assets/badges/status/passed_en.svg",
+      "label": "Passed",
+      "background": "#26733c",
+      "foreground": "#ffffff",
+      "contrast": 5.83,
+      "width": 49,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Caminho localizado preservado para não quebrar os READMEs.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false
+    },
+    {
+      "id": "passed_pt_br",
+      "category": "status",
+      "path": "assets/badges/status/passed_pt_br.svg",
+      "label": "Aprovado",
+      "background": "#26733c",
+      "foreground": "#ffffff",
+      "contrast": 5.83,
+      "width": 63,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Caminho localizado preservado para não quebrar os READMEs.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false
+    },
+    {
+      "id": "pending_en",
+      "category": "status",
+      "path": "assets/badges/status/pending_en.svg",
+      "label": "Pending",
+      "background": "#D86E5E",
+      "foreground": "#242424",
+      "contrast": 4.67,
+      "width": 54,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Caminho localizado preservado para não quebrar os READMEs.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false
+    },
+    {
+      "id": "pending_pt_br",
+      "category": "status",
+      "path": "assets/badges/status/pending_pt_br.svg",
+      "label": "Pendente",
+      "background": "#D86E5E",
+      "foreground": "#242424",
+      "contrast": 4.67,
+      "width": 62,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Caminho localizado preservado para não quebrar os READMEs.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false
+    },
+    {
+      "id": "css",
+      "category": "technologies",
+      "path": "assets/badges/technologies/css.svg",
+      "label": "CSS",
+      "background": "#006EB8",
+      "foreground": "#ffffff",
+      "contrast": 5.35,
+      "width": 57,
+      "icon": "assets/icons/technologies/badge_css.png",
+      "mode": "original",
+      "source": "Imagem CSS3 fornecida pelo autor do portfólio",
+      "source_path": "assets/icons/technologies/originals/badge_css.png",
+      "source_sha256": "e84f1e0ae336282633d9d608d507e787a810a9e089352932d3e7f6d1bca91bbb",
+      "visible_icon_size_px": [
+        12.25,
+        14
+      ],
+      "crop": "Escudo isolado do fundo quadriculado",
+      "note": "Símbolo CSS3 fornecido pelo autor; fundo quadriculado removido; proporção e cores preservadas.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "time_series_cv_en",
+      "category": "methods",
+      "path": "assets/badges/methods/time_series_cv_en.svg",
+      "label": "Time-series CV",
+      "background": "#427C83",
+      "foreground": "#FFFFFF",
+      "contrast": 4.73,
+      "width": 104,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "EP text-only identifier.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "theme_colors": {
+        "light": {
+          "background": "#427C83",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#7CA5A8",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-muted-pastel",
+        "index": 0
+      },
+      "dark_contrast": 5.77
+    },
+    {
+      "id": "time_series_cv_pt_br",
+      "category": "methods",
+      "path": "assets/badges/methods/time_series_cv_pt_br.svg",
+      "label": "Validação cruzada temporal",
+      "background": "#427C83",
+      "foreground": "#FFFFFF",
+      "contrast": 4.73,
+      "width": 178,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "EP text-only identifier.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "theme_colors": {
+        "light": {
+          "background": "#427C83",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#7CA5A8",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-muted-pastel",
+        "index": 0
+      },
+      "dark_contrast": 5.77
+    },
+    {
+      "id": "adobe_after_effects",
+      "category": "technologies",
+      "path": "assets/badges/technologies/adobe_after_effects.svg",
+      "label": "Adobe After Effects",
+      "background": "#30306F",
+      "foreground": "#ffffff",
+      "contrast": 11.81,
+      "width": 140,
+      "icon": "assets/icons/technologies/badge_adobe_after_effects.png",
+      "mode": "original",
+      "source": "https://cdn.prod.website-files.com/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d45_icon50-adobe-after-effects.png",
+      "source_path": "assets/icons/technologies/originals/badge_adobe_after_effects.png",
+      "source_sha256": "14724088a99206158b92e839fc12807cebd96c1e04b26b6d9262efcaf81d00f9",
+      "visible_icon_size_px": [
+        14,
+        14
+      ],
+      "crop": null,
+      "note": "Ícone fornecido pelo autor; cores e proporção preservadas.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "adobe_photoshop",
+      "category": "technologies",
+      "path": "assets/badges/technologies/adobe_photoshop.svg",
+      "label": "Adobe Photoshop",
+      "background": "#001E36",
+      "foreground": "#ffffff",
+      "contrast": 16.95,
+      "width": 131,
+      "icon": "assets/icons/technologies/badge_adobe_photoshop.png",
+      "mode": "original",
+      "source": "https://cdn.prod.website-files.com/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d3c_icon50-adobe-photoshop.png",
+      "source_path": "assets/icons/technologies/originals/badge_adobe_photoshop.png",
+      "source_sha256": "2d283a36bd82d7a83dadb18f26bf2fa4f3d85ffa2434734f55388e60f7986584",
+      "visible_icon_size_px": [
+        14,
+        14
+      ],
+      "crop": null,
+      "note": "Ícone fornecido pelo autor; cores e proporção preservadas.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "adobe_premiere_pro",
+      "category": "technologies",
+      "path": "assets/badges/technologies/adobe_premiere_pro.svg",
+      "label": "Adobe Premiere Pro",
+      "background": "#30306F",
+      "foreground": "#ffffff",
+      "contrast": 11.81,
+      "width": 143,
+      "icon": "assets/icons/technologies/badge_adobe_premiere_pro.png",
+      "mode": "original",
+      "source": "https://cdn.prod.website-files.com/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d38_icon50-adobe-premiere-pro.png",
+      "source_path": "assets/icons/technologies/originals/badge_adobe_premiere_pro.png",
+      "source_sha256": "e917e77eb6b4fc71231d417de4d2efa507dbadb5bb6c4935afc7de953edc5a56",
+      "visible_icon_size_px": [
+        14,
+        14
+      ],
+      "crop": null,
+      "note": "Ícone fornecido pelo autor; cores e proporção preservadas.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "anaconda",
+      "category": "technologies",
+      "path": "assets/badges/technologies/anaconda.svg",
+      "label": "Anaconda",
+      "background": "#176D3B",
+      "foreground": "#ffffff",
+      "contrast": 6.39,
+      "width": 89,
+      "icon": "assets/icons/technologies/badge_anaconda.png",
+      "mode": "original",
+      "source": "https://cdn.prod.website-files.com/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d57_anaconda-logo.svg",
+      "source_path": "assets/icons/technologies/originals/badge_anaconda.svg",
+      "source_sha256": "971b9ed0125de84637d940a3dd04c922c1b08c26eaf9129840e01a7f40fc41e4",
+      "visible_icon_size_px": [
+        14,
+        14
+      ],
+      "crop": null,
+      "note": "Ícone fornecido pelo autor; cores e proporção preservadas.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "beautifulsoup",
+      "category": "technologies",
+      "path": "assets/badges/technologies/beautifulsoup.svg",
+      "label": "BeautifulSoup",
+      "background": "#ffffff",
+      "foreground": "#242424",
+      "contrast": null,
+      "width": 46,
+      "icon": "assets/icons/technologies/badge_beautifulsoup.png",
+      "mode": "image_direct",
+      "source": "https://cdn.prod.website-files.com/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d64_beatifulsoup-logo.jpg",
+      "source_path": "assets/icons/technologies/originals/badge_beautifulsoup.jpg",
+      "source_sha256": "4a75e838aa006dd275d21af275fe9c3a858e48b4e0003981ffa696b0134b859f",
+      "visible_icon_size_px": [
+        41.86,
+        18
+      ],
+      "crop": null,
+      "note": "Imagem integral fornecida pelo autor; proporção e cores preservadas; fundo branco para contraste nos dois temas.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "pytorch",
+      "category": "technologies",
+      "path": "assets/badges/technologies/pytorch.svg",
+      "label": "PyTorch",
+      "background": "#ffffff",
+      "foreground": "#242424",
+      "contrast": null,
+      "width": 78,
+      "icon": "assets/icons/technologies/badge_pytorch.png",
+      "mode": "image_direct",
+      "source": "https://cdn.prod.website-files.com/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d62_pytorch-logo.png",
+      "source_path": "assets/icons/technologies/originals/badge_pytorch.png",
+      "source_sha256": "60e913a8cf1bcd544f67ab76872bebb30b5b0188c553983246533c571ea681fa",
+      "visible_icon_size_px": [
+        73.3,
+        18
+      ],
+      "crop": null,
+      "note": "Imagem integral fornecida pelo autor; proporção e cores preservadas; fundo branco para contraste nos dois temas.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "visual_studio_code",
+      "category": "technologies",
+      "path": "assets/badges/technologies/visual_studio_code.svg",
+      "label": "Visual Studio Code",
+      "background": "#0066A6",
+      "foreground": "#ffffff",
+      "contrast": 6.08,
+      "width": 138,
+      "icon": "assets/icons/technologies/badge_visual_studio_code.png",
+      "mode": "original",
+      "source": "https://cdn.prod.website-files.com/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d58_visual-studio-code-2019.svg",
+      "source_path": "assets/icons/technologies/originals/badge_visual_studio_code.svg",
+      "source_sha256": "d6e757809a17b59aeb51c0fed4c67b3b758075c1daf5cee8626360d6a515cafc",
+      "visible_icon_size_px": [
+        14,
+        14
+      ],
+      "crop": null,
+      "note": "Ícone fornecido pelo autor; cores e proporção preservadas.",
+      "rights_review": "pending",
+      "approved_text_only": false
+    },
+    {
+      "id": "supplementary_resources_en",
+      "category": "topics",
+      "path": "assets/badges/topics/supplementary_resources_en.svg",
+      "label": "Supplementary Resources",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 158,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "00",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "supplementary_resources_pt_br",
+      "category": "topics",
+      "path": "assets/badges/topics/supplementary_resources_pt_br.svg",
+      "label": "Recursos Complementares",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 162,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "00",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "python_programming_en",
+      "category": "topics",
+      "path": "assets/badges/topics/python_programming_en.svg",
+      "label": "Python Programming",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 130,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "01",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "python_programming_pt_br",
+      "category": "topics",
+      "path": "assets/badges/topics/python_programming_pt_br.svg",
+      "label": "Programação em Python",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 150,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "01",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "data_analytics_en",
+      "category": "topics",
+      "path": "assets/badges/topics/data_analytics_en.svg",
+      "label": "Data Analysis & Visualization",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 175,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "02",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "data_analytics_pt_br",
+      "category": "topics",
+      "path": "assets/badges/topics/data_analytics_pt_br.svg",
+      "label": "Análise e Visualização de Dados",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 191,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "02",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "statistics_en",
+      "category": "topics",
+      "path": "assets/badges/topics/statistics_en.svg",
+      "label": "Statistics",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 65,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "03",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "statistics_pt_br",
+      "category": "topics",
+      "path": "assets/badges/topics/statistics_pt_br.svg",
+      "label": "Estatística",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 71,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "03",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "relational_nosql_databases_en",
+      "category": "topics",
+      "path": "assets/badges/topics/relational_nosql_databases_en.svg",
+      "label": "Relational & NoSQL Databases",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 183,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "04",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "relational_nosql_databases_pt_br",
+      "category": "topics",
+      "path": "assets/badges/topics/relational_nosql_databases_pt_br.svg",
+      "label": "Bancos de Dados Relacionais e NoSQL",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 226,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "04",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "machine_learning_en",
+      "category": "topics",
+      "path": "assets/badges/topics/machine_learning_en.svg",
+      "label": "Machine Learning",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 112,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "05",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "machine_learning_pt_br",
+      "category": "topics",
+      "path": "assets/badges/topics/machine_learning_pt_br.svg",
+      "label": "Aprendizado de Máquina",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 151,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "05",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "natural_language_processing_en",
+      "category": "topics",
+      "path": "assets/badges/topics/natural_language_processing_en.svg",
+      "label": "Natural Language Processing",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 175,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "06",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "natural_language_processing_pt_br",
+      "category": "topics",
+      "path": "assets/badges/topics/natural_language_processing_pt_br.svg",
+      "label": "Processamento de Linguagem Natural",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 225,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "06",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "deep_learning_en",
+      "category": "topics",
+      "path": "assets/badges/topics/deep_learning_en.svg",
+      "label": "Deep Learning",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 95,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "07",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "deep_learning_pt_br",
+      "category": "topics",
+      "path": "assets/badges/topics/deep_learning_pt_br.svg",
+      "label": "Aprendizado Profundo",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 136,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "07",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "image_analysis_classification_en",
+      "category": "topics",
+      "path": "assets/badges/topics/image_analysis_classification_en.svg",
+      "label": "Image Analysis & Classification",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 186,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "08",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "image_analysis_classification_pt_br",
+      "category": "topics",
+      "path": "assets/badges/topics/image_analysis_classification_pt_br.svg",
+      "label": "Análise e Classificação de Imagens",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 207,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "08",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "recommender_systems_en",
+      "category": "topics",
+      "path": "assets/badges/topics/recommender_systems_en.svg",
+      "label": "Recommender Systems",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 145,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "09",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "recommender_systems_pt_br",
+      "category": "topics",
+      "path": "assets/badges/topics/recommender_systems_pt_br.svg",
+      "label": "Sistemas de Recomendação",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 170,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "09",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "big_data_distributed_processing_en",
+      "category": "topics",
+      "path": "assets/badges/topics/big_data_distributed_processing_en.svg",
+      "label": "Big Data & Distributed Processing",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 201,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "10",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
+      "id": "big_data_distributed_processing_pt_br",
+      "category": "topics",
+      "path": "assets/badges/topics/big_data_distributed_processing_pt_br.svg",
+      "label": "Big Data e Processamento Distribuído",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 223,
+      "icon": null,
+      "mode": "text",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Knowledge Base area; localized canonical badge.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "area": "10",
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    }
+  ]
+}

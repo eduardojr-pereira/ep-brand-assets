@@ -4,8 +4,6 @@
 .project-card p{font-size:14px;line-height:1.65;margin:0;flex:1;color:var(--ep-color-muted)}
 /* Canonical non-interactive technology tags. */
 
-.project-card .pill,
-.project-card .tech,
 .ep-project-intro .tag,
 .ep-reference-license {
     display: inline-flex;
@@ -24,8 +22,6 @@
     white-space: nowrap;
 }
 
-.project-card .pill::before,
-.project-card .tech::before,
 .ep-project-intro .tag::before,
 .ep-reference-license::before {
     content: "";
@@ -49,3 +45,30 @@
 @media(max-width:700px){.project-card{padding:21px}}
 @media(max-width:420px){.project-card .card-links{column-gap:12px}.project-card .card-links>a{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.project-card,.project-card .card-links>a::after{transition:none}.project-card:hover{transform:none}}
+
+/* Canonical SVG badges. */
+.ep-badge {
+    display: inline-block;
+    height: 20px;
+    width: auto;
+    max-width: 100%;
+    vertical-align: middle;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.ep-badge[data-badge-locale="pt-BR"] {
+    display: none;
+}
+
+html[lang="pt-BR"] .ep-badge[data-badge-locale="en"] {
+    display: none;
+}
+
+html[lang="pt-BR"] .ep-badge[data-badge-locale="pt-BR"] {
+    display: inline-block;
+}
+
+/* Explicit EP theme wins over OS preference, independently of language. */
+html:not([data-theme="light"]) .ep-badge[data-badge-theme="light"],
+html[data-theme="light"] .ep-badge[data-badge-theme="dark"] { display: none !important; }
