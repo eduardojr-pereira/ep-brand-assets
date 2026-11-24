@@ -46,7 +46,7 @@ class SiteBuilderTests(unittest.TestCase):
         root = self.source / name
         (root / 'reports').mkdir(parents=True)
         (root / 'reports/index.html').write_text(
-            '<!doctype html><title>Mini Report</title><h1>Mini</h1>', encoding='utf-8')
+            '<!doctype html><html lang="en"><head><title>Mini Report</title></head><body><h1>Mini</h1></body></html>', encoding='utf-8')
         (root / 'README.md').write_text('Test documentation', encoding='utf-8')
         (root / 'notebook.ipynb').write_text('{}', encoding='utf-8')
 
@@ -99,7 +99,33 @@ class SiteBuilderTests(unittest.TestCase):
         self.assertTrue((dest / '.nojekyll').is_file())
         # Never rewrite portfolio-owned original HTML.
         self.assertEqual((self.source / 'selected_projects/example/reports/index.html').read_text(encoding='utf-8'),
-                         '<!doctype html><title>Mini Report</title><h1>Mini</h1>')
+                         '<!doctype html><html lang="en"><head><title>Mini Report</title></head><body><h1>Mini</h1></body></html>')
+
+    def test_components_have_one_stylesheet_owner(self):
+        """Page builder must not redefine shared cards, controls or footer styles."""
+        page = builder.make_homepage([{
+            "name": "Test", "name_pt": "Teste", "description": "Details",
+            "description_pt": "Detalhes", "topics": ("Data",),
+            "technologies": ("Python",), "collection": "selected_projects",
+            "featured": True, "notebook": None, "readme": None,
+            "report": "selected_projects/test/reports/index.html",
+        }])
+        inline = page.split('<style>', 1)[1].split('</style>', 1)[0]
+        for selector in ('.project-card{', '.card-links{', '.ep-footer', '.ep-header', '.filter{'):
+            self.assertNotIn(selector, inline)
+        for asset in ('cards.css', 'buttons.css', 'footer.css', 'header.css'):
+            self.assertIn('assets/components/web/' + asset, page)
+        for path in ('components/web/cards.css', 'components/web/buttons.css'):
+            self.assertIn(path, SHARED_FILES)
+        bridge = (ROOT / 'styles/portfolio-theme.css').read_text()
+        self.assertNotIn('.project-card{', bridge)
+        self.assertNotIn('.ep-footer{', bridge)
+
+    def test_legacy_footer_is_not_reintroduced(self):
+        source = (ROOT / 'tools/build_site.py').read_text(encoding='utf-8')
+        self.assertNotIn('def remove_legacy_report_footer_css(', source)
+        self.assertNotIn('_EP_LEGACY_FOOTER_START', source)
+        self.assertIn('Legacy footer CSS remains in source report', source)
 
     def test_output_inside_source_is_rejected(self):
         self.make_project('selected_projects/example')

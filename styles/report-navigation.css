@@ -1,0 +1,99 @@
+/* EP Report Navigation — common visual treatment, shared by reports.
+   Project generators own the HTML structure and positioning, not link effects. */
+.ep-report-nav__link,
+.ep-report-nav__back {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 9px 10px;
+  color: var(--ep-color-text);
+  font: 600 .84rem/1.35 var(--ep-font-sans, "Source Sans 3", sans-serif);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.ep-report-nav__link::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  bottom: 3px;
+  height: 2px;
+  background: var(--ep-color-link-hover);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform .55s cubic-bezier(.76,0,.24,1), background-color .2s ease;
+  pointer-events: none;
+}
+.ep-report-nav__link:hover,
+.ep-report-nav__link:focus-visible { color: var(--ep-color-link-hover); }
+.ep-report-nav__link:hover::after,
+.ep-report-nav__link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+.ep-report-nav__link.is-active,
+.ep-report-nav__link.is-active:hover,
+.ep-report-nav__link.is-active:focus-visible { color: var(--ep-color-accent); }
+.ep-report-nav__link.is-active::after,
+.ep-report-nav__link.is-active:hover::after,
+.ep-report-nav__link.is-active:focus-visible::after {
+  background: var(--ep-color-accent);
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+.ep-report-nav__link:focus-visible,
+.ep-report-nav__back:focus-visible {
+  outline: 2px solid var(--ep-color-focus);
+  outline-offset: 3px;
+}
+/* Distinct Back to Showcase effect: sliding label and traveling accent underline. */
+.ep-report-nav__back { overflow: hidden; font-weight: 700; }
+.ep-report-nav__back:hover,
+.ep-report-nav__back:focus-visible { color: var(--ep-color-link-hover); }
+.ep-report-nav__back::before,
+.ep-report-nav__back::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  width: calc(100% - 18px);
+  pointer-events: none;
+}
+.ep-report-nav__back::before {
+  bottom: 3px;
+  height: 2px;
+  background: var(--ep-color-accent);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform .55s cubic-bezier(.76,0,.24,1);
+}
+.ep-report-nav__back::after {
+  content: attr(data-replace);
+  top: 8px;
+  color: var(--ep-color-accent);
+  transform: translate3d(200%,0,0);
+  transition: transform .55s cubic-bezier(.76,0,.24,1);
+}
+.ep-report-nav__back > span {
+  display: inline-block;
+  transition: transform .55s cubic-bezier(.76,0,.24,1);
+}
+.ep-report-nav__back:hover::before,
+.ep-report-nav__back:focus-visible::before {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+.ep-report-nav__back:hover::after,
+.ep-report-nav__back:focus-visible::after { transform: translate3d(0,0,0); }
+.ep-report-nav__back:hover > span,
+.ep-report-nav__back:focus-visible > span { transform: translate3d(-200%,0,0); }
+@media (prefers-reduced-motion: reduce) {
+  .ep-report-nav__link::after,
+  .ep-report-nav__back::before,
+  .ep-report-nav__back::after,
+  .ep-report-nav__back > span { transition: none; }
+  .ep-report-nav__back:hover > span,
+  .ep-report-nav__back:focus-visible > span { transform: none; }
+  .ep-report-nav__back:hover::after,
+  .ep-report-nav__back:focus-visible::after { display: none; }
+}

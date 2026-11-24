@@ -1,0 +1,7 @@
+/* EP Brand canonical showcase filters and controls. */
+.filter{border:1px solid var(--ep-color-border);background:var(--ep-color-surface);color:var(--ep-color-text);border-radius:999px;padding:9px 15px;font:inherit;font-size:13px;cursor:pointer}
+.filter:hover,.filter.is-active{border-color:var(--ep-color-accent);background:var(--ep-color-surface);color:var(--ep-color-text)}
+.collection-option{display:inline-flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;color:var(--ep-color-text)}
+.collection-option input{accent-color:var(--ep-color-accent);width:16px;height:16px;cursor:pointer}
+.collection-option:hover{color:var(--ep-color-link-hover)}
+.filter:focus-visible,.collection-option input:focus-visible{outline:2px solid var(--ep-color-focus);outline-offset:3px}

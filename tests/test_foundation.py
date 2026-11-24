@@ -26,7 +26,7 @@ class FoundationTests(unittest.TestCase):
 
     def test_languages_and_persistence(self):
         code = self.read("scripts/i18n.js")
-        for marker in ("pt-BR", "en", "ep_locale", "data-i18n", "data-language-select"):
+        for marker in ("pt-BR", "en", "ep_locale", "data-i18n", "data-language-choice"):
             with self.subTest(marker=marker):
                 self.assertIn(marker, code)
 
@@ -35,7 +35,7 @@ class FoundationTests(unittest.TestCase):
         js = self.read("scripts/header.js")
         css = self.read("components/web/header.css")
         self.assertIn('class="ep-header"', html)
-        self.assertIn("data-language-select", html)
+        self.assertIn("data-language-choice", html)
         self.assertIn("data-theme-toggle", html)
         self.assertIn("ep-header__dropdown", html)
         self.assertIn("Escape", js)

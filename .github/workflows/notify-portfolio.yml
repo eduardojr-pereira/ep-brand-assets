@@ -9,6 +9,7 @@ on:
       - 'components/**'
       - 'config/**'
       - 'tools/**'
+      - 'scripts/**'
       - 'tests/**'
       - '.github/workflows/notify-portfolio.yml'
   workflow_dispatch:

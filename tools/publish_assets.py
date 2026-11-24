@@ -10,7 +10,10 @@ import shutil
 ROOT = Path(__file__).resolve().parents[1]
 SHARED_FILES = (
     "styles/theme-tokens.css", "styles/typography-v2.css", "styles/portfolio-theme.css",
+    "styles/report-navigation.css", "styles/report-theme.css", "components/web/header.css",
+    "components/web/footer.css", "components/web/cards.css", "components/web/buttons.css",
     "scripts/theme-init.js", "scripts/theme.js", "scripts/i18n.js", "scripts/header.js",
+    "scripts/report-navigation.js", "scripts/report-language.js",
 )
 
 

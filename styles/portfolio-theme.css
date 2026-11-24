@@ -1,23 +1,7 @@
-/* EP portfolio theme bridge: maps legacy showcase selectors to validated tokens. */
-:root{--bg:var(--ep-color-bg);--surface:var(--ep-color-surface);--line:var(--ep-color-border);--ink:var(--ep-color-text);--muted:var(--ep-color-muted);--aqua:var(--ep-color-accent);--orange:var(--ep-color-focus);color-scheme:light dark;font-family:var(--ep-font-sans,"Source Sans 3",sans-serif);background:var(--ep-color-bg);color:var(--ep-color-text)}
-html,body{background:var(--ep-color-bg)!important;color:var(--ep-color-text)}body{background-image:none!important}
-.site-header{display:none!important}.container{max-width:1120px}
-.intro-label,.eyebrow,.area-filters h3,.collection-fieldset legend{color:var(--ep-color-accent)!important}
-.lead,.section-subtitle,.project-card p{color:var(--ep-color-muted)!important}
-h1,h2,.project-card h3{color:var(--ep-color-text)}
-.filter{border-color:var(--ep-color-border);background:var(--ep-color-surface);color:var(--ep-color-text)}
-.filter:hover,.filter.is-active{border-color:var(--ep-color-accent);background:var(--ep-color-surface);color:var(--ep-color-text)}
-.collection-fieldset{border-bottom-color:var(--ep-color-border)}.collection-option{color:var(--ep-color-text)}.collection-option input{accent-color:var(--ep-color-accent)}
-.project-card{background:var(--ep-color-surface)!important;border-color:var(--ep-color-border)!important;box-shadow:0 6px 18px rgba(0,0,0,.10)}
-.project-card:hover{border-color:var(--ep-color-accent)!important}
-.pill,.tech{background:color-mix(in srgb,var(--ep-color-accent) 13%,var(--ep-color-surface));color:var(--ep-color-text)}
-.card-links{border-top-color:var(--ep-color-border)!important}.card-links>a{color:var(--ep-color-accent)!important}
-.card-links>a::before{background:var(--ep-color-accent)!important}.card-links>a::after{background:var(--ep-color-link-hover)!important}
-.card-links>a:hover,.card-links>a:focus-visible{color:var(--ep-color-link-hover)!important}
+/* EP Brand homepage palette bridge for page-only legacy variables. */
+:root{--bg:var(--ep-color-bg);--surface:var(--ep-color-surface);--line:var(--ep-color-border);--ink:var(--ep-color-text);--muted:var(--ep-color-muted);--aqua:var(--ep-color-accent);--orange:var(--ep-color-focus);font-family:var(--ep-font-sans,"Source Sans 3",sans-serif);background:var(--ep-color-bg);color:var(--ep-color-text)}
+html,body{background:var(--ep-color-bg);color:var(--ep-color-text)}
+.intro-label,.eyebrow,.area-filters h3,.collection-fieldset legend{color:var(--ep-color-accent)}
+.lead,.section-subtitle{color:var(--ep-color-muted)}
+h1,h2{color:var(--ep-color-text)}
 .empty{border-color:var(--ep-color-border);color:var(--ep-color-muted)}
-.ep-footer{background:var(--ep-color-footer-bg)!important;color:var(--ep-color-text)!important;border-top-color:var(--ep-color-border)!important}
-.ep-footer h2,.ep-footer__contact{color:var(--ep-color-text)!important}
-.ep-footer__intro,.ep-footer__contact span,.ep-footer__bottom{color:var(--ep-color-muted)!important}
-.ep-footer__contact{background:var(--ep-color-footer-surface)!important;border-color:var(--ep-color-border)!important}
-.ep-footer__contact b,.ep-footer__website{color:var(--ep-color-accent)!important}
-.ep-footer__bottom{border-top-color:var(--ep-color-border)!important}

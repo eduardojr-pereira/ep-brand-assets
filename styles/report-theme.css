@@ -1,0 +1,22 @@
+/* Shared report surface tokens; published report pages only. */
+html.ep-report-document { scroll-padding-top: 100px; }
+html.ep-report-document, html.ep-report-document body.ep-report-page {
+  background: var(--ep-color-bg);
+  color: var(--ep-color-text);
+}
+html.ep-report-document {
+  --bg: var(--ep-color-bg);
+  --card: var(--ep-color-surface);
+  --border: var(--ep-color-border);
+  --text: var(--ep-color-text);
+  --muted: var(--ep-color-muted);
+  --aqua: var(--ep-color-accent);
+}
+.ep-report-page .hero { background:var(--ep-color-bg); border-color:var(--ep-color-border); }
+.ep-report-page .eyebrow { color:var(--ep-color-accent); }
+.ep-report-page .lead, .ep-report-page .hint, .ep-report-page .caption { color:var(--ep-color-muted); }
+.ep-report-page .card, .ep-report-page .stat, .ep-report-page .chart { background:var(--ep-color-surface); border-color:var(--ep-color-border); }
+.ep-report-page .card p, .ep-report-page .chart-heading, .ep-report-page .metric { color:var(--ep-color-text); }
+.ep-report-page .bike-local-nav { z-index:30; }
+.ep-report-page section[id] { scroll-margin-top: 100px; }
+@media(max-width:720px){.ep-report-page section[id]{scroll-margin-top:120px}}
