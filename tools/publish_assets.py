@@ -15,7 +15,7 @@ SHARED_FILES = (
     "scripts/theme-init.js", "scripts/theme.js", "scripts/i18n.js", "scripts/header.js",
     "scripts/report-navigation.js", "scripts/report-language.js", "scripts/footer.js",
     "scripts/plotly-i18n.js", "scripts/plotly-theme.js",
-    "styles/plotly-theme.css",
+    "styles/plotly-theme.css", "styles/colormaps.css",
     "components/web/project-intro.css", "scripts/project-links.js",
     "components/web/links.css", "components/web/outputs.css", "scripts/outputs.js",
     "assets/icons/flag_us.svg", "assets/icons/flag_br.svg",

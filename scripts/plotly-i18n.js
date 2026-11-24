@@ -4,6 +4,47 @@
 
   let queue = Promise.resolve();
 
+  // Native Plotly locale for the EP reports; deliberately independent of project data.
+  const nativePt = {
+    moduleType: 'locale', name: 'pt-BR',
+    dictionary: {
+      'Download plot as a PNG': 'Baixar gráfico como PNG',
+      'Share chart...': 'Compartilhar gráfico...',
+      'Pan': 'Mover', 'Zoom in': 'Ampliar', 'Zoom out': 'Reduzir',
+      'Autoscale': 'Escala automática', 'Reset axes': 'Restaurar eixos',
+      'Box Select': 'Seleção retangular', 'Lasso Select': 'Seleção livre',
+      'Toggle Spike Lines': 'Alternar linhas de referência',
+      'Show closest data on hover': 'Mostrar dado mais próximo ao passar o cursor',
+      'Compare data on hover': 'Comparar dados ao passar o cursor'
+    },
+    format: {
+      days: ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'],
+      shortDays: ['dom','seg','ter','qua','qui','sex','sáb'],
+      months: ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],
+      shortMonths: ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'],
+      periods: ['AM','PM'], dateTime: '%d/%m/%Y %H:%M:%S',
+      date: '%d/%m/%Y', time: '%H:%M:%S', decimal: ',', thousands: '.',
+      grouping: [3], currency: ['R$ ', ''], year: '%Y', month: '%b %Y',
+      dayMonth: '%-d %b', dayMonthYear: '%-d %b %Y'
+    }
+  };
+  const configs = new WeakMap();
+  let registeredPlotly;
+
+  function nativeLocale(locale) {
+    if (registeredPlotly !== window.Plotly) {
+      Plotly.register(nativePt);
+      registeredPlotly = window.Plotly;
+    }
+    return locale === 'pt-BR' ? 'pt-BR' : 'en-US';
+  }
+
+  function configure(graph, config) {
+    configs.set(graph, {...config});
+    return {...config, locale: nativeLocale(currentLocale())};
+  }
+
+
   function currentLocale() {
     return document.documentElement.lang === 'pt-BR' ? 'pt-BR' : 'en';
   }
@@ -30,6 +71,13 @@
 
       if (heading && typeof translation.heading === 'string') {
         heading.textContent = translation.heading;
+      }
+
+      // Preserve all original config options as well as the live layout and trace state.
+      const config = configs.get(graph);
+      const targetLocale = nativeLocale(locale);
+      if (config && graph._context.locale !== targetLocale) {
+        await Plotly.react(graph, graph.data, graph.layout, {...config, locale: targetLocale});
       }
 
       // Update textual layout properties without replacing the figure.
@@ -63,5 +111,5 @@
     refresh();
   }
 
-  window.EPPlotlyI18n = Object.freeze({apply});
+  window.EPPlotlyI18n = Object.freeze({apply, configure});
 })();

@@ -154,6 +154,13 @@ def integrate_report(report_file: Path, published: list[dict], output_root: Path
 <link rel="stylesheet" href="{base}assets/components/web/buttons.css">
 '''
     head=head.replace('{base}', prefix)
+    # Remove the standalone-only head BEFORE locating the last inline style.
+    # Otherwise the canonical shared head would be inserted inside this block.
+    has_canonical_plotly = '<!-- EP-PLOTLY-HEAD-START -->' in markup
+    if has_canonical_plotly:
+        markup, count = re.subn(r'<!-- EP-PLOTLY-HEAD-START -->.*?<!-- EP-PLOTLY-HEAD-END -->', '', markup, flags=re.S)
+        if count != 1: raise ValueError('Unexpected embedded Plotly head')
+        head += f'<link rel="stylesheet" href="{prefix}assets/styles/colormaps.css">\n<script src="{prefix}assets/scripts/plotly-i18n.js"></script>\n<script src="{prefix}assets/scripts/plotly-theme.js"></script>\n'
     # Styles after legacy inline report styles, so tokens override fixed legacy vars.
     if '</style>' in markup:
         pos=markup.rfind('</style>',0,markup.index('</head>'))
@@ -173,8 +180,9 @@ def integrate_report(report_file: Path, published: list[dict], output_root: Path
     scripts=scripts.replace('{base}', prefix)
     scripts += f'<script src="{prefix}assets/scripts/report-language.js" defer></script>\n'
     if 'data-ep-plotly-i18n' in markup:
-        scripts += f'<script src="{prefix}assets/scripts/plotly-i18n.js" defer></script>\n'
-        scripts += f'<script src="{prefix}assets/scripts/plotly-theme.js" defer></script>\n'
+        if not has_canonical_plotly:
+            scripts += f'<script src="{prefix}assets/scripts/plotly-i18n.js" defer></script>\n'
+            scripts += f'<script src="{prefix}assets/scripts/plotly-theme.js" defer></script>\n'
         markup = markup.replace(
             '</head>',
             f'<link rel="stylesheet" href="{prefix}assets/styles/plotly-theme.css">\n</head>',
@@ -189,4 +197,10 @@ def integrate_report(report_file: Path, published: list[dict], output_root: Path
     if 'class="ep-project-links"' in markup:
         scripts += f'<script src="{prefix}assets/scripts/project-links.js" defer></script>\n'
     markup=markup.replace('</body>',scripts+'</body>',1)
+    if has_canonical_plotly:
+        for asset in ('scripts/theme-init.js', 'styles/theme-tokens.css', 'styles/typography-v2.css', 'components/web/header.css', 'components/web/footer.css', 'styles/report-theme.css', 'styles/colormaps.css', 'scripts/plotly-i18n.js', 'scripts/plotly-theme.js'):
+            if markup.count(prefix + 'assets/' + asset) != 1:
+                raise ValueError(f'Missing or duplicate canonical asset: {asset}')
+        if 'EP-PLOTLY-HEAD-START' in markup:
+            raise ValueError('Standalone Plotly head was not removed')
     report_file.write_text(markup,encoding='utf-8')

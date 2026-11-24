@@ -1,21 +1,23 @@
+<a id="readme-top"></a>
+
 <!-- EP-FOOTER:START -->
 ## Contato
 
 <div align="center">
 
-<a href="{{website}}" title="Site pessoal — {{name}}"><img src="{{logo_src}}" alt="Logo EP — {{name}}" height="90"></a>
+<a href="https://eduardo-pereira.webflow.io/" title="Site pessoal — Eduardo Junior Pereira"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/logos/logo_initials.png" alt="Logo EP — Eduardo Junior Pereira" height="90"></a>
 
-**{{name}}**
+**Eduardo Junior Pereira**
 
-*{{tagline}}*
+*Economics · Data Science · Analytics*
 
-<a href="mailto:{{email}}"><img src="{{gmail_src}}" alt="Email" height="27"></a>&nbsp;&nbsp;
-<a href="{{linkedin}}"><img src="{{linkedin_src}}" alt="LinkedIn" height="27"></a>&nbsp;&nbsp;
-<a href="{{github}}"><img src="{{github_src}}" alt="GitHub" height="27"></a>
+<a href="mailto:eduardojr.pereira@gmail.com"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/gmail_icon.svg" alt="E-mail" height="27"></a>&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/eduardo-jr-pereira/"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/linkedin_icon.svg" alt="LinkedIn" height="27"></a>&nbsp;&nbsp;
+<a href="https://github.com/eduardojr-pereira"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/github_icon.svg" alt="GitHub" height="27"></a>
 
-[Vamos nos conectar no LinkedIn para trocar ideias e oportunidades.]({{linkedin}})
+[Vamos nos conectar no LinkedIn para trocar ideias e oportunidades.](https://www.linkedin.com/in/eduardo-jr-pereira/)
 
-{{related_links}}
+[**Portfólio GitHub**](https://github.com/eduardojr-pereira/data-science-portfolio) &nbsp;•&nbsp; [**Base de Conhecimento**](https://github.com/eduardojr-pereira/data-science-knowledge-base)
 
 </div>
 

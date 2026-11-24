@@ -50,24 +50,44 @@ def substitute(template, values):
 def links(kind, lang, brand):
     en = lang == 'en'
     if kind == 'portfolio':
-        entries = [('Knowledge Base' if en else 'Base de Conhecimento', brand['knowledge_base']),
-                   ('Personal Website' if en else 'Site Pessoal', brand['website'])]
+        entries = [('Knowledge Base' if en else 'Base de Conhecimento', brand['knowledge_base'])]
     elif kind == 'knowledge-base':
-        entries = [('GitHub Portfolio' if en else 'Portfólio GitHub', brand['portfolio']),
-                   ('Personal Website' if en else 'Site Pessoal', brand['website'])]
+        entries = [('GitHub Portfolio' if en else 'Portfólio GitHub', brand['portfolio'])]
     else:
         entries = [('GitHub Portfolio' if en else 'Portfólio GitHub', brand['portfolio']),
-                   ('Knowledge Base' if en else 'Base de Conhecimento', brand['knowledge_base']),
-                   ('Personal Website' if en else 'Site Pessoal', brand['website'])]
+                   ('Knowledge Base' if en else 'Base de Conhecimento', brand['knowledge_base'])]
     return ' &nbsp;•&nbsp; '.join(f'[**{label}**]({url})' for label, url in entries)
 
 
+# One Markdown layout; the two committed .md files are rendered previews.
+MARKDOWN_LAYOUT = '<!-- EP-FOOTER:START -->\n## {{heading}}\n\n<div align="center">\n\n<a href="{{website}}" title="{{website_label}} — {{name}}"><img src="{{logo_src}}" alt="{{logo_label}} — {{name}}" height="90"></a>\n\n**{{name}}**\n\n*{{tagline}}*\n\n<a href="mailto:{{email}}"><img src="{{gmail_src}}" alt="{{email_label}}" height="27"></a>&nbsp;&nbsp;\n<a href="{{linkedin}}"><img src="{{linkedin_src}}" alt="LinkedIn" height="27"></a>&nbsp;&nbsp;\n<a href="{{github}}"><img src="{{github_src}}" alt="GitHub" height="27"></a>\n\n[{{invite}}]({{linkedin}})\n\n{{related_links}}\n\n</div>\n\n<p align="right"><a href="#readme-top">↑ {{back_top}}</a></p>\n\n---\n<!-- EP-FOOTER:END -->\n'
+MARKDOWN_COPY = {
+    'en': {'heading': 'Contact', 'website_label': 'Personal website',
+           'logo_label': 'EP logo', 'email_label': 'Email',
+           'invite': "Let's connect on LinkedIn to exchange ideas and opportunities.",
+           'back_top': 'BACK TO TOP'},
+    'pt-BR': {'heading': 'Contato', 'website_label': 'Site pessoal',
+              'logo_label': 'Logo EP', 'email_label': 'E-mail',
+              'invite': 'Vamos nos conectar no LinkedIn para trocar ideias e oportunidades.',
+              'back_top': 'VOLTAR AO TOPO'},
+}
+
+
 def render_readme(kind, lang):
-    name = 'footer.en.md' if lang == 'en' else 'footer.pt-BR.md'
-    template = (ROOT / 'components/markdown' / name).read_text(encoding='utf-8')
+    if kind not in ('portfolio', 'knowledge-base', 'other'):
+        raise ValueError('Unknown README kind: ' + str(kind))
     values = brand_values()
+    values.update(MARKDOWN_COPY[lang])
     values['related_links'] = links(kind, lang, values)
-    return substitute(template, values).rstrip() + '\n'
+    return substitute(MARKDOWN_LAYOUT, values).rstrip() + '\n'
+
+
+def render_markdown_previews():
+    # Standalone anchor is outside the markers, never injected into consumers.
+    return {ROOT / 'components/markdown' / filename:
+            '<a id="readme-top"></a>\n\n' + render_readme('other', lang)
+            for lang, filename in (('en', 'footer.en.md'),
+                                   ('pt-BR', 'footer.pt-BR.md'))}
 
 
 def replace_footer(original, footer):
@@ -115,10 +135,27 @@ def main():
     r.add_argument('--kind', choices=['portfolio', 'knowledge-base', 'other'], required=True)
     r.add_argument('--lang', choices=['en', 'pt-BR'], required=True)
     r.add_argument('--apply', action='store_true', help='Write changes (default: dry run)')
+    t = sub.add_parser('templates', help='Check or regenerate standalone Markdown previews')
+    t.add_argument('--apply', action='store_true', help='Write generated previews')
     w = sub.add_parser('web', help='Print the web footer for embedding at build time')
     w.add_argument('--embed-assets', action='store_true', help='Use bundled image data URIs for offline use')
     w.add_argument('--css', action='store_true', help='Print CSS instead of HTML')
     args = p.parse_args()
+    if args.mode == 'templates':
+        stale = []
+        for path, content in render_markdown_previews().items():
+            if not path.is_file() or path.read_text(encoding='utf-8') != content:
+                stale.append(path)
+                if args.apply:
+                    path.write_text(content, encoding='utf-8')
+                    print('Updated:', path)
+                else:
+                    print('Out of date:', path)
+        if not stale:
+            print('Markdown previews are current.')
+        if stale and not args.apply:
+            return 1
+        return 0
     if args.mode == 'web':
         if args.css:
             print(render_web_css(), end='')
@@ -149,4 +186,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

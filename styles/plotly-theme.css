@@ -20,3 +20,55 @@
 .ep-report-document .plotly-graph-div {
     max-width: 100%;
 }
+
+/* EP Plotly native controls */
+.ep-report-document .plotly-graph-div
+.updatemenu-header-arrow {
+    fill: var(--ep-color-accent) !important;
+}
+
+.ep-report-document .plotly-graph-div
+.updatemenu-header:hover .updatemenu-item-rect,
+.ep-report-document .plotly-graph-div
+.updatemenu-dropdown-button:hover .updatemenu-item-rect {
+    fill: var(--ep-color-bg) !important;
+    stroke: var(--ep-color-accent) !important;
+}
+
+.ep-report-document .plotly-graph-div
+.updatemenu-header:hover .updatemenu-item-text,
+.ep-report-document .plotly-graph-div
+.updatemenu-dropdown-button:hover .updatemenu-item-text {
+    fill: var(--ep-color-accent) !important;
+}
+
+/* EP Plotly selected option */
+.ep-report-document .plotly-graph-div
+.updatemenu-item-rect {
+    fill: var(--ep-color-surface) !important;
+    stroke: var(--ep-color-border) !important;
+    stroke-width: .85px !important;
+}
+
+.ep-report-document .plotly-graph-div
+.updatemenu-item-text {
+    fill: var(--ep-color-text) !important;
+}
+
+.ep-report-document .plotly-graph-div
+.updatemenu-dropdown-button.ep-plotly-selected
+.updatemenu-item-rect,
+.ep-report-document .plotly-graph-div
+.updatemenu-header-group .updatemenu-item-rect {
+    fill: var(--ep-color-surface) !important;
+    stroke: var(--ep-color-accent) !important;
+    stroke-width: .95px !important;
+}
+
+.ep-report-document .plotly-graph-div
+.updatemenu-dropdown-button.ep-plotly-selected
+.updatemenu-item-text,
+.ep-report-document .plotly-graph-div
+.updatemenu-header-group .updatemenu-item-text {
+    fill: var(--ep-color-accent) !important;
+}
