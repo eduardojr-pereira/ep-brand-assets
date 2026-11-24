@@ -2,35 +2,34 @@
 
 <div align="center">
 
-[🇺🇸 English](./README.md) &nbsp;|&nbsp; [🇧🇷 Português](./README.pt-BR.md)
+| [English](./README.md) · [Português](./README.pt-BR.md) |
 
-<img src="assets/logos/logo_initials.png" alt="EP" width="115" />
+# EP Brand Assets
 
-# EP · Brand Assets
+*Visual identity, shared components and presentation infrastructure for the EP ecosystem.*
 
-Visual identity and shared infrastructure for the professional projects of Eduardo Junior Pereira.
+</div>
 
-[GitHub](https://github.com/eduardojr-pereira) · [LinkedIn](https://www.linkedin.com/in/eduardo-jr-pereira/) · [Portfolio website](https://eduardo-pereira.webflow.io/)
+<div align="center">
+
+[Overview](#overview) · [Visual Identity](#visual-identity) · [Shared Components](#shared-components) · [Themes and Internationalization](#themes-and-internationalization) · [EP Analytical Colour System](#ep-analytical-colour-system)<br>
+[Directory Structure](#directory-structure) · [Usage and Integration](#usage-and-integration) · [Testing and Validation](#testing-and-validation) · [Related Repositories](#related-repositories) · [License](#license) · [Contact](#contact)
 
 </div>
 
 ---
 
-## On This Page
-
-[Overview](#ep-overview) · [Visual Identity](#ep-visual-identity) · [Shared Components](#ep-shared-components) · [Themes and Internationalization](#ep-themes-and-internationalization) · [EP Analytical Colour System](#ep-ep-analytical-colour-system) · [Directory Structure](#ep-directory-structure) · [Usage and Integration](#ep-usage-and-integration) · [Related Repositories](#ep-related-repositories) · [License](#ep-license) · [Contact](#ep-contact)
-
----
-
-<a id="ep-overview"></a>
+<a id="overview"></a>
 
 ## Overview
 
-This repository is the canonical source of the EP identity and shared infrastructure for the portfolio showcase, project reports and professional READMEs. It centralizes design tokens, typography, themes, bilingual interface mechanisms, visual assets, components and renderers. Projects retain their own data, analyses and project-specific texts.
+EP Brand Assets is the canonical source of visual identity and shared presentation infrastructure for the EP ecosystem. It centralizes design tokens, typography, themes, bilingual interface mechanisms, visual assets, components and renderers for the interactive portfolio, project reports and professional READMEs.
+
+Consuming projects retain their own data, analyses and project-specific content. Shared components are maintained here rather than duplicated across repositories.
 
 ---
 
-<a id="ep-visual-identity"></a>
+<a id="visual-identity"></a>
 
 ## Visual Identity
 
@@ -46,9 +45,18 @@ The identity uses the EP logo, institutional graphite and copper palette, shared
 
 See [animations](./assets/animations/) and [theme tokens](./styles/theme-tokens.css).
 
+### Badge Library
+
+The centralized badge library is intended to standardize technology, license and status indicators across the EP ecosystem.
+
+> [!NOTE]
+> The badge library is pending local integration and validation. Its availability in the published repository has not yet been confirmed.
+
+<p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
+
 ---
 
-<a id="ep-shared-components"></a>
+<a id="shared-components"></a>
 
 ## Shared Components
 
@@ -63,17 +71,34 @@ Components are maintained in EP Brand and reused where relevant. The site builde
 | Composition, rendering and publication | [`tools/`](./tools/) |
 | Regression tests | [`tests/`](./tests/) |
 
+<p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
+
 ---
 
-<a id="ep-themes-and-internationalization"></a>
+<a id="themes-and-internationalization"></a>
 
 ## Themes and Internationalization
 
-Light and dark themes share [theme tokens](./styles/theme-tokens.css) and [typography](./styles/typography-v2.css). [Theme initialization](./scripts/theme-init.js), [theme switching](./scripts/theme.js) and [interface internationalization](./scripts/i18n.js) provide the common mechanisms. Project-specific translations remain with each project. The [Plotly theme adapter](./scripts/plotly-theme.js) and [localization adapter](./scripts/plotly-i18n.js) handle analytical presentation, without changing the underlying data.
+A centralized presentation layer ensures visual and linguistic consistency across the portfolio and project reports.
+
+| Mechanism | Responsibility | Source |
+|---|---|---|
+| Theme tokens | Shared light and dark theme definitions | [theme-tokens.css](./styles/theme-tokens.css) |
+| Typography | Consistent typographic system | [typography-v2.css](./styles/typography-v2.css) |
+| Theme initialization | Initial theme configuration | [theme-init.js](./scripts/theme-init.js) |
+| Theme switching | Light and dark theme transitions | [theme.js](./scripts/theme.js) |
+| Internationalization | Shared bilingual interface mechanisms | [i18n.js](./scripts/i18n.js) |
+| Plotly theming | Consistent analytical presentation | [plotly-theme.js](./scripts/plotly-theme.js) |
+| Plotly localization | Language-specific chart presentation | [plotly-i18n.js](./scripts/plotly-i18n.js) |
+
+> [!IMPORTANT]
+> Presentation mechanisms are centralized in EP Brand, while project-specific translations remain within their respective projects. Theme and language changes affect presentation only, preserving the underlying analytical data.
+
+<p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
 ---
 
-<a id="ep-ep-analytical-colour-system"></a>
+<a id="ep-analytical-colour-system"></a>
 
 ## EP Analytical Colour System
 
@@ -89,20 +114,37 @@ The EP Analytical Colour System separates visual encoding of data from instituti
 
 ![Nine analytical palettes; categorical variants in both themes and seven continuous scales](./docs/colormaps-preview.svg)
 
-Preview generated from [config/colormaps.json](./config/colormaps.json), the source of truth. The continuous scales use Scientific Colour Maps 9.0.0 by Fabio Crameri; EP LipariS Adapted is an adaptation, not an official scale. Categorical colours require additional cues (markers, line styles, patterns or labels); contrast alone does not guarantee accessibility. See the [methodology and attribution](./docs/colormaps.md) and [MIT license](./docs/LICENSE-SCIENTIFIC-COLOUR-MAPS.txt). The [canonical Plotly renderer](./tools/render_plotly.py) and [generated CSS](./styles/colormaps.css) consume the colour configuration.
+> [!WARNING]
+> - **Source of Truth:** The palette preview is generated directly from [config/colormaps.json](./config/colormaps.json), the canonical colour configuration.
+> - **Origin and Attribution:** Continuous scales use Scientific Colour Maps 9.0.0 by Fabio Crameri. EP LipariS Adapted is a custom adaptation, not an official scale. See the [methodology and attribution](./docs/colormaps.md) and [MIT license](./docs/LICENSE-SCIENTIFIC-COLOUR-MAPS.txt).
+> - **Accessibility:** Categorical palettes require complementary visual cues, such as markers, line styles, patterns or labels. Colour contrast alone does not guarantee accessibility.
+> - **Technical Integration:** The [canonical Plotly renderer](./tools/render_plotly.py) and [generated CSS](./styles/colormaps.css) use the same centralized colour configuration.
+
+<p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
 ---
 
-<a id="ep-directory-structure"></a>
+<a id="directory-structure"></a>
 
 ## Directory Structure
 
+<details>
+<summary><strong>Repository tree</strong></summary>
+
 ```text
 ep-brand-assets/
+├── .github/
+│   └── workflows/
+├── .gitignore
+├── LICENSE-BRAND.md
+├── LICENSE-CODE.txt
+├── LICENSE-CONTENT.md
+├── README.md
+├── README.pt-BR.md
 ├── assets/
-│   ├── logos/
+│   ├── animations/
 │   ├── icons/
-│   └── animations/
+│   └── logos/
 ├── components/
 │   ├── markdown/
 │   └── web/
@@ -111,14 +153,26 @@ ep-brand-assets/
 ├── scripts/
 ├── styles/
 ├── tests/
-├── tools/
-├── README.md
-└── README.pt-BR.md
+└── tools/
 ```
+
+</details>
+
+- `assets/` — Visual identity resources.
+- `components/` — Canonical Markdown and web components.
+- `config/` — Institutional and analytical colour configuration.
+- `docs/` — Technical documentation and third-party attribution.
+- `scripts/` and `styles/` — Shared behaviour, themes and presentation.
+- `tests/` — Automated regression tests.
+- `tools/` — Rendering, composition and publication utilities.
+
+The tree includes the proposed root license files and reflects the local cleanup. Pending badge-library files are not shown as existing.
+
+<p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
 ---
 
-<a id="ep-usage-and-integration"></a>
+<a id="usage-and-integration"></a>
 
 ## Usage and Integration
 
@@ -147,32 +201,56 @@ python3 tools/render_footer.py readme --kind knowledge-base --lang pt-BR
 
 With `--file`, the renderer displays the proposed diff; only `--apply` writes changes. Review before applying. Render the web footer with embedded assets using `python3 tools/render_footer.py web --embed-assets`.
 
-Regression tests from the repository root:
+Do not rename shared assets without checking consumers. Local generation does not publish changes.
+
+<p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
+
+---
+
+<a id="testing-and-validation"></a>
+
+## Testing and Validation
+
+Run the regression suite from the repository root:
 
 ```bash
 python3 -m unittest discover -s tests -v
 ```
 
-Do not rename shared assets without checking consumers. Local generation does not publish changes.
+Review generated previews and verify shared components, themes, language switching, navigation and analytical presentation in consuming projects before publication.
+
+> [!NOTE]
+> Final integrated validation and coordinated publication remain pending. Local generation does not publish changes.
+
+<p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
 ---
 
-<a id="ep-related-repositories"></a>
+<a id="related-repositories"></a>
 
 ## Related Repositories
 
 | Repository | Role |
 |---|---|
-| [Data Science Portfolio](https://github.com/eduardojr-pereira/data-science-portfolio) | Applied projects, showcase, Bike Sharing and Hangman. |
-| [Data Science Knowledge Base](https://github.com/eduardojr-pereira/data-science-knowledge-base) | Technical knowledge and professional documentation. |
+| [Data Science Portfolio](https://github.com/eduardojr-pereira/data-science-portfolio) | Applied projects, interactive portfolio and project reports. |
+| [Data Science Knowledge Base](https://github.com/eduardojr-pereira/data-science-knowledge-base) | Study notebooks, guides and technical reference materials. |
+
+<p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
 ---
 
-<a id="ep-license"></a>
+<a id="license"></a>
 
 ## License
 
-EP identity assets do not imply permission for commercial reuse or redistribution. Terms may be defined separately; third-party assets retain their applicable rights and licenses.
+The following terms apply only to material for which the author holds the necessary rights.
+
+<table>
+<tr><td align="center" valign="middle"><a href="./LICENSE-CODE.txt"><img src="./assets/badges/licenses/mit.svg" alt="MIT"></a></td><td valign="middle"><strong>Source code</strong> | Original scripts, components, renderers and tests.</td></tr>
+<tr><td align="center" valign="middle"><a href="./LICENSE-CONTENT.md"><img src="./assets/badges/licenses/cc_by_nc_4_0.svg" alt="CC BY-NC 4.0"></a></td><td valign="middle"><strong>Documentation</strong> | Original technical and editorial content.</td></tr>
+<tr><td align="center" valign="middle"><a href="./LICENSE-BRAND.md">All rights reserved</a></td><td valign="middle"><strong>EP visual identity</strong> | Original institutional brand assets; no automatic permission for reuse or redistribution.</td></tr>
+<tr><td align="center" valign="middle">Third-party terms</td><td valign="middle"><strong>External assets</strong> | Original licenses and permissions remain applicable.</td></tr>
+</table>
 
 ### Scientific Colour Maps — MIT License
 
@@ -187,32 +265,29 @@ EP identity assets do not imply permission for commercial reuse or redistributio
 
 The MIT license permits use, copying, modification and redistribution, including commercial use, provided the original copyright and permission notices accompany all copies or substantial portions. The full license is preserved in the repository. This license applies to the original Scientific Colour Maps material, including the portions used in the EP adaptation and preview; it does not automatically license unrelated EP identity assets.
 
+> [!WARNING]
+> Third-party icons, trademarks, animations, libraries and colour maps retain their respective rights and license terms. Review provenance, redistribution rights and applicable notices before publication.
+
+<p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
+
 ---
 
-<a id="ep-contact"></a>
+<a id="contact"></a>
 
 <!-- EP-FOOTER:START -->
 ## Contact
 
 <div align="center">
 
-<a href="https://eduardo-pereira.webflow.io/" title="Personal website — Eduardo Junior Pereira"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/logos/logo_initials.png" alt="EP logo — Eduardo Junior Pereira" height="90"></a>
+<a href="https://eduardo-pereira.webflow.io/"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/logos/logo_initials.png" alt="EP logo" height="90"></a>
 
-**Eduardo Junior Pereira**
-
-*Economics · Data Science · Analytics*
+Let's connect and exchange ideas and opportunities.
 
 <a href="mailto:eduardojr.pereira@gmail.com"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/gmail_icon.svg" alt="Email" height="27"></a>&nbsp;&nbsp;
 <a href="https://www.linkedin.com/in/eduardo-jr-pereira/"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/linkedin_icon.svg" alt="LinkedIn" height="27"></a>&nbsp;&nbsp;
-<a href="https://github.com/eduardojr-pereira"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/github_icon.svg" alt="GitHub" height="27"></a>
-
-[Let's connect on LinkedIn to exchange ideas and opportunities.](https://www.linkedin.com/in/eduardo-jr-pereira/)
-
-[**GitHub Portfolio**](https://github.com/eduardojr-pereira/data-science-portfolio) &nbsp;•&nbsp; [**Knowledge Base**](https://github.com/eduardojr-pereira/data-science-knowledge-base)
+<a href="https://github.com/eduardojr-pereira"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/github_icon.svg" alt="GitHub" height="27"></a>&nbsp;&nbsp;
+<a href="https://discord.com/users/533043855122235393"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/discord_icon.svg" alt="Discord" height="27"></a>
 
 </div>
 
-<p align="right"><a href="#readme-top">↑ BACK TO TOP</a></p>
-
----
 <!-- EP-FOOTER:END -->
