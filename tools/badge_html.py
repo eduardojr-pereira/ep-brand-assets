@@ -6,6 +6,7 @@ import re
 from functools import lru_cache
 from html import escape
 from pathlib import Path
+from render_badges import render
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -23,7 +24,6 @@ def entries():
 
 
 def image(ident, locale=None):
-    from render_badges import render
     entry = entries()[ident]
     label = escape((entry.get("prefix", "") + " " + entry["label"]).strip(), quote=True)
     lang = f' data-badge-locale="{locale}"' if locale else ""

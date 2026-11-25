@@ -4,7 +4,7 @@
 
 This library supports educational documentation, technology identification and noncommercial portfolio projects.
 
-80 SVG badges: 48 technologies, 2 licenses, 6 localized statuses, 22 localized topics and 2 localized methods. The 44 prepared PNG icons live in `assets/icons/technologies/`; original source files are preserved in its `originals/` subdirectory for provenance and future regeneration. They are not additional badge libraries.
+81 SVG badges: 48 technologies, 3 licenses, 6 localized statuses, 22 localized topics and 2 localized methods. The 44 prepared PNG icons live in `assets/icons/technologies/`; original source files are preserved in its `originals/` subdirectory for provenance and future regeneration. They are not additional badge libraries.
 
 ## Visual specification
 
@@ -72,6 +72,7 @@ A source link is provenance, not a redistribution license. Brand names and marks
 | ![JavaScript](../assets/badges/technologies/javascript.svg) | [Source](https://raw.githubusercontent.com/voodootikigod/logo.js/master/js.svg) | original; Original source colors preserved. | pending |
 | ![MIT](../assets/badges/licenses/mit.svg) | — | license_split; Mineral blue identifier and theme-adaptive monochrome prefix. | not_applicable |
 | ![CC BY-NC 4.0](../assets/badges/licenses/cc_by_nc_4_0.svg) | — | license_split; Mineral blue identifier and theme-adaptive monochrome prefix. | not_applicable |
+| ![CC BY 4.0](../assets/badges/licenses/cc_by_4_0_data.svg) | — | license_split; dataset attribution license, same approved theme palette. | not_applicable |
 | ![Partial](../assets/badges/status/partial_en.svg) | — | text; Localized path preserved for README compatibility. | not_applicable |
 | ![Parcial](../assets/badges/status/partial_pt_br.svg) | — | text; Localized path preserved for README compatibility. | not_applicable |
 | ![Passed](../assets/badges/status/passed_en.svg) | — | text; Localized path preserved for README compatibility. | not_applicable |
@@ -110,7 +111,7 @@ Source attribution does not constitute a grant of additional rights.
 
 ## Website integration
 
-The current library contains 80 SVG badges.
+The current library contains 81 SVG badges.
 
 | Category | Badge | Path |
 |---|---|---|
@@ -154,11 +155,11 @@ Revisão visual local: imagens diretas (incluindo PyTorch), ícones PyPI genéri
 | Category | READMEs | Showcase and report HTML | Current SVG count |
 |---|---|---|---:|
 | Technologies | Yes | Yes | 48 |
-| Licenses | Yes | Yes | 2 |
+| Licenses | Yes | Yes | 3 |
 | Status | Yes | Yes | 6 |
 | Topics | No | Yes | 22 |
 | Methods | No | Yes | 2 |
-| Total | | | 80 |
+| Total | | | 81 |
 
 Topics are limited to the eleven official Knowledge Base areas (00–10), with EN/PT-BR pairs. Numbers identify areas in the catalog, not in badge labels. Keep the existing `data_analytics` path for area 02. Methods describe actual methods used in a project; create EN/PT-BR pairs only as needed. Technologies and Methods are extensible without a predetermined limit. Do not add Topics or Methods to README badge displays. The inventory above describes the approved baseline, not a maximum.
 
@@ -168,7 +169,7 @@ Each cell lists background / foreground. Colors are case-insensitive hex values.
 
 | Element | Light | Dark | Origin |
 |---|---|---|---|
-| License identifier (both licenses) | `#505B7A` / `#FFFFFF` | `#9EA7C4` / `#242424` | EP LipariS Adapted, index 4 (zero-based) |
+| License identifier (all licenses) | `#505B7A` / `#FFFFFF` | `#9EA7C4` / `#242424` | EP LipariS Adapted, index 4 (zero-based) |
 | License prefix | `#000000` / `#FFFFFF` | `#FFFFFF` / `#000000` | Inverse monochrome |
 | Topics | `#505B7A` / `#FFFFFF` | `#9EA7C4` / `#242424` | EP LipariS Adapted, index 4 |
 | Methods | `#427C83` / `#FFFFFF` | `#7CA5A8` / `#242424` | EP Muted Pastel, index 0 |
@@ -177,7 +178,7 @@ Each cell lists background / foreground. Colors are case-insensitive hex values.
 | Pending / Pendente | `#D86E5E` / `#242424` | `#D86E5E` / `#242424` | EP LipariS Adapted, dark index 5 |
 | Text-only technology | `#9D603B` / `#FFFFFF` | `#9D603B` / `#FFFFFF` | EP copper |
 
-Both license identifiers use mineral blue; the labels Code License and Content License distinguish them. Technologies with artwork retain their individually approved colors from `config/badges.json`. The icon tile is white. Direct artwork uses a white background. Do not extend the copper rule to Licenses, Topics, Methods or Status.
+All license identifiers use mineral blue; Code License, Content License and Data License distinguish their scope. The Data License badge CC BY 4.0 applies only to the dataset, not to the project’s original content or code. Technologies with artwork retain their individually approved colors from `config/badges.json`. The icon tile is white. Direct artwork uses a white background. Do not extend the copper rule to Licenses, Topics, Methods or Status.
 
 ### Technology formats and order
 
@@ -211,3 +212,12 @@ Standalone SVGs use `prefers-color-scheme`; the HTML renderer emits explicit lig
 6. Check the generated SVGs against the manifest, including uniqueness of IDs, labels and paths, 20 px height, artwork proportions, text fit, readable foreground/background contrast (at least 4.5:1 for text), light/dark variants, and localized pairs. Preview both themes and languages where applicable. Check stable ordering and aliases. Review all affected README and HTML references, rebuild HTML consumers, and test their actual theme/language switches.
 7. Update this document's inventory, source/rights table and category details as applicable. Extend regression tests if a new rule, alias or format needs coverage; the existing tests already iterate over manifest entries and enforce the official eleven-area Topics set. Review any other fixed-count validation in packaging scripts rather than treating the baseline count as a permanent limit.
 8. Obtain visual approval, resolve rights issues before public use, and commit only the approved catalog, original/prepared assets, generated SVGs, relevant tests/documentation and necessary consumer changes. Coordinate publication of the central assets before dependent references. Verify public URLs and both GitHub themes after publication. Do not publish or push without authorization.
+
+## Report references and reproducibility — approved reusable layout
+
+- In the introduction, render only the applicable linked code/content license badges after the description (`render_report_licenses`). Do not place technology or method badges there.
+- Render the data source in its own card, including a linked dataset-license badge when the actual license is known. Never imply the dataset license applies to code or authored analysis.
+- The adjacent Technical References card uses `render_references` with `technical_tabs: true`, `knowledge_base` (bilingual labels and HTTPS area links), `methods` (canonical localized base IDs), and `technologies` (canonical technology names, preferably from project metadata). Topics are clickable without arrows; methods and technologies are informational. Only nonempty tabs are rendered. Order: Topics, Methods, Technologies (PT-BR: Tópicos, Métodos, Tecnologias). The Topics tab retains links to the Knowledge Base; only the visible tab label changes. A project without data/source cards uses the full width.
+- The shared `references.css` and `references.js` implement responsive tabs beside the Technical References heading where space permits, a copper sliding indicator, and a continuous 5-second rotation through nonempty tabs. Badges enter together with scale 85% → 100% and opacity 0 → 100% over 250 ms, without staggering or elastic overshoot. Rotation pauses on pointer hover, keyboard focus, explicit pause, an inactive browser tab or an off-screen card; reduced-motion preferences disable both automatic rotation and transitions. The bilingual pause/resume control and keyboard navigation remain available as applicable. All panels remain readable without scripting; on narrow screens the tabs wrap below the heading and cards stack. Do not copy the component into projects.
+- Reproducibility remains outside the tabs, at full width; documentation and source-code links are adjacent. Preserve actual installation and generation instructions. Use Status only in an appropriate validation section and only when supported by actual results.
+- Regenerate the report to refresh embedded badge variants from the central catalog; publish shared CSS/JS through the existing asset builder. Verify both themes and languages. This layout applies to reports, not the showcase cards (their redesign is deferred).

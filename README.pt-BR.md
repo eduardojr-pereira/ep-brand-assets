@@ -47,7 +47,7 @@ Consulte as [animações](./assets/animations/) e [tokens de tema](./styles/them
 
 ### Biblioteca de Badges
 
-A biblioteca centralizada contém 80 badges SVG: 48 de tecnologias, 2 de licenças, 6 de status, 22 de tópicos e 2 de métodos. Technologies, Licenses e Status podem ser utilizados em READMEs e HTMLs; Topics e Methods são exclusivos dos HTMLs da vitrine e dos relatórios. Consulte a [documentação da biblioteca](./docs/badges.md).
+A biblioteca centralizada contém 81 badges SVG: 48 de tecnologias, 3 de licenças, 6 de status, 22 de tópicos e 2 de métodos. Technologies, Licenses e Status podem ser utilizados em READMEs e HTMLs; Topics e Methods são exclusivos dos HTMLs da vitrine e dos relatórios. Consulte a [documentação da biblioteca](./docs/badges.md).
 
 > [!NOTE]
 > A biblioteca foi integrada e versionada localmente. A validação integrada dos consumidores e a publicação coordenada permanecem pendentes.

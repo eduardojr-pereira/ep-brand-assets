@@ -1049,6 +1049,53 @@
       "dark_contrast": 6.49
     },
     {
+      "id": "cc_by_4_0_data",
+      "category": "licenses",
+      "path": "assets/badges/licenses/cc_by_4_0_data.svg",
+      "label": "CC BY 4.0",
+      "background": "#505B7A",
+      "foreground": "#FFFFFF",
+      "contrast": 6.73,
+      "width": 151,
+      "icon": null,
+      "mode": "license_split",
+      "source": "",
+      "source_path": "",
+      "source_sha256": null,
+      "visible_icon_size_px": null,
+      "crop": null,
+      "note": "Data license, approved split license style; CC BY 4.0 applies to the dataset only.",
+      "rights_review": "not_applicable",
+      "approved_text_only": false,
+      "prefix": "Data License",
+      "prefix_width": 82,
+      "theme_prefix": {
+        "light": {
+          "background": "#000000",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#FFFFFF",
+          "foreground": "#000000"
+        }
+      },
+      "theme_colors": {
+        "light": {
+          "background": "#505B7A",
+          "foreground": "#FFFFFF"
+        },
+        "dark": {
+          "background": "#9EA7C4",
+          "foreground": "#242424"
+        }
+      },
+      "theme_palette": {
+        "id": "ep-lipari-adapted",
+        "index": 4
+      },
+      "dark_contrast": 6.49
+    },
+    {
       "id": "partial_en",
       "category": "status",
       "path": "assets/badges/status/partial_en.svg",

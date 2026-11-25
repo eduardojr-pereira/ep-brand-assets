@@ -47,7 +47,7 @@ See [animations](./assets/animations/) and [theme tokens](./styles/theme-tokens.
 
 ### Badge Library
 
-The centralized library contains 80 SVG badges: 48 technologies, 2 licenses, 6 statuses, 22 topics and 2 methods. Technologies, Licenses and Status may be used in READMEs and HTML; Topics and Methods are reserved for showcase and report HTML. See the [badge library documentation](./docs/badges.md).
+The centralized library contains 81 SVG badges: 48 technologies, 3 licenses, 6 statuses, 22 topics and 2 methods. Technologies, Licenses and Status may be used in READMEs and HTML; Topics and Methods are reserved for showcase and report HTML. See the [badge library documentation](./docs/badges.md).
 
 > [!NOTE]
 > The library has been integrated and committed locally. Integrated consumer validation and coordinated publication remain pending.
