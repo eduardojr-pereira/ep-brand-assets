@@ -23,41 +23,100 @@
   });
   const nodes = [...footer.querySelectorAll('[data-ep-footer-lottie]')];
   if (!nodes.length) return;
-  const entries = nodes.map(node => ({node, fallback: node.textContent, animation: null}));
-  let currentVariant = '';
-  const variant = () => document.documentElement.getAttribute('data-theme') === 'light' ? 'graphite' : 'copper';
-  function draw() {
-    if (!window.lottie) return;
-    const color = variant();
-    if (currentVariant === color) return;
-    currentVariant = color;
-    for (const entry of entries) {
-      entry.animation?.destroy();
-      entry.node.textContent = entry.fallback;
+  const colors = ['graphite', 'white', 'copper'];
+  const baseColor = () => document.documentElement.getAttribute('data-theme') === 'light' ? 'graphite' : 'white';
+  const entries = nodes.map(node => ({node, fallback: node.textContent, slots: {}, hovered: false, focused: false, active: null, playing: false}));
+  const setLoop = (animation, enabled) => {
+    if (typeof animation.setLoop === 'function') animation.setLoop(enabled);
+    else animation.loop = enabled;
+  };
+  const stop = slot => {
+    if (!slot?.ready) return;
+    setLoop(slot.animation, false);
+    slot.animation.goToAndStop(Math.max(0, slot.animation.totalFrames - 1), true);
+  };
+  function update(entry) {
+    const engaged = entry.hovered || entry.focused;
+    const base = entry.slots[baseColor()];
+    const copper = entry.slots.copper;
+    const next = engaged && copper?.ready ? copper : base?.ready ? base : null;
+    const play = !!next && next === copper && engaged && !reduceMotion.matches;
+    if (entry.active !== next || entry.playing !== play) {
+      if (entry.active && entry.active !== next) stop(entry.active);
+      if (next) {
+        if (play) {
+          setLoop(next.animation, true);
+          next.animation.goToAndPlay(0, true);
+        } else stop(next);
+      }
+      entry.active = next;
+      entry.playing = play;
+    }
+    for (const slot of Object.values(entry.slots)) {
+      slot.holder.style.visibility = slot === next ? 'visible' : 'hidden';
+    }
+    if (entry.fallbackNode) {
+      entry.fallbackNode.style.visibility = next ? 'hidden' : 'visible';
+      entry.fallbackNode.style.color = engaged ? 'var(--ep-color-accent)' : 'var(--ep-color-text)';
+    }
+  }
+  function initialize(entry) {
+    if (entry.fallbackNode) return;
+    const fallback = document.createElement('span');
+    fallback.textContent = entry.fallback;
+    fallback.style.gridArea = '1 / 1';
+    entry.fallbackNode = fallback;
+    entry.node.replaceChildren(fallback);
+    for (const color of colors) {
       const holder = document.createElement('span');
-      holder.style.cssText = 'display:block;width:100%;height:100%';
-      entry.node.replaceChildren(holder);
+      holder.style.cssText = 'display:block;width:100%;height:100%;grid-area:1 / 1;visibility:hidden;pointer-events:none';
+      entry.node.appendChild(holder);
+      const slot = {holder, animation: null, ready: false};
+      entry.slots[color] = slot;
       const file = `lottie_${entry.node.dataset.epFooterLottie}_${color}.json`;
       const path = new URL('../animations/' + file, scriptUrl).href;
       try {
         const anim = window.lottie.loadAnimation({container: holder, renderer: 'svg', loop: false, autoplay: false, path});
-        entry.animation = anim;
-        anim.addEventListener('DOMLoaded', () => anim.goToAndStop(Math.max(0, anim.totalFrames - 1), true));
-        anim.addEventListener('data_failed', () => { entry.node.textContent = entry.fallback; });
-      } catch (_) { entry.node.textContent = entry.fallback; }
+        slot.animation = anim;
+        anim.addEventListener('DOMLoaded', () => {
+          slot.ready = true;
+          stop(slot);
+          update(entry);
+        });
+        anim.addEventListener('data_failed', () => {
+          slot.ready = false;
+          update(entry);
+        });
+      } catch (_) { slot.ready = false; }
+    }
+    update(entry);
+  }
+  function draw() {
+    if (!window.lottie) return;
+    for (const entry of entries) {
+      initialize(entry);
+      update(entry);
     }
   }
   for (const entry of entries) {
     const surface = entry.node.closest('.ep-footer__icon');
-    const play = () => { if (!reduceMotion.matches && entry.animation) {entry.animation.setLoop(false);entry.animation.goToAndPlay(0, true);} };
-    const stop = () => { if (entry.animation) entry.animation.goToAndStop(Math.max(0,entry.animation.totalFrames-1),true); };
-    surface?.addEventListener('pointerenter',play);
-    surface?.addEventListener('pointerleave',stop);
-    surface?.addEventListener('focusin',play);
-    surface?.addEventListener('focusout',stop);
+    surface?.addEventListener('pointerenter', event => {
+      if (event.pointerType === 'touch') return;
+      entry.hovered = true;
+      update(entry);
+    });
+    const leave = () => { entry.hovered = false; update(entry); };
+    surface?.addEventListener('pointerleave', leave);
+    surface?.addEventListener('pointercancel', leave);
+    surface?.addEventListener('focusin', () => {
+      entry.focused = surface.matches(':focus-visible');
+      update(entry);
+    });
+    surface?.addEventListener('focusout', () => { entry.focused = false; update(entry); });
   }
   new MutationObserver(draw).observe(document.documentElement, {attributes:true,attributeFilter:['data-theme']});
   document.addEventListener('ep:themechange',draw);
+  reduceMotion.addEventListener('change',draw);
   if (window.lottie) {draw();return;}
   // External player is optional: text fallbacks remain usable offline.
   const player = document.createElement('script');
