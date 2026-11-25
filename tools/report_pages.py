@@ -141,7 +141,9 @@ def integrate_report(report_file: Path, published: list[dict], output_root: Path
     prefix=os.path.relpath(output_root, report_file.parent).replace(os.sep, '/') + '/'
     links=[{'name':p['name'],'name_pt':p['name_pt'],'report':prefix+str(p['report'])} for p in published]
     header,_=render_header(links,all_projects_href=prefix+'index.html#projects', include_portfolio_bridge=False)
-    head='''<script src="{base}assets/scripts/theme-init.js"></script>
+    head='''<link rel="icon" type="image/png" href="{base}assets/assets/logos/favicon.png">
+<link rel="apple-touch-icon" href="{base}assets/assets/logos/webclip.png">
+<script src="{base}assets/scripts/theme-init.js"></script>
 <link rel="stylesheet" href="{base}assets/styles/theme-tokens.css">
 <link rel="stylesheet" href="{base}assets/styles/typography-v2.css">
 <link rel="stylesheet" href="{base}assets/components/web/header.css">

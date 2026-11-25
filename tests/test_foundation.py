@@ -41,10 +41,14 @@ class FoundationTests(unittest.TestCase):
         self.assertIn("Escape", js)
         self.assertIn("prefers-reduced-motion", css)
 
-    def test_knowledge_lotties_are_valid_json(self):
-        for variant in ("knowledge", "knowledge_copper", "knowledge_copper_light", "knowledge_white", "knowledge_graphite"):
-            with self.subTest(variant=variant):
-                path = ROOT / "assets/animations" / f"lottie_{variant}.json"
+    def test_approved_lotties_are_valid_json(self):
+        names = ("about", "discord", "github", "gmail", "home", "knowledge", "linkedin", "projects")
+        expected = {f"lottie_{name}_{color}.json" for name in names for color in ("copper", "graphite", "white")}
+        expected.add("lottie_initials.json")
+        paths = list((ROOT / "assets/animations").glob("*.json"))
+        self.assertEqual({path.name for path in paths}, expected)
+        for path in paths:
+            with self.subTest(filename=path.name):
                 data = json.loads(path.read_text(encoding="utf-8"))
                 self.assertIsInstance(data, dict)
                 self.assertIn("layers", data)

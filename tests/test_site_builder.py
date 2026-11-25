@@ -12,7 +12,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 import build_site as builder
-from publish_assets import SHARED_FILES, copy_shared_assets
+from publish_assets import SHARED_FILES, SHARED_ANIMATIONS, copy_shared_assets
 
 
 class SiteBuilderTests(unittest.TestCase):
@@ -76,7 +76,10 @@ class SiteBuilderTests(unittest.TestCase):
         copy_shared_assets(out)
         for relative in SHARED_FILES:
             self.assertEqual((out / 'assets' / relative).read_bytes(), (ROOT / relative).read_bytes())
-        self.assertTrue((out / 'assets/animations').is_dir())
+        self.assertEqual({p.name for p in (out / 'assets/animations').iterdir()}, set(SHARED_ANIMATIONS))
+        self.assertEqual(len(SHARED_ANIMATIONS), 25)
+        for filename in SHARED_ANIMATIONS:
+            self.assertEqual((out / 'assets/animations' / filename).read_bytes(), (ROOT / 'assets/animations' / filename).read_bytes())
 
     def test_full_isolated_build_preserves_projects_and_header(self):
         self.make_project('selected_projects/example')
@@ -93,6 +96,10 @@ class SiteBuilderTests(unittest.TestCase):
         self.assertIn('Revisado', homepage)
         self.assertIn('class="ep-header"', homepage)
         self.assertIn('assets/scripts/header.js', homepage)
+        self.assertIn('rel="icon" type="image/png" href="assets/assets/logos/favicon.png"', homepage)
+        self.assertIn('rel="apple-touch-icon" href="assets/assets/logos/webclip.png"', homepage)
+        self.assertTrue((dest / 'assets/assets/logos/favicon.png').is_file())
+        self.assertTrue((dest / 'assets/assets/logos/webclip.png').is_file())
         self.assertIn('href="https://eduardo-pereira.webflow.io/"', homepage)
         self.assertTrue((dest / 'selected_projects/example/reports/index.html').is_file())
         report_html = (dest / 'selected_projects/example/reports/index.html').read_text(encoding='utf-8')
