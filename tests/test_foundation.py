@@ -42,7 +42,7 @@ class FoundationTests(unittest.TestCase):
         self.assertIn("prefers-reduced-motion", css)
 
     def test_approved_lotties_are_valid_json(self):
-        names = ("about", "discord", "github", "gmail", "home", "knowledge", "linkedin", "projects")
+        names = ("about", "award", "discord", "github", "gmail", "home", "knowledge", "linkedin", "projects", "search_to_x")
         expected = {f"lottie_{name}_{color}.json" for name in names for color in ("copper", "graphite", "white")}
         expected.add("lottie_initials.json")
         paths = list((ROOT / "assets/animations").glob("*.json"))

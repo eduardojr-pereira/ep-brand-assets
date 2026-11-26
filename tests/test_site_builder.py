@@ -115,7 +115,7 @@ class SiteBuilderTests(unittest.TestCase):
         """Page builder must not redefine shared cards, controls or footer styles."""
         page = builder.make_homepage([{
             "name": "Test", "name_pt": "Teste", "description": "Details",
-            "description_pt": "Detalhes", "topics": ("Data",),
+            "description_pt": "Detalhes", "topics": ("Data Analytics",),
             "technologies": ("Python",), "collection": "selected_projects",
             "featured": True, "notebook": None, "readme": None,
             "report": "selected_projects/test/reports/index.html",
