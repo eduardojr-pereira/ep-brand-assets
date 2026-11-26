@@ -45,6 +45,13 @@ The identity uses the EP logo, institutional graphite and copper palette, shared
 
 See [animations](./assets/animations/) and [theme tokens](./styles/theme-tokens.css).
 
+The animation library includes the following Lottie assets for the new editorial layout:
+
+| Animation | Application | Variants |
+|---|---|---|
+| Award | Selected Projects | [Graphite](./assets/animations/lottie_award_graphite.json) · [White](./assets/animations/lottie_award_white.json) · [Copper](./assets/animations/lottie_award_copper.json) |
+| Search-to-X | About Me panel controls | [Graphite](./assets/animations/lottie_search_to_x_graphite.json) · [White](./assets/animations/lottie_search_to_x_white.json) · [Copper](./assets/animations/lottie_search_to_x_copper.json) |
+
 ### Badge Library
 
 The centralized library contains 81 SVG badges: 48 technologies, 3 licenses, 6 statuses, 22 topics and 2 methods. Technologies, Licenses and Status may be used in READMEs and HTML; Topics and Methods are reserved for showcase and report HTML. See the [badge library documentation](./docs/badges.md).

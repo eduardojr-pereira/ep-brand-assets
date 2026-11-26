@@ -45,6 +45,13 @@ A identidade utiliza o logotipo EP, a paleta institucional grafite e cobre, tipo
 
 Consulte as [animações](./assets/animations/) e [tokens de tema](./styles/theme-tokens.css).
 
+A biblioteca de animações inclui os seguintes ativos Lottie para o novo layout editorial:
+
+| Animação | Aplicação | Variantes |
+|---|---|---|
+| Award | Projetos Selecionados | [Grafite](./assets/animations/lottie_award_graphite.json) · [Branco](./assets/animations/lottie_award_white.json) · [Cobre](./assets/animations/lottie_award_copper.json) |
+| Search-to-X | Controles dos painéis Sobre Mim | [Grafite](./assets/animations/lottie_search_to_x_graphite.json) · [Branco](./assets/animations/lottie_search_to_x_white.json) · [Cobre](./assets/animations/lottie_search_to_x_copper.json) |
+
 ### Biblioteca de Badges
 
 A biblioteca centralizada contém 81 badges SVG: 48 de tecnologias, 3 de licenças, 6 de status, 22 de tópicos e 2 de métodos. Technologies, Licenses e Status podem ser utilizados em READMEs e HTMLs; Topics e Methods são exclusivos dos HTMLs da vitrine e dos relatórios. Consulte a [documentação da biblioteca](./docs/badges.md).
