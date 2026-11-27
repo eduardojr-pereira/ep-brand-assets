@@ -1,7 +1,0 @@
-/* EP Brand homepage palette bridge for page-only legacy variables. */
-:root{--bg:var(--ep-color-bg);--surface:var(--ep-color-surface);--line:var(--ep-color-border);--ink:var(--ep-color-text);--muted:var(--ep-color-muted);--aqua:var(--ep-color-accent);--orange:var(--ep-color-focus);font-family:var(--ep-font-sans,"Source Sans 3",sans-serif);background:var(--ep-color-bg);color:var(--ep-color-text)}
-html,body{background:var(--ep-color-bg);color:var(--ep-color-text)}
-.intro-label,.eyebrow,.area-filters h3,.collection-fieldset legend{color:var(--ep-color-accent)}
-.lead,.section-subtitle{color:var(--ep-color-muted)}
-h1,h2{color:var(--ep-color-text)}
-.empty{border-color:var(--ep-color-border);color:var(--ep-color-muted)}
