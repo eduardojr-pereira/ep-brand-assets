@@ -30,7 +30,8 @@
       "crop": null,
       "note": "Preservadas as cores do arquivo recuperado.",
       "rights_review": "pending",
-      "approved_text_only": false
+      "approved_text_only": false,
+      "source_review_evidence": "Exact original Git blob match: 288186fa0cb2e30f56b0925780b28c4a4e73c0cc; repository BSD-3-Clause, artwork-specific scope not established."
     },
     {
       "id": "apache_cassandra",
@@ -150,7 +151,8 @@
       "crop": null,
       "note": "",
       "rights_review": "pending",
-      "approved_text_only": false
+      "approved_text_only": false,
+      "source_review_evidence": "Exact Simple Icons original Git blob match: 1926ddf7a0cc211c63b77ac433b4dbdc7098ba80; icon-specific rights not established."
     },
     {
       "id": "docker_compose",
@@ -265,7 +267,8 @@
       "crop": null,
       "note": "Direitos Oracle pendentes; não publicar sem conferência.",
       "rights_review": "pending",
-      "approved_text_only": false
+      "approved_text_only": false,
+      "source_review_evidence": "Exact Devicon original Git blob match: 051bf254ad782820627890ef2b0e06fbae63dc6e; trademark rights separate."
     },
     {
       "id": "joblib",
@@ -319,7 +322,8 @@
       "crop": null,
       "note": "Símbolo do ecossistema Jupyter.",
       "rights_review": "pending",
-      "approved_text_only": false
+      "approved_text_only": false,
+      "source_review_evidence": "Exact Devicon original Git blob match: fa14d7068c441908f25f4e51abb07d2af17d6748; trademark rights separate."
     },
     {
       "id": "keras",
@@ -365,7 +369,8 @@
       "crop": null,
       "note": "Preservadas as cores do arquivo recuperado.",
       "rights_review": "pending",
-      "approved_text_only": false
+      "approved_text_only": false,
+      "source_review_evidence": "Exact original Git blob match: aadbdeafb095b81f4d0f9dca24f4f73d1edfc6ba; author dedication CC0-1.0."
     },
     {
       "id": "matplotlib",
@@ -628,7 +633,8 @@
       "crop": null,
       "note": "Preservadas as cores do arquivo recuperado.",
       "rights_review": "pending",
-      "approved_text_only": false
+      "approved_text_only": false,
+      "source_review_evidence": "Exact original Git blob match: 3dfda8bd6017c0a09fc449471129cc826b487bf4; artwork-specific terms not established."
     },
     {
       "id": "postgresql",
@@ -929,7 +935,8 @@
       "crop": null,
       "note": "Preservadas as cores do arquivo recuperado.",
       "rights_review": "pending",
-      "approved_text_only": false
+      "approved_text_only": false,
+      "source_review_evidence": "Recorded W3C source; W3C HTML5 logo CC BY 3.0 with attribution. Exact upstream bytes not independently matched."
     },
     {
       "id": "javascript",
@@ -952,7 +959,8 @@
       "crop": null,
       "note": "Preservadas as cores do arquivo recuperado.",
       "rights_review": "pending",
-      "approved_text_only": false
+      "approved_text_only": false,
+      "source_review_evidence": "Exact original Git blob match: 64b2440fd1578e9ae6f74c8d1a388b842349c00f; logo.js MIT notice."
     },
     {
       "id": "mit",
@@ -1399,5 +1407,11 @@
       "rights_review": "pending",
       "approved_text_only": false
     }
-  ]
+  ],
+  "composition_authorship": {
+    "author": "Eduardo Junior Pereira",
+    "basis": "Rights-holder declaration, 2026-11-27",
+    "scope": "EP original badge compositions, layout, typography, colour selection and original adaptations only; underlying third-party marks and artwork excluded.",
+    "notice": "THIRD-PARTY-NOTICES.md"
+  }
 }

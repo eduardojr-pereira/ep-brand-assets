@@ -52,7 +52,8 @@ def resource_paths(root=ROOT):
             paths.append(target)
             if target.endswith(('.ttf', '.otf', '.woff', '.woff2')):
                 paths.append(posixpath.dirname(target) + '/OFL.txt')
-    paths += ['LICENSE-BRAND.md', 'LICENSE-CODE.txt', 'LICENSE-CONTENT.md']
+    paths += ['LICENSE-BRAND.md', 'LICENSE-CODE.txt', 'LICENSE-CONTENT.md',
+              'THIRD-PARTY-NOTICES.md', 'docs/LICENSE-SCIENTIFIC-COLOUR-MAPS.txt']
     result = sorted(set(paths))
     for name in result:
         local_file(root, name)

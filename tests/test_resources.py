@@ -16,7 +16,7 @@ class ResourceTests(unittest.TestCase):
         self.assertEqual(paths, sorted(set(paths)))
         for name in DEPENDENCIES['styles'] + DEPENDENCIES['head_scripts'] + DEPENDENCIES['defer_scripts']:
             self.assertIn(name, paths)
-        for name in ('assets/fonts/manrope/OFL.txt', 'assets/fonts/inter/OFL.txt', 'assets/vendor/lottie/LICENSE.md', 'assets/vendor/plotly/LICENSE', 'LICENSE-BRAND.md'):
+        for name in ('assets/fonts/manrope/OFL.txt', 'assets/fonts/inter/OFL.txt', 'assets/vendor/lottie/LICENSE.md', 'assets/vendor/plotly/LICENSE', 'LICENSE-BRAND.md', 'THIRD-PARTY-NOTICES.md', 'docs/LICENSE-SCIENTIFIC-COLOUR-MAPS.txt'):
             self.assertIn(name, paths)
         self.assertFalse(any(p.startswith(('tools/', 'tests/', 'components/', 'config/')) for p in paths))
         self.assertFalse(any('/originals/' in p for p in paths))

@@ -18,7 +18,7 @@ Markdown: `![Python](relative/path/to/assets/badges/technologies/python.svg)` (a
 
 ## Catalog, sources and rights review
 
-A source link is provenance, not a redistribution license. Brand names and marks belong to their respective owners. No trademark permission is asserted. Experimental crops, ecosystem mappings, and third-party licenses must be checked before public use.
+The EP badge compositions, layout, typography, colour selection and original adaptations are authored by Eduardo Junior Pereira, as declared by the rights holder. This attribution does not claim the underlying technology marks. The catalog records composition authorship separately from `rights_review`. See [third-party notices](../THIRD-PARTY-NOTICES.md). A source link is provenance, not a redistribution license. Brand names and marks belong to their respective owners. No trademark permission is asserted. Experimental crops, ecosystem mappings, and third-party licenses must be checked before public use.
 
 | Badge | Source | Selection / note | Rights review |
 |---|---|---|---|
