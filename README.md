@@ -43,7 +43,7 @@ The identity uses the EP logo, institutional graphite and copper palette, shared
 | Email | <img src="assets/icons/gmail_icon.svg" width="26" alt="Email" /> | [`gmail_icon.svg`](./assets/icons/gmail_icon.svg) |
 | Discord | <img src="assets/icons/discord_icon.svg" width="26" alt="Discord" /> | [`discord_icon.svg`](./assets/icons/discord_icon.svg) |
 
-See [animations](./assets/animations/) and [theme tokens](./styles/theme-tokens.css).
+See [animations](./assets/animations/) and [theme tokens](./styles/foundations.css).
 
 The animation library includes the following Lottie assets for the new editorial layout:
 
@@ -57,7 +57,7 @@ The animation library includes the following Lottie assets for the new editorial
 The centralized library contains 81 SVG badges: 48 technologies, 3 licenses, 6 statuses, 22 topics and 2 methods. Technologies, Licenses and Status may be used in READMEs and HTML; Topics and Methods are reserved for showcase and report HTML. See the [badge library documentation](./docs/badges.md).
 
 > [!NOTE]
-> The library has been integrated and committed locally. Integrated consumer validation and coordinated publication remain pending.
+> The asset library is versioned; integration into the new architecture is still in progress. Integrated consumer validation and coordinated publication remain pending.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
@@ -67,15 +67,15 @@ The centralized library contains 81 SVG badges: 48 technologies, 3 licenses, 6 s
 
 ## Shared Components
 
-Components are maintained in EP Brand and reused where relevant. The site builder assembles the portfolio and reports from canonical sources rather than maintaining separate implementations in each project.
+Components are maintained in EP Brand and reused where relevant. The canonical builder is still pending; the current templates are Jinja macros, not published pages.
 
 | Component | Source |
 |---|---|
 | Institutional configuration | [`config/brand.json`](./config/brand.json) |
-| Web components: Header, Footer, cards, buttons, links, navigation and controls | [`components/web/`](./components/web/) |
+| Web components: cards, buttons, links, navigation and controls | [`components/web/`](./components/web/) |
 | Bilingual Markdown footers | [`components/markdown/`](./components/markdown/) |
 | Shared scripts and interactions | [`scripts/`](./scripts/) |
-| Composition, rendering and publication | [`tools/`](./tools/) |
+| Dependency order | [`config/ui.json`](./config/ui.json) |
 | Regression tests | [`tests/`](./tests/) |
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
@@ -86,20 +86,9 @@ Components are maintained in EP Brand and reused where relevant. The site builde
 
 ## Themes and Internationalization
 
-A centralized presentation layer ensures visual and linguistic consistency across the portfolio and project reports.
+The palette and typography are centralized in [Foundations](./styles/foundations.css). Light and dark themes are defined by CSS tokens. Shared motion tokens and generic animations live in [Motion](./styles/motion.css). Loading order is declared in [config/ui.json](./config/ui.json).
 
-| Mechanism | Responsibility | Source |
-|---|---|---|
-| Theme tokens | Shared light and dark theme definitions | [theme-tokens.css](./styles/theme-tokens.css) |
-| Typography | Consistent typographic system | [typography-v2.css](./styles/typography-v2.css) |
-| Theme initialization | Initial theme configuration | [theme-init.js](./scripts/theme-init.js) |
-| Theme switching | Light and dark theme transitions | [theme.js](./scripts/theme.js) |
-| Internationalization | Shared bilingual interface mechanisms | [i18n.js](./scripts/i18n.js) |
-| Plotly theming | Consistent analytical presentation | [plotly-theme.js](./scripts/plotly-theme.js) |
-| Plotly localization | Language-specific chart presentation | [plotly-i18n.js](./scripts/plotly-i18n.js) |
-
-> [!IMPORTANT]
-> Presentation mechanisms are centralized in EP Brand, while project-specific translations remain within their respective projects. Theme and language changes affect presentation only, preserving the underlying analytical data.
+The global theme controller, internationalization and animation asset loader are pending the next lot. Header, Footer, the builder and Plotly adapters are not yet part of the new architecture. Projects retain their content translations; theme and language changes must not alter analytical data.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
@@ -125,7 +114,7 @@ The EP Analytical Colour System separates visual encoding of data from instituti
 > - **Source of Truth:** The palette preview is generated directly from [config/colormaps.json](./config/colormaps.json), the canonical colour configuration.
 > - **Origin and Attribution:** Continuous scales use Scientific Colour Maps 9.0.0 by Fabio Crameri. EP LipariS Adapted is a custom adaptation, not an official scale. See the [methodology and attribution](./docs/colormaps.md) and [MIT license](./docs/LICENSE-SCIENTIFIC-COLOUR-MAPS.txt).
 > - **Accessibility:** Categorical palettes require complementary visual cues, such as markers, line styles, patterns or labels. Colour contrast alone does not guarantee accessibility.
-> - **Technical Integration:** The [canonical Plotly renderer](./tools/render_plotly.py) and [generated CSS](./styles/colormaps.css) use the same centralized colour configuration.
+> - **Technical Integration:** The future Plotly adapter will consume the canonical colour configuration. No Plotly renderer is active in this reconstruction.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
@@ -135,52 +124,53 @@ The EP Analytical Colour System separates visual encoding of data from instituti
 
 ## Directory Structure
 
-<details>
-<summary><strong>Repository tree</strong></summary>
-
 ```text
 ep-brand-assets/
-├── .github/
-│   └── workflows/
-├── .gitignore
-├── LICENSE-BRAND.md
-├── LICENSE-CODE.txt
-├── LICENSE-CONTENT.md
-├── README.md
-├── README.pt-BR.md
 ├── assets/
 │   ├── animations/
 │   ├── badges/
+│   ├── fonts/
 │   ├── icons/
-│   │   └── technologies/
 │   └── logos/
 ├── components/
 │   ├── markdown/
 │   └── web/
+│       ├── navigation.html
+│       ├── buttons.html
+│       └── interactive.html
 ├── config/
-│   └── badges.json
+│   ├── badges.json
+│   ├── brand.json
+│   ├── colormaps.json
+│   └── ui.json
 ├── docs/
-│   └── badges.md
 ├── scripts/
+│   ├── scroll-trigger.js
+│   ├── navigation.js
+│   ├── buttons.js
+│   └── interactive.js
 ├── styles/
+│   ├── foundations.css
+│   ├── motion.css
+│   ├── links.css
+│   ├── buttons.css
+│   └── interactive.css
 ├── tests/
-│   └── test_badge_library.py
-└── tools/
-    ├── badge_html.py
-    └── render_badges.py
+│   ├── support.py
+│   └── test_*.py
+├── LICENSE-BRAND.md
+├── LICENSE-CODE.txt
+├── LICENSE-CONTENT.md
+├── README.md
+└── README.pt-BR.md
 ```
 
-</details>
-
-- `assets/` — Visual identity resources.
-- `components/` — Canonical Markdown and web components.
-- `config/` — Institutional and analytical colour configuration.
-- `docs/` — Technical documentation and third-party attribution.
-- `scripts/` and `styles/` — Shared behaviour, themes and presentation.
-- `tests/` — Automated regression tests.
-- `tools/` — Rendering, composition and publication utilities.
-
-The tree includes the badge library and reflects the local structure; coordinated publication remains pending.
+- `assets/` — Visual identity resources and fonts.
+- `components/` — Markdown footers and canonical Jinja macros.
+- `config/` — Institutional data, catalogues and dependency order.
+- `docs/` — Technical documentation and attribution.
+- `scripts/` and `styles/` — Shared behavior and presentation.
+- `tests/` — Component tests with shared infrastructure.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
@@ -190,32 +180,9 @@ The tree includes the badge library and reflects the local structure; coordinate
 
 ## Usage and Integration
 
-For other repositories, use the public asset URLs.
+[brand.json](./config/brand.json) declares `asset_root` relative to the consumed EP Brand version. The future builder must resolve resources from the same checkout or immutable reference as the components, not a mutable branch.
 
-```markdown
-![EP](https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/logos/logo_initials.png)
-```
-
-```html
-<img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/github_icon.svg" alt="GitHub" width="26" />
-```
-
-Keep the canonical checkout of EP Brand alongside the Portfolio checkout. From EP Brand, replace the source path with your local Portfolio path; use a preview output directory outside both repositories.
-
-```bash
-python3 tools/build_site.py --source /path/to/data-science-portfolio --output /tmp/ep-portfolio-preview
-```
-
-Preview Markdown footers without writing files:
-
-```bash
-python3 tools/render_footer.py readme --kind portfolio --lang en
-python3 tools/render_footer.py readme --kind knowledge-base --lang pt-BR
-```
-
-With `--file`, the renderer displays the proposed diff; only `--apply` writes changes. Review before applying. Render the web footer with embedded assets using `python3 tools/render_footer.py web --embed-assets`.
-
-Do not rename shared assets without checking consumers. Local generation does not publish changes.
+The templates in `components/web/` are HTML-autoescaped Jinja macros; the CSS and script loading order is in `config/ui.json`. No builder is currently active. Existing Markdown footer templates are preserved independently of the new web architecture. Do not rename shared assets without checking consumers. Local generation does not publish changes.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
@@ -225,16 +192,13 @@ Do not rename shared assets without checking consumers. Local generation does no
 
 ## Testing and Validation
 
-Run the regression suite from the repository root:
+With Python, Jinja2, Playwright and a Chromium-compatible browser installed, run from the repository root:
 
 ```bash
-python3 -m unittest discover -s tests -v
+python3 tests/support.py
 ```
 
-Review generated previews and verify shared components, themes, language switching, navigation and analytical presentation in consuming projects before publication.
-
-> [!NOTE]
-> Final integrated validation and coordinated publication remain pending. Local generation does not publish changes.
+`UI_TEST_BROWSER` can specify the browser executable. The suite uses the dependency manifest, canonical components and the actual repository fonts. Component tests do not replace integrated visual and functional acceptance on GitHub Pages. Real Lottie playback, global translation, the contact form and publication still require validation.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
@@ -293,14 +257,14 @@ The MIT license permits use, copying, modification and redistribution, including
 
 <div align="center">
 
-<a href="https://eduardo-pereira.webflow.io/"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/logos/logo_initials.png" alt="EP logo" height="90"></a>
+<a href="https://eduardo-pereira.webflow.io/"><img src="./assets/logos/logo_initials.png" alt="EP logo" height="90"></a>
 
 Let's connect and exchange ideas and opportunities.
 
-<a href="mailto:eduardojr.pereira@gmail.com"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/gmail_icon.svg" alt="Email" height="27"></a>&nbsp;&nbsp;
-<a href="https://www.linkedin.com/in/eduardo-jr-pereira/"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/linkedin_icon.svg" alt="LinkedIn" height="27"></a>&nbsp;&nbsp;
-<a href="https://github.com/eduardojr-pereira"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/github_icon.svg" alt="GitHub" height="27"></a>&nbsp;&nbsp;
-<a href="https://discord.com/users/533043855122235393"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/discord_icon.svg" alt="Discord" height="27"></a>
+<a href="mailto:eduardojr.pereira@gmail.com"><img src="./assets/icons/gmail_icon.svg" alt="Email" height="27"></a>&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/eduardo-jr-pereira/"><img src="./assets/icons/linkedin_icon.svg" alt="LinkedIn" height="27"></a>&nbsp;&nbsp;
+<a href="https://github.com/eduardojr-pereira"><img src="./assets/icons/github_icon.svg" alt="GitHub" height="27"></a>&nbsp;&nbsp;
+<a href="https://discord.com/users/533043855122235393"><img src="./assets/icons/discord_icon.svg" alt="Discord" height="27"></a>
 
 </div>
 

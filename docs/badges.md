@@ -12,7 +12,7 @@ Flat-square SVG, height 20 px, icon box 14 × 14 px, 11 px Verdana/DejaVu Sans t
 
 ## Usage and maintenance
 
-Run `python3 tools/render_badges.py` from the repository root to regenerate the SVGs offline from `config/badges.json` and prepared icons. Original sources, SHA-256 hashes, crop parameters and rights-review state are recorded in that manifest. Do not edit generated SVGs manually.
+The generated SVGs and their prepared icons are preserved. The former badge generator was removed with the legacy web implementation; regeneration requires a canonical tool before it can be performed again. Original sources, SHA-256 hashes, crop parameters and rights-review state are recorded in that manifest. Do not edit generated SVGs manually.
 
 Markdown: `![Python](relative/path/to/assets/badges/technologies/python.svg)` (adjust relative path for the consumer). Cross-repository references must use the canonical published paths. HTML: `<img src="relative/path/to/assets/badges/technologies/python.svg" alt="Python" height="20">`; standalone builds may embed the canonical SVG as a data URI. Do not maintain independent copies as sources.
 
@@ -140,9 +140,7 @@ The current library contains 81 SVG badges.
 | topics | Big Data & Distributed Processing | `assets/badges/topics/big_data_distributed_processing_en.svg` |
 | topics | Big Data e Processamento Distribuído | `assets/badges/topics/big_data_distributed_processing_pt_br.svg` |
 
-The shared `tools/badge_html.py` renderer embeds canonical SVG
-artwork in standalone HTML documents. Localized badges follow
-the document language through the shared stylesheet.
+The shared `badges(items)` macro in `components/web/interactive.html` consumes canonical asset paths. The future builder and global theme/language services will resolve localized artwork and standalone embedding where required.
 
 Generated HTML is a consumer of the canonical library,
 not an independent source of badge artwork.
@@ -188,11 +186,11 @@ All license identifiers use mineral blue; Code License, Content License and Data
 
 The generic PyPI symbol is explicitly approved for ipykernel, ipywidgets, nbformat and NLTK; it is not their official logo. Other ecosystem substitutions require explicit approval and provenance. Joblib uses the isolated grey gear plus its name, not the previous direct image. The original artwork is retained.
 
-Deduplicate technologies by canonical ID. Stably partition the input list into entries with artwork (including direct images), followed by entries without artwork. Preserve the original relative order within both groups; do not alphabetize or use CSS ordering. HTML uses `tools/badge_html.py::technologies`; apply the same rule to README lists.
+Deduplicate technologies by canonical ID. Stably partition the input list into entries with artwork (including direct images), followed by entries without artwork. Preserve the original relative order within both groups; do not alphabetize or use CSS ordering. Apply this same rule when preparing badge items for the HTML macro and README lists.
 
 ### Themes, localization and consumers
 
-Standalone SVGs use `prefers-color-scheme`; the HTML renderer emits explicit light/dark variants selected by shared CSS and the EP theme. Localized badges use `_en` and `_pt_br` IDs/paths and the document language. Use `image(ident)` or `localized(ident)` from the shared HTML renderer as appropriate, and `topic(label)` for Topics. Never maintain an independent source of artwork in a consumer. Regenerate embedded HTML after catalog changes. README references retain canonical published paths; updates depend on publication and caching. GitHub's selected theme may differ from the browser color scheme: validate both after publication; this is not yet confirmed. No existing README paths are removed.
+Standalone SVGs use `prefers-color-scheme`. Explicit light/dark and localized variants must be resolved by the future shared theme/language services and builder. Localized badges use `_en` and `_pt_br` IDs/paths; supply the resolved `src` and `label` to `badges(items)`. Never maintain an independent source of artwork in a consumer. Regenerate embedded HTML after catalog changes. README references retain canonical published paths; updates depend on publication and caching. GitHub's selected theme may differ from the browser color scheme: validate both after publication; this is not yet confirmed. No existing README paths are removed.
 
 ## Adding or updating a badge
 
@@ -200,17 +198,10 @@ Standalone SVGs use `prefers-color-scheme`; the HTML renderer emits explicit lig
 2. Select the appropriate technology format or localized category. Obtain suitable artwork from a traceable source. Check the license and trademark terms before public use; a source URL alone does not grant rights. Preserve the original under `assets/icons/technologies/originals/` and the prepared PNG under `assets/icons/technologies/`. Record the original SHA-256, any crop and the rights-review status. Do not misrepresent generic artwork as an official logo.
 3. Follow the visual specification and category colors above. Keep a 20 px SVG height, suitable variable width and 11 px text; avoid clipping, distortion and redundant names. For text-only technology, set `icon` to null, `mode` to `text`, and `approved_text_only` to true only after approval. For direct artwork, use `image_direct` and a prepared PNG. For localized Topics, Methods and Status, preserve paired EN/PT-BR entries.
 4. Add or update the manifest entry, using the same schema as a comparable existing entry: `id`, `category`, `path`, `label`, `background`, `foreground`, `contrast`, `width`, `icon`, `mode`, `source`, `source_path`, `source_sha256`, `visible_icon_size_px`, `crop`, `note`, `rights_review`, `approved_text_only`. For adaptive colors also use `theme_colors`, `theme_palette` and `dark_contrast`; for split licenses use `prefix`, `prefix_width` and `theme_prefix`; Topics include `area`. Calculate contrast from actual colors, not copied metadata. Keep IDs and paths stable and unique. Do not silently rename a published badge.
-5. From the EP Brand repository root, regenerate and test in the active Python environment:
-
-   ```bash
-   python tools/render_badges.py
-   python -m unittest discover -s tests -p 'test_badge_library.py' -v
-   git diff --check
-   git status -sb
-   ```
+5. Regeneration is pending a canonical badge maintenance tool and its dedicated validation. Do not regenerate or hand-edit the preserved SVGs using the removed legacy scripts. Verify any authorized changes with the current repository checks.
 
 6. Check the generated SVGs against the manifest, including uniqueness of IDs, labels and paths, 20 px height, artwork proportions, text fit, readable foreground/background contrast (at least 4.5:1 for text), light/dark variants, and localized pairs. Preview both themes and languages where applicable. Check stable ordering and aliases. Review all affected README and HTML references, rebuild HTML consumers, and test their actual theme/language switches.
-7. Update this document's inventory, source/rights table and category details as applicable. Extend regression tests if a new rule, alias or format needs coverage; the existing tests already iterate over manifest entries and enforce the official eleven-area Topics set. Review any other fixed-count validation in packaging scripts rather than treating the baseline count as a permanent limit.
+7. Update this document's inventory, source/rights table and category details as applicable. Extend regression tests if a new rule, alias or format needs coverage; future dedicated badge tests should iterate over manifest entries and enforce the official eleven-area Topics set. Review any other fixed-count validation in packaging scripts rather than treating the baseline count as a permanent limit.
 8. Obtain visual approval, resolve rights issues before public use, and commit only the approved catalog, original/prepared assets, generated SVGs, relevant tests/documentation and necessary consumer changes. Coordinate publication of the central assets before dependent references. Verify public URLs and both GitHub themes after publication. Do not publish or push without authorization.
 
 ## Report references and reproducibility — approved reusable layout

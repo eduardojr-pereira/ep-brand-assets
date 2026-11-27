@@ -1,23 +1,27 @@
-/* EP navigation: disclosure, single-choice filters and section state. */
+/*
+ * Responsibility: Menu disclosure, filter selection and active section navigation.
+ * Temporary checkbox/label integration contracts are replaced by shared asset and i18n services in Lot 6; no preference ownership.
+ */
+
 (() => {
     'use strict';
-    const dropdown = '[data-ep-dropdown]';
-    const filter = '[data-ep-filter]';
-    const option = '[data-ep-filter-value]';
+    const dropdown = '[data-ui-dropdown]';
+    const filter = '[data-ui-filter]';
+    const option = '[data-ui-filter-value]';
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const closeTimers = new WeakMap();
     const checks = new Map();
     let checkRuntime = null;
     function refreshChecks() {
         if (!checkRuntime) return;
-        const raw = getComputedStyle(document.documentElement).getPropertyValue('--ep-color-accent').trim();
+        const raw = getComputedStyle(document.documentElement).getPropertyValue('--ui-color-accent').trim();
         if (!/^#[0-9a-f]{6}$/i.test(raw)) return;
         const color = [1, 3, 5].map(i => parseInt(raw.slice(i, i + 2), 16) / 255).concat(1);
-        for (const item of document.querySelectorAll(`${option}:has([data-ep-check])`)) {
-            const node = item.querySelector('[data-ep-check]');
-            const host = node.querySelector('[data-ep-check-player]');
+        for (const item of document.querySelectorAll(`${option}:has([data-ui-check])`)) {
+            const node = item.querySelector('[data-ui-check]');
+            const host = node.querySelector('[data-ui-check-player]');
             checks.get(item)?.destroy();
-            node.removeAttribute('data-ep-lottie-ready');
+            node.removeAttribute('data-ui-lottie-ready');
             host.replaceChildren();
             const data = JSON.parse(JSON.stringify(checkRuntime.source));
             function recolor(value) {
@@ -31,7 +35,7 @@
             player.addEventListener('DOMLoaded', () => {
                 if (checks.get(item) !== player) return;
                 player.goToAndStop(item.getAttribute('aria-pressed') === 'true' ? 44 : 0, true);
-                node.setAttribute('data-ep-lottie-ready', '');
+                node.setAttribute('data-ui-lottie-ready', '');
             });
         }
     }
@@ -42,12 +46,12 @@
         return true;
     }
     function checkDuration() {
-        const value = getComputedStyle(document.documentElement).getPropertyValue('--ep-duration-link').trim();
+        const value = getComputedStyle(document.documentElement).getPropertyValue('--ui-duration-link').trim();
         return parseFloat(value) * (value.endsWith('ms') ? 1 : 1000) || 0;
     }
     function animateCheck(item, selected, animate) {
         const player = checks.get(item);
-        if (!player || !item.querySelector('[data-ep-lottie-ready]')) return false;
+        if (!player || !item.querySelector('[data-ui-lottie-ready]')) return false;
         if (reduced.matches || !animate || !checkDuration()) {
             player.goToAndStop(selected ? 44 : 0, true);
             return false;
@@ -59,11 +63,11 @@
     }
 
     const setLabel = (element, label) => {
-        for (const part of element.querySelectorAll('[data-ep-label]')) part.textContent = label;
+        for (const part of element.querySelectorAll('[data-ui-label]')) part.textContent = label;
     };
     function select(group, value, notify = true) {
         const options = [...group.querySelectorAll(option)].filter(el => el.closest(filter) === group);
-        const chosen = options.find(el => el.dataset.epFilterValue === value);
+        const chosen = options.find(el => el.dataset.uiFilterValue === value);
         if (!chosen) return false;
         let animated = false;
         for (const item of options) {
@@ -72,13 +76,13 @@
             item.setAttribute('aria-pressed', String(selected));
             if (changed) animated = animateCheck(item, selected, notify) || animated;
         }
-        group.dataset.epValue = value;
+        group.dataset.uiValue = value;
         if (group.matches(dropdown)) {
-            setLabel(group.querySelector('summary'), chosen.querySelector('[data-ep-label]').textContent);
-            group.dataset.epFiltered = String(value !== (group.dataset.epDefault || 'all'));
+            setLabel(group.querySelector('summary'), chosen.querySelector('[data-ui-label]').textContent);
+            group.dataset.uiFiltered = String(value !== (group.dataset.uiDefault || 'all'));
         }
-        if (notify) group.dispatchEvent(new CustomEvent('ep:filterchange', {
-            bubbles: true, detail: { name: group.dataset.epFilter, value }
+        if (notify) group.dispatchEvent(new CustomEvent('ui:filterchange', {
+            bubbles: true, detail: { name: group.dataset.uiFilter, value }
         }));
         return { animated };
     }
@@ -88,12 +92,12 @@
         if (restore) el.querySelector('summary').focus();
     }
     function init() {
-        document.addEventListener('ep:themechange', refreshChecks);
+        document.addEventListener('ui:themechange', refreshChecks);
         reduced.addEventListener('change', refreshChecks);
         if (checkRuntime) refreshChecks();
         for (const group of document.querySelectorAll(filter)) {
             const selected = [...group.querySelectorAll(option)].find(el => el.getAttribute('aria-pressed') === 'true');
-            if (selected) select(group, selected.dataset.epFilterValue, false);
+            if (selected) select(group, selected.dataset.uiFilterValue, false);
         }
         document.addEventListener('toggle', event => {
             const el = event.target;
@@ -111,7 +115,7 @@
             if (!target) return;
             const group = target.closest(filter);
             if (group && target.matches(option)) {
-                const result = select(group, target.dataset.epFilterValue);
+                const result = select(group, target.dataset.uiFilterValue);
                 if (group.matches(dropdown)) {
                     clearTimeout(closeTimers.get(group));
                     if (result?.animated) {
@@ -127,7 +131,7 @@
             const el = event.target.closest(`${dropdown}[open]`);
             if (el) { event.preventDefault(); closeDisclosure(el, true); }
         });
-        const groups = [...document.querySelectorAll('[data-ep-scroll-nav]')].map(root => {
+        const groups = [...document.querySelectorAll('[data-ui-scroll-nav]')].map(root => {
             const items = [...root.querySelectorAll('a[href^="#"]')].flatMap(link => {
                 let section;
                 try { section = document.getElementById(decodeURIComponent(link.hash.slice(1))); }
@@ -142,10 +146,10 @@
             for (const entry of group.items) {
                 if (entry === item) {
                     entry.link.setAttribute('aria-current', 'location');
-                    entry.link.removeAttribute('data-ep-departed');
+                    entry.link.removeAttribute('data-ui-departed');
                 } else {
                     if (entry.link.hasAttribute('aria-current') && entry.link.matches(':hover')) {
-                        entry.link.setAttribute('data-ep-departed', '');
+                        entry.link.setAttribute('data-ui-departed', '');
                     }
                     entry.link.removeAttribute('aria-current');
                 }
@@ -169,7 +173,7 @@
         const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
         const unlock = () => { locked = null; clearTimeout(timer); schedule(); };
         for (const group of groups) for (const item of group.items) {
-            item.link.addEventListener('pointerleave', () => item.link.removeAttribute('data-ep-departed'));
+            item.link.addEventListener('pointerleave', () => item.link.removeAttribute('data-ui-departed'));
             item.link.addEventListener('click', event => {
                 if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
                 locked = item.section;
@@ -192,7 +196,8 @@
         window.addEventListener('hashchange', schedule);
         update();
     }
-    window.EPNavigation = Object.freeze({ setLabel, select, connectChecks });
+    window.UI ??= {};
+    window.UI.navigation = Object.freeze({ setLabel, select, connectChecks });
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
     else init();
 })();

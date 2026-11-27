@@ -1,4 +1,7 @@
-/* EP Design System: canonical foundations */
+/*
+ * Responsibility: Semantic colours, typography, spacing and document foundations.
+ * Does not own theme preference, component layout or motion.
+ */
 
 @font-face {
     font-family: Manrope;
@@ -19,34 +22,34 @@
 /* Typography and spacing */
 
 :root {
-    --ep-font-heading: Manrope, sans-serif;
-    --ep-font-body: Inter, sans-serif;
+    --ui-font-heading: Manrope, sans-serif;
+    --ui-font-body: Inter, sans-serif;
 
-    --ep-weight-regular: 400;
-    --ep-weight-medium: 500;
-    --ep-weight-semibold: 600;
-    --ep-weight-bold: 700;
-    --ep-weight-extrabold: 800;
+    --ui-weight-regular: 400;
+    --ui-weight-medium: 500;
+    --ui-weight-semibold: 600;
+    --ui-weight-bold: 700;
+    --ui-weight-extrabold: 800;
 
-    --ep-text-xs: 0.75rem;
-    --ep-text-sm: 0.875rem;
-    --ep-text-base: 1rem;
-    --ep-text-lg: 1.125rem;
-    --ep-text-xl: 1.25rem;
-    --ep-text-2xl: 1.5rem;
-    --ep-text-3xl: 2rem;
-    --ep-text-4xl: 3rem;
+    --ui-text-xs: 0.75rem;
+    --ui-text-sm: 0.875rem;
+    --ui-text-base: 1rem;
+    --ui-text-lg: 1.125rem;
+    --ui-text-xl: 1.25rem;
+    --ui-text-2xl: 1.5rem;
+    --ui-text-3xl: 2rem;
+    --ui-text-4xl: 3rem;
 
-    --ep-space-1: 0.25rem;
-    --ep-space-2: 0.5rem;
-    --ep-space-3: 0.75rem;
-    --ep-space-4: 1rem;
-    --ep-space-5: 1.25rem;
-    --ep-space-6: 1.5rem;
-    --ep-space-8: 2rem;
-    --ep-space-12: 3rem;
-    --ep-space-16: 4rem;
-    --ep-space-24: 6rem;
+    --ui-space-1: 0.25rem;
+    --ui-space-2: 0.5rem;
+    --ui-space-3: 0.75rem;
+    --ui-space-4: 1rem;
+    --ui-space-5: 1.25rem;
+    --ui-space-6: 1.5rem;
+    --ui-space-8: 2rem;
+    --ui-space-12: 3rem;
+    --ui-space-16: 4rem;
+    --ui-space-24: 6rem;
 }
 
 /* Theme tokens */
@@ -55,33 +58,37 @@
 :root[data-theme="dark"] {
     color-scheme: dark;
 
-    --ep-color-bg: #242424;
-    --ep-color-surface: #333230;
-    --ep-color-border: #4C4945;
-    --ep-color-text: #F4F0E9;
-    --ep-color-muted: #C5BEB5;
-    --ep-color-accent: #C98D62;
-    --ep-color-focus: #E3AB82;
-    --ep-color-on-accent: #242424;
-    --ep-color-success: #8BD5AB;
-    --ep-color-danger: #D86E5E;
-    --ep-color-link-hover: #FFFFFF;
+    --ui-color-bg: #242424;
+    --ui-color-surface: #333230;
+    --ui-color-border: #4C4945;
+    --ui-color-text: #F4F0E9;
+    --ui-color-muted: #C5BEB5;
+    --ui-color-accent: #C98D62;
+    --ui-color-focus: #E3AB82;
+    --ui-color-on-accent: #242424;
+    --ui-color-success: #8BD5AB;
+    --ui-color-danger: #D86E5E;
+    --ui-color-link-hover: #FFFFFF;
+    --ui-color-ink: #fff;
+    --ui-color-on-ink: #000;
 }
 
 :root[data-theme="light"] {
     color-scheme: light;
 
-    --ep-color-bg: #F4F0E9;
-    --ep-color-surface: #FFFFFF;
-    --ep-color-border: #D9D1C7;
-    --ep-color-text: #242424;
-    --ep-color-muted: #5B554E;
-    --ep-color-accent: #9D603B;
-    --ep-color-focus: #9D603B;
-    --ep-color-on-accent: #FFFFFF;
-    --ep-color-success: #256B48;
-    --ep-color-danger: #D86E5E;
-    --ep-color-link-hover: #242424;
+    --ui-color-bg: #F4F0E9;
+    --ui-color-surface: #FFFFFF;
+    --ui-color-border: #D9D1C7;
+    --ui-color-text: #242424;
+    --ui-color-muted: #5B554E;
+    --ui-color-accent: #9D603B;
+    --ui-color-focus: #9D603B;
+    --ui-color-on-accent: #FFFFFF;
+    --ui-color-success: #256B48;
+    --ui-color-danger: #D86E5E;
+    --ui-color-link-hover: #242424;
+    --ui-color-ink: #000;
+    --ui-color-on-ink: #fff;
 }
 
 /* Base document */
@@ -93,20 +100,20 @@
 }
 
 html {
-    font-family: var(--ep-font-body);
-    background: var(--ep-color-bg);
-    color: var(--ep-color-text);
+    font-family: var(--ui-font-body);
+    background: var(--ui-color-bg);
+    color: var(--ui-color-text);
 }
 
 body {
     margin: 0;
-    font-family: var(--ep-font-body);
-    font-size: var(--ep-text-base);
-    font-weight: var(--ep-weight-regular);
+    font-family: var(--ui-font-body);
+    font-size: var(--ui-text-base);
+    font-weight: var(--ui-weight-regular);
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--ep-font-heading);
+    font-family: var(--ui-font-heading);
 }
 
 button, input, select, textarea {
@@ -114,6 +121,6 @@ button, input, select, textarea {
 }
 
 :focus-visible {
-    outline: 2px solid var(--ep-color-focus);
+    outline: 2px solid var(--ui-color-focus);
     outline-offset: 4px;
 }

@@ -1,9 +1,13 @@
-/* Load synchronously in <head>, before the body is parsed. */
+/*
+ * Responsibility: Scroll and load animation triggers, interruption and explicit replay.
+ * Load synchronously in the head; does not own translation or theme preference.
+ */
+
 (() => {
     'use strict';
     const root = document.documentElement;
     const selector = '[data-motion]:is([data-scroll-trigger="load"], [data-scroll-trigger="once"], [data-scroll-trigger="repeat"])';
-    const state = 'data-ep-motion-state';
+    const state = 'data-ui-motion-state';
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     let observer = null;
     let active = false;
@@ -22,7 +26,7 @@
     function stop() {
         active = false;
         observer?.disconnect();
-        root.removeAttribute('data-ep-motion');
+        root.removeAttribute('data-ui-motion');
         document.querySelectorAll(selector).forEach(showImmediately);
     }
 
@@ -56,7 +60,7 @@
             }
         } catch (error) {
             stop();
-            console.error('EP motion initialization failed:', error);
+            console.error('UI motion initialization failed:', error);
         }
     }
 
@@ -64,11 +68,11 @@
     // If loaded late or unsupported, leave content visible instead.
     active = !reduced.matches && 'IntersectionObserver' in window &&
         document.readyState === 'loading' && !document.body;
-    if (active) root.setAttribute('data-ep-motion', 'active');
+    if (active) root.setAttribute('data-ui-motion', 'active');
 
     document.addEventListener('DOMContentLoaded', initialize, { once: true });
     document.addEventListener('animationend', event => {
-        if (event.animationName === 'ep-motion-enter' && event.target.matches(selector)) {
+        if (event.animationName === 'ui-motion-enter' && event.target.matches(selector)) {
             event.target.setAttribute(state, 'visible');
         }
     });
@@ -83,7 +87,8 @@
 
     // For an explicit replay (e.g. after the locale controller swaps content).
     // The caller owns any fade-out and must perform the text change first.
-    window.EPMotion = Object.freeze({
+    window.UI ??= {};
+    window.UI.motion = Object.freeze({
         replay(scope) {
             if (!active || reduced.matches) return;
             const targets = Array.from(scope.querySelectorAll('[data-motion][data-scroll-trigger="load"]'));

@@ -1,34 +1,28 @@
-from pathlib import Path
-import os
-import shutil
+"""Responsibility: verify motion first paint, triggers, replay and fallbacks."""
+from support import load_page, launch_browser
 from playwright.sync_api import sync_playwright
-p=Path(__file__).resolve().parents[1]
-fixture='''<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="styles/motion-tokens.css"><link rel="stylesheet" href="styles/motion.css"><style>body{margin:0}section{height:120px}.spacer{height:1200px}</style><script src="scripts/scroll-trigger.js"></script></head><body><section id="hero" data-motion="reveal-left" data-scroll-trigger="load" style="--ep-motion-distance:100vw;--ep-motion-opacity:.15;--ep-motion-duration:1650ms;--ep-motion-delay:50ms">Hero</section><script>window.initialOpacity=getComputedStyle(document.querySelector('#hero')).opacity;</script><div class="spacer"></div><section id="once" data-motion="reveal-up" data-scroll-trigger="once">Once</section><div class="spacer"></div><section id="repeat" data-motion="scale-in" data-scroll-trigger="repeat">Repeat</section><div class="spacer"></div><section id="focus" data-motion="fade-in" data-scroll-trigger="once"><button>Focus</button></section><div class="spacer"></div></body></html>'''
+fixture='''<section id="hero" data-motion="reveal-left" data-scroll-trigger="load" style="--ui-motion-distance:100vw;--ui-motion-opacity:.15;--ui-motion-duration:1650ms;--ui-motion-delay:50ms">Hero</section><script>window.initialOpacity=getComputedStyle(document.querySelector('#hero')).opacity;</script><div class="spacer"></div><section id="once" data-motion="reveal-up" data-scroll-trigger="once">Once</section><div class="spacer"></div><section id="repeat" data-motion="scale-in" data-scroll-trigger="repeat">Repeat</section><div class="spacer"></div><section id="focus" data-motion="fade-in" data-scroll-trigger="once"><button>Focus</button></section><div class="spacer"></div>'''
 def load(page):
-    html=fixture
-    for name in ['motion-tokens.css','motion.css']:
-        html=html.replace(f'<link rel="stylesheet" href="styles/{name}">','<style>'+ (p/'styles'/name).read_text()+'</style>')
-    html=html.replace('<script src="scripts/scroll-trigger.js"></script>','<script>'+ (p/'scripts/scroll-trigger.js').read_text()+'</script>')
-    page.set_content(html)
+    load_page(page, fixture, css='body{margin:0}section{height:120px}.spacer{height:1200px}')
 
 if __name__ == '__main__':
     with sync_playwright() as pw:
-        executable = os.environ.get('EP_TEST_BROWSER') or shutil.which('chromium') or shutil.which('google-chrome')
-        browser=pw.chromium.launch(**({'executable_path':executable} if executable else {}),headless=True)
+
+        browser=launch_browser(pw)
         page=browser.new_page(viewport={'width':1000,'height':700})
         errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
         load(page);assert page.evaluate('window.initialOpacity')=='0.15',page.evaluate('window.initialOpacity')
-        page.wait_for_function("document.querySelector('#hero').dataset.epMotionState === 'visible'")
+        page.wait_for_function("document.querySelector('#hero').dataset.uiMotionState === 'visible'")
         assert page.locator('#once').evaluate('(e)=>getComputedStyle(e).opacity')=='0'
-        page.locator('#once').scroll_into_view_if_needed();page.wait_for_function("document.querySelector('#once').dataset.epMotionState === 'visible'")
-        page.locator('#repeat').scroll_into_view_if_needed();page.wait_for_function("document.querySelector('#repeat').dataset.epMotionState === 'visible'")
-        page.evaluate('window.scrollTo(0,0)');page.wait_for_function("!document.querySelector('#repeat').hasAttribute('data-ep-motion-state')")
-        assert page.locator('#once').get_attribute('data-ep-motion-state')=='visible'
-        page.locator('#repeat').scroll_into_view_if_needed();page.wait_for_function("document.querySelector('#repeat').dataset.epMotionState === 'visible'")
-        page.evaluate("window.EPMotion.replay(document.querySelector('#hero'))");assert page.locator('#hero').get_attribute('data-ep-motion-state')=='entering'
-        page.wait_for_function("document.querySelector('#hero').dataset.epMotionState === 'visible'")
-        page.locator('#focus button').focus();assert page.locator('#focus').get_attribute('data-ep-motion-state')=='visible'
-        page.emulate_media(reduced_motion='reduce');page.wait_for_function("!document.documentElement.hasAttribute('data-ep-motion')")
+        page.locator('#once').scroll_into_view_if_needed();page.wait_for_function("document.querySelector('#once').dataset.uiMotionState === 'visible'")
+        page.locator('#repeat').scroll_into_view_if_needed();page.wait_for_function("document.querySelector('#repeat').dataset.uiMotionState === 'visible'")
+        page.evaluate('window.scrollTo(0,0)');page.wait_for_function("!document.querySelector('#repeat').hasAttribute('data-ui-motion-state')")
+        assert page.locator('#once').get_attribute('data-ui-motion-state')=='visible'
+        page.locator('#repeat').scroll_into_view_if_needed();page.wait_for_function("document.querySelector('#repeat').dataset.uiMotionState === 'visible'")
+        page.evaluate("window.UI.motion.replay(document.querySelector('#hero'))");assert page.locator('#hero').get_attribute('data-ui-motion-state')=='entering'
+        page.wait_for_function("document.querySelector('#hero').dataset.uiMotionState === 'visible'")
+        page.locator('#focus button').focus();assert page.locator('#focus').get_attribute('data-ui-motion-state')=='visible'
+        page.emulate_media(reduced_motion='reduce');page.wait_for_function("!document.documentElement.hasAttribute('data-ui-motion')")
         assert page.locator('#repeat').evaluate('(e)=>getComputedStyle(e).opacity')=='1'
         assert not errors,errors
         print('PASS: initial style, load, scroll once, repeat/reentry, replay, focus, runtime reduced motion')

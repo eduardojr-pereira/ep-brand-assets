@@ -43,7 +43,7 @@ A identidade utiliza o logotipo EP, a paleta institucional grafite e cobre, tipo
 | E-mail | <img src="assets/icons/gmail_icon.svg" width="26" alt="E-mail" /> | [`gmail_icon.svg`](./assets/icons/gmail_icon.svg) |
 | Discord | <img src="assets/icons/discord_icon.svg" width="26" alt="Discord" /> | [`discord_icon.svg`](./assets/icons/discord_icon.svg) |
 
-Consulte as [animações](./assets/animations/) e [tokens de tema](./styles/theme-tokens.css).
+Consulte as [animações](./assets/animations/) e [tokens de tema](./styles/foundations.css).
 
 A biblioteca de animações inclui os seguintes ativos Lottie para o novo layout editorial:
 
@@ -57,7 +57,7 @@ A biblioteca de animações inclui os seguintes ativos Lottie para o novo layout
 A biblioteca centralizada contém 81 badges SVG: 48 de tecnologias, 3 de licenças, 6 de status, 22 de tópicos e 2 de métodos. Technologies, Licenses e Status podem ser utilizados em READMEs e HTMLs; Topics e Methods são exclusivos dos HTMLs da vitrine e dos relatórios. Consulte a [documentação da biblioteca](./docs/badges.md).
 
 > [!NOTE]
-> A biblioteca foi integrada e versionada localmente. A validação integrada dos consumidores e a publicação coordenada permanecem pendentes.
+> A biblioteca de recursos está versionada; a integração na nova arquitetura ainda está em andamento. A validação integrada dos consumidores e a publicação coordenada permanecem pendentes.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
@@ -67,15 +67,15 @@ A biblioteca centralizada contém 81 badges SVG: 48 de tecnologias, 3 de licenç
 
 ## Componentes Compartilhados
 
-Os componentes são mantidos no EP Brand e reutilizados quando pertinentes. O builder compõe o portfólio e os relatórios a partir das fontes canônicas, evitando implementações separadas em cada projeto.
+Os componentes são mantidos no EP Brand e reutilizados quando pertinentes. O builder canônico ainda será implementado; os templates atuais são macros Jinja, não páginas publicadas.
 
 | Componente | Fonte |
 |---|---|
 | Configuração institucional | [`config/brand.json`](./config/brand.json) |
-| Componentes web: Header, Footer, cards, botões, links, navegação e controles | [`components/web/`](./components/web/) |
+| Componentes web: cards, botões, links, navegação e controles | [`components/web/`](./components/web/) |
 | Rodapés Markdown bilíngues | [`components/markdown/`](./components/markdown/) |
 | Scripts e interações compartilhados | [`scripts/`](./scripts/) |
-| Composição, renderização e publicação | [`tools/`](./tools/) |
+| Ordem de dependências | [`config/ui.json`](./config/ui.json) |
 | Testes de regressão | [`tests/`](./tests/) |
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
@@ -86,20 +86,9 @@ Os componentes são mantidos no EP Brand e reutilizados quando pertinentes. O bu
 
 ## Temas e Internacionalização
 
-Uma camada centralizada de apresentação garante consistência visual e linguística no portfólio e nos relatórios dos projetos.
+A paleta e a tipografia estão centralizadas em [Foundations](./styles/foundations.css). Os temas claro e escuro são definidos por tokens CSS. A biblioteca de movimento, incluindo tokens e animações genéricas, está em [Motion](./styles/motion.css). A ordem de carregamento é definida em [config/ui.json](./config/ui.json).
 
-| Mecanismo | Responsabilidade | Fonte |
-|---|---|---|
-| Tokens de tema | Definições compartilhadas dos temas claro e escuro | [theme-tokens.css](./styles/theme-tokens.css) |
-| Tipografia | Sistema tipográfico consistente | [typography-v2.css](./styles/typography-v2.css) |
-| Inicialização do tema | Configuração inicial do tema | [theme-init.js](./scripts/theme-init.js) |
-| Alternância de tema | Alternância entre os temas claro e escuro | [theme.js](./scripts/theme.js) |
-| Internacionalização | Mecanismos compartilhados de interface bilíngue | [i18n.js](./scripts/i18n.js) |
-| Temas do Plotly | Apresentação analítica consistente | [plotly-theme.js](./scripts/plotly-theme.js) |
-| Localização do Plotly | Apresentação dos gráficos conforme o idioma | [plotly-i18n.js](./scripts/plotly-i18n.js) |
-
-> [!IMPORTANT]
-> Os mecanismos de apresentação são centralizados no EP Brand, enquanto as traduções específicas permanecem nos respectivos projetos. As mudanças de tema e idioma afetam apenas a apresentação, preservando os dados analíticos subjacentes.
+O controlador global de tema, a internacionalização e o carregador de animações serão implementados no próximo lote. Header, Footer, builder e adaptadores Plotly ainda não integram a nova arquitetura. Os projetos conservarão suas traduções específicas; tema e idioma não alterarão os dados analíticos.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
@@ -125,7 +114,7 @@ O Sistema Cromático Analítico EP separa a codificação visual dos dados da id
 > - **Fonte canônica:** A prévia das paletas é gerada diretamente de [config/colormaps.json](./config/colormaps.json), a configuração cromática canônica.
 > - **Origem e atribuição:** As escalas contínuas utilizam Scientific Colour Maps 9.0.0 de Fabio Crameri. EP LipariS Adapted é uma adaptação própria, não uma escala oficial. Consulte a [metodologia e atribuição](./docs/colormaps.md) e a [licença MIT](./docs/LICENSE-SCIENTIFIC-COLOUR-MAPS.txt).
 > - **Acessibilidade:** As paletas categóricas exigem sinais visuais complementares, como marcadores, estilos de linha, padrões ou rótulos. O contraste cromático isolado não garante acessibilidade.
-> - **Integração técnica:** O [renderizador Plotly canônico](./tools/render_plotly.py) e o [CSS gerado](./styles/colormaps.css) utilizam a mesma configuração cromática centralizada.
+> - **Integração técnica:** O futuro adaptador Plotly utilizará a configuração cromática centralizada. Nenhum renderizador Plotly está ativo nesta reconstrução.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
@@ -135,52 +124,53 @@ O Sistema Cromático Analítico EP separa a codificação visual dos dados da id
 
 ## Estrutura de Diretórios
 
-<details>
-<summary><strong>Árvore do repositório</strong></summary>
-
 ```text
 ep-brand-assets/
-├── .github/
-│   └── workflows/
-├── .gitignore
-├── LICENSE-BRAND.md
-├── LICENSE-CODE.txt
-├── LICENSE-CONTENT.md
-├── README.md
-├── README.pt-BR.md
 ├── assets/
 │   ├── animations/
 │   ├── badges/
+│   ├── fonts/
 │   ├── icons/
-│   │   └── technologies/
 │   └── logos/
 ├── components/
 │   ├── markdown/
 │   └── web/
+│       ├── navigation.html
+│       ├── buttons.html
+│       └── interactive.html
 ├── config/
-│   └── badges.json
+│   ├── badges.json
+│   ├── brand.json
+│   ├── colormaps.json
+│   └── ui.json
 ├── docs/
-│   └── badges.md
 ├── scripts/
+│   ├── scroll-trigger.js
+│   ├── navigation.js
+│   ├── buttons.js
+│   └── interactive.js
 ├── styles/
+│   ├── foundations.css
+│   ├── motion.css
+│   ├── links.css
+│   ├── buttons.css
+│   └── interactive.css
 ├── tests/
-│   └── test_badge_library.py
-└── tools/
-    ├── badge_html.py
-    └── render_badges.py
+│   ├── support.py
+│   └── test_*.py
+├── LICENSE-BRAND.md
+├── LICENSE-CODE.txt
+├── LICENSE-CONTENT.md
+├── README.md
+└── README.pt-BR.md
 ```
 
-</details>
-
-- `assets/` — Recursos de identidade visual.
-- `components/` — Componentes canônicos Markdown e web.
-- `config/` — Configuração cromática institucional e analítica.
-- `docs/` — Documentação técnica e atribuições de terceiros.
-- `scripts/` e `styles/` — Comportamento, temas e apresentação compartilhados.
-- `tests/` — Testes automatizados de regressão.
-- `tools/` — Utilitários de renderização, composição e publicação.
-
-A árvore inclui a biblioteca de badges e reflete a estrutura local; a publicação coordenada permanece pendente.
+- `assets/` — Recursos de identidade visual e fontes.
+- `components/` — Rodapés Markdown e macros Jinja canônicas.
+- `config/` — Dados institucionais, catálogos e ordem de dependências.
+- `docs/` — Documentação técnica e atribuições.
+- `scripts/` e `styles/` — Comportamento e apresentação compartilhados.
+- `tests/` — Testes de componentes com infraestrutura comum.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
@@ -190,32 +180,9 @@ A árvore inclui a biblioteca de badges e reflete a estrutura local; a publicaç
 
 ## Uso e Integração
 
-Em outros repositórios, utilize os endereços públicos dos ativos.
+A configuração [brand.json](./config/brand.json) define `asset_root` como caminho relativo à versão do EP Brand consumida. O futuro builder deverá resolver os recursos a partir do mesmo checkout ou referência imutável que fornece os componentes, sem dependência de uma branch mutável.
 
-```markdown
-![EP](https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/logos/logo_initials.png)
-```
-
-```html
-<img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/github_icon.svg" alt="GitHub" width="26" />
-```
-
-Mantenha o checkout canônico do EP Brand ao lado do checkout do Portfolio. A partir do EP Brand, substitua o caminho de origem pelo caminho local do Portfolio; utilize um diretório de saída fora dos dois repositórios.
-
-```bash
-python3 tools/build_site.py --source /path/to/data-science-portfolio --output /tmp/ep-portfolio-preview
-```
-
-Visualize os rodapés Markdown sem alterar arquivos:
-
-```bash
-python3 tools/render_footer.py readme --kind portfolio --lang en
-python3 tools/render_footer.py readme --kind knowledge-base --lang pt-BR
-```
-
-Com `--file`, o renderizador exibe o diff proposto; somente `--apply` grava alterações. Revise antes de aplicar. Renderize o footer web com ativos embutidos usando `python3 tools/render_footer.py web --embed-assets`.
-
-Não renomeie ativos compartilhados sem verificar os consumidores. A geração local não publica alterações.
+Os templates de `components/web/` são macros Jinja com escape HTML; a ordem dos CSS e scripts consta em `config/ui.json`. A biblioteca ainda não possui um builder ativo. Os rodapés Markdown existentes são preservados, independentemente da nova arquitetura web. Não renomeie ativos compartilhados sem verificar os consumidores. Nenhuma geração local publica mudanças.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
@@ -225,16 +192,13 @@ Não renomeie ativos compartilhados sem verificar os consumidores. A geração l
 
 ## Testes e Validação
 
-Execute a suíte de testes de regressão a partir da raiz do repositório:
+Com Python, Jinja2, Playwright e um navegador compatível com Chromium instalados, execute a partir da raiz:
 
 ```bash
-python3 -m unittest discover -s tests -v
+python3 tests/support.py
 ```
 
-Revise as prévias geradas e verifique os componentes compartilhados, temas, alternância de idioma, navegação e apresentação analítica nos projetos consumidores antes da publicação.
-
-> [!NOTE]
-> A validação integrada final e a publicação coordenada permanecem pendentes. A geração local não publica alterações.
+`UI_TEST_BROWSER` permite informar o executável do navegador. A suíte utiliza o manifesto de dependências, os componentes canônicos e as fontes reais do repositório. Os testes de componentes não substituem o aceite visual e funcional integrado no GitHub Pages. O player Lottie real, a tradução global, o formulário e a publicação ainda exigem validação.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
@@ -293,14 +257,14 @@ A licença MIT permite uso, cópia, modificação e redistribuição, inclusive 
 
 <div align="center">
 
-<a href="https://eduardo-pereira.webflow.io/"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/logos/logo_initials.png" alt="Logotipo EP" height="90"></a>
+<a href="https://eduardo-pereira.webflow.io/"><img src="./assets/logos/logo_initials.png" alt="Logotipo EP" height="90"></a>
 
 Vamos nos conectar e trocar ideias e oportunidades.
 
-<a href="mailto:eduardojr.pereira@gmail.com"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/gmail_icon.svg" alt="E-mail" height="27"></a>&nbsp;&nbsp;
-<a href="https://www.linkedin.com/in/eduardo-jr-pereira/"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/linkedin_icon.svg" alt="LinkedIn" height="27"></a>&nbsp;&nbsp;
-<a href="https://github.com/eduardojr-pereira"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/github_icon.svg" alt="GitHub" height="27"></a>&nbsp;&nbsp;
-<a href="https://discord.com/users/533043855122235393"><img src="https://raw.githubusercontent.com/eduardojr-pereira/ep-brand-assets/main/assets/icons/discord_icon.svg" alt="Discord" height="27"></a>
+<a href="mailto:eduardojr.pereira@gmail.com"><img src="./assets/icons/gmail_icon.svg" alt="E-mail" height="27"></a>&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/eduardo-jr-pereira/"><img src="./assets/icons/linkedin_icon.svg" alt="LinkedIn" height="27"></a>&nbsp;&nbsp;
+<a href="https://github.com/eduardojr-pereira"><img src="./assets/icons/github_icon.svg" alt="GitHub" height="27"></a>&nbsp;&nbsp;
+<a href="https://discord.com/users/533043855122235393"><img src="./assets/icons/discord_icon.svg" alt="Discord" height="27"></a>
 
 </div>
 

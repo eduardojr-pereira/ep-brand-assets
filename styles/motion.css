@@ -1,62 +1,115 @@
+/*
+ * Responsibility: Motion tokens, timing, reusable keyframes and reduced-motion primitives.
+ * Does not manage component state, language or theme preference.
+ */
+
+:root {
+    --ui-ease-smooth: cubic-bezier(.22, 1, .36, 1);
+    --ui-ease-directional: cubic-bezier(.76, 0, .24, 1);
+    --ui-ease-out-circ: cubic-bezier(0, .55, .45, 1);
+    --ui-duration-color: 200ms;
+    --ui-duration-feedback: 250ms;
+    --ui-duration-nav: 420ms;
+    --ui-duration-link: 450ms;
+    --ui-duration-underline: 550ms;
+    --ui-duration-fill: 550ms;
+    --ui-duration-reveal: 650ms;
+    --ui-duration-hero-line: 1650ms;
+    --ui-duration-hero-fade: 1350ms;
+    --ui-delay-hero-first: 50ms;
+    --ui-delay-hero-second: 190ms;
+    --ui-delay-hero-third: 330ms;
+    --ui-delay-hero-detail: 700ms;
+    --ui-duration-orbit: 20s;
+    --ui-duration-arrow-cycle: 3370ms;
+    --ui-distance-text: 8px;
+    --ui-distance-arrow: 3px;
+    --ui-duration-evidence-entry: 850ms;
+    --ui-duration-slide-entry: 900ms;
+    --ui-duration-evidence-cycle: 4500ms;
+    --ui-distance-reveal: 24px;
+    --ui-scale-reveal: .96;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --ui-duration-color: 0ms;
+        --ui-duration-feedback: 0ms;
+        --ui-duration-nav: 0ms;
+        --ui-duration-link: 0ms;
+        --ui-duration-underline: 0ms;
+        --ui-duration-fill: 0ms;
+        --ui-duration-reveal: 0ms;
+        --ui-duration-evidence-entry: 0ms;
+        --ui-duration-slide-entry: 0ms;
+        --ui-duration-hero-line: 0ms;
+        --ui-duration-hero-fade: 0ms;
+        --ui-delay-hero-first: 0ms;
+        --ui-delay-hero-second: 0ms;
+        --ui-delay-hero-third: 0ms;
+        --ui-delay-hero-detail: 0ms;
+    }
+}
+
 /* Motion targets are dedicated wrappers, not interactive components. */
 [data-motion] {
-    --ep-motion-from-x: 0px;
-    --ep-motion-from-y: 0px;
-    --ep-motion-from-scale: 1;
-    --ep-motion-from-opacity: 0;
+    --ui-motion-from-x: 0px;
+    --ui-motion-from-y: 0px;
+    --ui-motion-from-scale: 1;
+    --ui-motion-from-opacity: 0;
 }
 
 [data-motion="reveal-up"] {
-    --ep-motion-from-y: var(--ep-motion-distance, var(--ep-distance-reveal));
+    --ui-motion-from-y: var(--ui-motion-distance, var(--ui-distance-reveal));
 }
 
 [data-motion="reveal-left"] {
-    --ep-motion-from-x: calc(-1 * var(--ep-motion-distance, var(--ep-distance-reveal)));
+    --ui-motion-from-x: calc(-1 * var(--ui-motion-distance, var(--ui-distance-reveal)));
 }
 
 [data-motion="reveal-right"] {
-    --ep-motion-from-x: var(--ep-motion-distance, var(--ep-distance-reveal));
+    --ui-motion-from-x: var(--ui-motion-distance, var(--ui-distance-reveal));
 }
 
 [data-motion="scale-in"] {
-    --ep-motion-from-scale: var(--ep-motion-scale, var(--ep-scale-reveal));
+    --ui-motion-from-scale: var(--ui-motion-scale, var(--ui-scale-reveal));
 }
 
 /* Progressive enhancement: without the head bootstrap, content stays visible. */
-:root[data-ep-motion="active"] [data-motion]:is([data-scroll-trigger="load"], [data-scroll-trigger="once"], [data-scroll-trigger="repeat"]):not([data-ep-motion-state]) {
-    opacity: var(--ep-motion-opacity, var(--ep-motion-from-opacity));
-    transform: translate3d(var(--ep-motion-from-x), var(--ep-motion-from-y), 0)
-        scale(var(--ep-motion-from-scale));
+:root[data-ui-motion="active"] [data-motion]:is([data-scroll-trigger="load"], [data-scroll-trigger="once"], [data-scroll-trigger="repeat"]):not([data-ui-motion-state]) {
+    opacity: var(--ui-motion-opacity, var(--ui-motion-from-opacity));
+    transform: translate3d(var(--ui-motion-from-x), var(--ui-motion-from-y), 0)
+        scale(var(--ui-motion-from-scale));
 }
 
-:root[data-ep-motion="active"] [data-motion][data-ep-motion-state="entering"] {
-    animation: ep-motion-enter var(--ep-motion-duration, var(--ep-duration-reveal))
-        var(--ep-motion-ease, var(--ep-ease-smooth)) var(--ep-motion-delay, 0ms) backwards;
+:root[data-ui-motion="active"] [data-motion][data-ui-motion-state="entering"] {
+    animation: ui-motion-enter var(--ui-motion-duration, var(--ui-duration-reveal))
+        var(--ui-motion-ease, var(--ui-ease-smooth)) var(--ui-motion-delay, 0ms) backwards;
 }
 
-@keyframes ep-motion-enter {
+@keyframes ui-motion-enter {
     from {
-        opacity: var(--ep-motion-opacity, var(--ep-motion-from-opacity));
-        transform: translate3d(var(--ep-motion-from-x), var(--ep-motion-from-y), 0)
-            scale(var(--ep-motion-from-scale));
+        opacity: var(--ui-motion-opacity, var(--ui-motion-from-opacity));
+        transform: translate3d(var(--ui-motion-from-x), var(--ui-motion-from-y), 0)
+            scale(var(--ui-motion-from-scale));
     }
     to { opacity: 1; transform: none; }
 }
 
-@keyframes ep-motion-fade-out {
+@keyframes ui-motion-fade-out {
     from { opacity: 1; }
     to { opacity: 0; }
 }
 
 /* Keyboard navigation must never leave focus inside invisible content. */
-:root[data-ep-motion="active"] [data-motion]:is([data-scroll-trigger="load"], [data-scroll-trigger="once"], [data-scroll-trigger="repeat"]):is(:focus-within, :target) {
+:root[data-ui-motion="active"] [data-motion]:is([data-scroll-trigger="load"], [data-scroll-trigger="once"], [data-scroll-trigger="repeat"]):is(:focus-within, :target) {
     opacity: 1;
     transform: none;
     animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    :root[data-ep-motion="active"] [data-motion] {
+    :root[data-ui-motion="active"] [data-motion] {
         opacity: 1 !important;
         transform: none !important;
         animation: none !important;

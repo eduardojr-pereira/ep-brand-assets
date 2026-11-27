@@ -1,0 +1,17 @@
+{
+  "styles": [
+    "styles/foundations.css",
+    "styles/motion.css",
+    "styles/links.css",
+    "styles/buttons.css",
+    "styles/interactive.css"
+  ],
+  "head_scripts": [
+    "scripts/scroll-trigger.js"
+  ],
+  "defer_scripts": [
+    "scripts/navigation.js",
+    "scripts/buttons.js",
+    "scripts/interactive.js"
+  ]
+}
