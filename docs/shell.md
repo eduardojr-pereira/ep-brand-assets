@@ -3,9 +3,9 @@
 ## Ownership
 
 - `components/web/header.html` and `components/web/footer.html`: structure and composition only; consume `navigation.html`, `buttons.html` and `localization.html`. Shared navigation destinations and semantic labels are in `config/navigation.json`; institutional URLs are in `config/brand.json`; translations are in `config/translations.json`.
-- `styles/header.css` and `styles/footer.css`: component layout, responsive placement, optical icon geometry and surface presentation. Foundations owns the shared page gutter and palette; Motion owns entry timings. Link arrows, underline, editorial rows, radial buttons and return links retain their canonical implementation.
-- `scripts/header.js`: move a single set of navigation nodes between desktop and compact native disclosure; measure sticky height; forward preference commands. The existing `navigation.js` alone owns scroll selection, dropdown closing and filter selection. The header listens to language changes only for layout, not translation. The language indicator is a binding in the shared dictionary; the theme icon is selected by the global theme attribute.
-- `scripts/footer.js`: hover/focus playback intent and frame positioning for footer artwork; `UI.assets` owns fetching, runtime/cache, theme variants and lifecycle. There is no second player loader. Static decorative fallback is available before readiness and without JS. Reduced motion shows the final frame, not an automatic animation.
+- `styles/header.css` and `styles/footer.css`: component layout, responsive placement, optical icon geometry and surface presentation. Consume the shared foundations, [motion](motion.md), [links and navigation](navigation.md), and [buttons](buttons.md).
+- `scripts/header.js`: move a single navigation tree between desktop and compact disclosure, measure sticky height and forward preference commands. Navigation behavior follows [navigation.md](navigation.md); global preferences and translation bindings follow [presentation.md](presentation.md).
+- `scripts/footer.js`: hover/focus playback intent and frame positioning for footer artwork. Reduced motion shows the final frame. Asset loading, lifecycle, variants and fallback follow [presentation.md](presentation.md).
 
 ## Usage
 
@@ -22,7 +22,7 @@ For reports, call `h.header(brand,navigation,sections,home_href,back_href)`. Eac
 
 Desktop header: Home, Selected Projects, All Projects, About Me, Contact and GitHub (click disclosure). Report sections are supplied by the consumer. The compact trigger is text-only, and the exact same links are moved into the native disclosure when width is insufficient or at 670px and below. A nested GitHub menu reuses canonical disclosure behavior. The report return link stays visible. No JavaScript leaves native links available. The header entrance uses the shared motion primitive and never replays just for translation.
 
-Footer: 12-column layout, institutional bio and radial Learn More, editorial navigation and repositories, social links, legal links and persistent-underlined Back to Top. Titles and descriptions remain in one aligned content block. The approved optical scales for navigation Lotties are Home 136%, Award 100%, All Projects 95%, About Me 180%, Contact 80%. Theme-rest and copper-hover instances consume the same pinned runtime and cached sources. Social labels and icons stack at narrow widths; all legal text shares the copyright font size. The logo, copy, destinations and artwork must be verified in the integrated page. The legacy Markdown footers are independent and unchanged.
+Footer: 12-column layout, institutional bio and radial Learn More, editorial navigation and repositories, social links, legal links and persistent-underlined Back to Top. Titles and descriptions remain in one aligned content block. The approved optical scales for navigation Lotties are Home 136%, Award 100%, All Projects 95%, About Me 180%, Contact 80%. Footer artwork uses theme-rest and copper-hover variants. Social labels and icons stack at narrow widths; all legal text shares the copyright font size. The logo, copy, destinations and artwork must be verified in the integrated page. The legacy Markdown footers are independent and unchanged.
 
 ## Validation
 
