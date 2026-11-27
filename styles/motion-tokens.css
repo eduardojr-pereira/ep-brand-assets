@@ -1,0 +1,42 @@
+/* EP Design System — shared motion values. */
+:root {
+    --ep-ease-smooth: cubic-bezier(.22, 1, .36, 1);
+    --ep-ease-directional: cubic-bezier(.76, 0, .24, 1);
+    --ep-ease-out-circ: cubic-bezier(0, .55, .45, 1);
+    --ep-duration-color: 200ms;
+    --ep-duration-feedback: 250ms;
+    --ep-duration-nav: 420ms;
+    --ep-duration-link: 450ms;
+    --ep-duration-underline: 550ms;
+    --ep-duration-fill: 550ms;
+    --ep-duration-reveal: 650ms;
+    --ep-duration-hero-line: 1650ms;
+    --ep-duration-hero-fade: 1350ms;
+    --ep-delay-hero-first: 50ms;
+    --ep-delay-hero-second: 190ms;
+    --ep-delay-hero-third: 330ms;
+    --ep-delay-hero-detail: 700ms;
+    --ep-duration-orbit: 20s;
+    --ep-duration-arrow-cycle: 3370ms;
+    --ep-distance-arrow: 3px;
+    --ep-distance-reveal: 24px;
+    --ep-scale-reveal: .96;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --ep-duration-color: 0ms;
+        --ep-duration-feedback: 0ms;
+        --ep-duration-nav: 0ms;
+        --ep-duration-link: 0ms;
+        --ep-duration-underline: 0ms;
+        --ep-duration-fill: 0ms;
+        --ep-duration-reveal: 0ms;
+        --ep-duration-hero-line: 0ms;
+        --ep-duration-hero-fade: 0ms;
+        --ep-delay-hero-first: 0ms;
+        --ep-delay-hero-second: 0ms;
+        --ep-delay-hero-third: 0ms;
+        --ep-delay-hero-detail: 0ms;
+    }
+}

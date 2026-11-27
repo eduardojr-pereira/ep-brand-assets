@@ -1,0 +1,65 @@
+/* Motion targets are dedicated wrappers, not interactive components. */
+[data-motion] {
+    --ep-motion-from-x: 0px;
+    --ep-motion-from-y: 0px;
+    --ep-motion-from-scale: 1;
+    --ep-motion-from-opacity: 0;
+}
+
+[data-motion="reveal-up"] {
+    --ep-motion-from-y: var(--ep-motion-distance, var(--ep-distance-reveal));
+}
+
+[data-motion="reveal-left"] {
+    --ep-motion-from-x: calc(-1 * var(--ep-motion-distance, var(--ep-distance-reveal)));
+}
+
+[data-motion="reveal-right"] {
+    --ep-motion-from-x: var(--ep-motion-distance, var(--ep-distance-reveal));
+}
+
+[data-motion="scale-in"] {
+    --ep-motion-from-scale: var(--ep-motion-scale, var(--ep-scale-reveal));
+}
+
+/* Progressive enhancement: without the head bootstrap, content stays visible. */
+:root[data-ep-motion="active"] [data-motion]:is([data-scroll-trigger="load"], [data-scroll-trigger="once"], [data-scroll-trigger="repeat"]):not([data-ep-motion-state]) {
+    opacity: var(--ep-motion-opacity, var(--ep-motion-from-opacity));
+    transform: translate3d(var(--ep-motion-from-x), var(--ep-motion-from-y), 0)
+        scale(var(--ep-motion-from-scale));
+}
+
+:root[data-ep-motion="active"] [data-motion][data-ep-motion-state="entering"] {
+    animation: ep-motion-enter var(--ep-motion-duration, var(--ep-duration-reveal))
+        var(--ep-motion-ease, var(--ep-ease-smooth)) var(--ep-motion-delay, 0ms) backwards;
+}
+
+@keyframes ep-motion-enter {
+    from {
+        opacity: var(--ep-motion-opacity, var(--ep-motion-from-opacity));
+        transform: translate3d(var(--ep-motion-from-x), var(--ep-motion-from-y), 0)
+            scale(var(--ep-motion-from-scale));
+    }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes ep-motion-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Keyboard navigation must never leave focus inside invisible content. */
+:root[data-ep-motion="active"] [data-motion]:is([data-scroll-trigger="load"], [data-scroll-trigger="once"], [data-scroll-trigger="repeat"]):is(:focus-within, :target) {
+    opacity: 1;
+    transform: none;
+    animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root[data-ep-motion="active"] [data-motion] {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+    }
+    html { scroll-behavior: auto !important; }
+}
