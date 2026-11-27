@@ -140,7 +140,7 @@ The current library contains 81 SVG badges.
 | topics | Big Data & Distributed Processing | `assets/badges/topics/big_data_distributed_processing_en.svg` |
 | topics | Big Data e Processamento Distribuído | `assets/badges/topics/big_data_distributed_processing_pt_br.svg` |
 
-The shared `badges(items)` macro in `components/web/interactive.html` consumes canonical asset paths. The future builder and global theme/language services will resolve localized artwork and standalone embedding where required.
+The shared `badges(items)` macro in `components/web/interactive.html` consumes canonical asset paths. The shared asset service applies explicit image variants. The future builder resolves canonical catalog paths and standalone embedding where required.
 
 Generated HTML is a consumer of the canonical library,
 not an independent source of badge artwork.
@@ -190,7 +190,7 @@ Deduplicate technologies by canonical ID. Stably partition the input list into e
 
 ### Themes, localization and consumers
 
-Standalone SVGs use `prefers-color-scheme`. Explicit light/dark and localized variants must be resolved by the future shared theme/language services and builder. Localized badges use `_en` and `_pt_br` IDs/paths; supply the resolved `src` and `label` to `badges(items)`. Never maintain an independent source of artwork in a consumer. Regenerate embedded HTML after catalog changes. README references retain canonical published paths; updates depend on publication and caching. GitHub's selected theme may differ from the browser color scheme: validate both after publication; this is not yet confirmed. No existing README paths are removed.
+Standalone SVGs use `prefers-color-scheme`. `UI.assets` selects explicit light/dark or EN/PT-BR source pairs. Localized badges use `_en` and `_pt_br` IDs/paths; supply canonical resolved `src`, `label` and optional `en_src`/`pt_br_src` or `light`/`dark` pairs to `badges(items)`. The builder will resolve paths from the same library version. Never maintain an independent source of artwork in a consumer. Regenerate embedded HTML after catalog changes. README references retain canonical published paths; updates depend on publication and caching. GitHub's selected theme may differ from the browser color scheme: validate both after publication; this is not yet confirmed. No existing README paths are removed.
 
 ## Adding or updating a badge
 

@@ -155,7 +155,7 @@
 .ui-area-check__fallback path { visibility: hidden; }
 [aria-pressed="true"] .ui-area-check { color: var(--ui-color-accent); }
 [aria-pressed="true"] .ui-area-check__fallback path { visibility: visible; }
-.ui-area-check[data-ui-lottie-ready] .ui-area-check__fallback { visibility: hidden; }
+.ui-area-check:has([data-ui-lottie-ready]) .ui-area-check__fallback { visibility: hidden; }
 [data-ui-section] { scroll-margin-top: var(--ui-sticky-offset, 0px); }
 :root[data-ui-smooth-scroll] { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
@@ -166,5 +166,5 @@
     .ui-dropdown[open] > .ui-dropdown__panel { animation: none; }
 }
 .ui-area-check [data-ui-check-player] { visibility: hidden; }
-.ui-area-check[data-ui-lottie-ready] [data-ui-check-player] { visibility: visible; }
+.ui-area-check [data-ui-check-player][data-ui-lottie-ready] { visibility: visible; }
 [aria-pressed="false"] .ui-area-check [data-ui-check-player] { opacity: .65; filter: grayscale(1); }

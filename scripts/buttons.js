@@ -39,10 +39,6 @@
         [fine, reduce].forEach(query => query.addEventListener('change', () => orbits.forEach((_, node) => reset(node))));
         document.addEventListener('visibilitychange', () => orbits.forEach((_, node) => { pause(node); if (document.hidden) reset(node); }));
     }
-    function setOrbitLabel(node, label, ringLabel) {
-        node.setAttribute('aria-label', label);
-        node.querySelector('[data-ui-ring-label]').textContent = `${ringLabel} · ${ringLabel} · `;
-    }
     function setSendState(node, state, options = {}) {
         if (!['idle', 'pending', 'success', 'error'].includes(state)) throw new RangeError('Invalid send state');
         if (state === 'success' && options.confirmed !== true) throw new Error('Confirmed transport response required');
@@ -54,21 +50,13 @@
     }
     function updateFeedback(node) {
         const state = node.dataset.state;
-        const copy = ['success', 'error'].includes(state) ? node.querySelector(`[data-ui-send-copy="${state}"]`).textContent : '';
-        node.querySelector('[role="status"]').textContent = copy;
-    }
-    function setSendLabels(node, labels) {
-        for (const state of ['idle', 'pending', 'success']) {
-            if (typeof labels[state] === 'string') node.querySelector(`[data-ui-send-label="${state}"]`).textContent = labels[state];
-        }
-        for (const state of ['success', 'error']) {
-            const text = labels[`${state}Feedback`];
-            if (typeof text === 'string') node.querySelector(`[data-ui-send-copy="${state}"]`).textContent = text;
-        }
-        updateFeedback(node);
+        const status = node.querySelector('[role="status"]');
+        const source = node.querySelector(`[data-ui-send-copy="${state}"]`);
+        if (source) UI.i18n.bindFrom(status, source);
+        else UI.i18n.clear(status);
     }
     window.UI ??= {};
-    window.UI.actions = Object.freeze({setOrbitLabel, setSendState, setSendLabels});
+    window.UI.actions = Object.freeze({setSendState});
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once: true});
     else init();
 })();

@@ -7,11 +7,102 @@
     "styles/interactive.css"
   ],
   "head_scripts": [
+    "scripts/theme.js",
+    "scripts/i18n.js",
     "scripts/scroll-trigger.js"
   ],
   "defer_scripts": [
+    "scripts/assets.js",
     "scripts/navigation.js",
     "scripts/buttons.js",
     "scripts/interactive.js"
-  ]
+  ],
+  "lottie": {
+    "version": "5.12.2",
+    "commit": "846dbf2a5c40df245db4307490cecae02b9dcca4",
+    "runtime": "vendor/lottie/lottie.min.js",
+    "license": "vendor/lottie/LICENSE.md",
+    "source_files": {
+      "build/player/lottie.min.js": "db3599b9c9ebf4a6cf0643bdb58eb3caaafd0832",
+      "LICENSE.md": "9c1cd7cb84357f4aa3d57ff961cd37d993055ef5"
+    },
+    "animations": {
+      "checkbox": {
+        "file": "animations/lottie-checkbox-v1-orange.json"
+      },
+      "initials": {
+        "file": "animations/lottie_initials.json"
+      },
+      "home": {
+        "variants": {
+          "graphite": "animations/lottie_home_graphite.json",
+          "white": "animations/lottie_home_white.json",
+          "copper": "animations/lottie_home_copper.json"
+        }
+      },
+      "award": {
+        "variants": {
+          "graphite": "animations/lottie_award_graphite.json",
+          "white": "animations/lottie_award_white.json",
+          "copper": "animations/lottie_award_copper.json"
+        }
+      },
+      "projects": {
+        "variants": {
+          "graphite": "animations/lottie_projects_graphite.json",
+          "white": "animations/lottie_projects_white.json",
+          "copper": "animations/lottie_projects_copper.json"
+        }
+      },
+      "about": {
+        "variants": {
+          "graphite": "animations/lottie_about_graphite.json",
+          "white": "animations/lottie_about_white.json",
+          "copper": "animations/lottie_about_copper.json"
+        }
+      },
+      "gmail": {
+        "variants": {
+          "graphite": "animations/lottie_gmail_graphite.json",
+          "white": "animations/lottie_gmail_white.json",
+          "copper": "animations/lottie_gmail_copper.json"
+        }
+      },
+      "github": {
+        "variants": {
+          "graphite": "animations/lottie_github_graphite.json",
+          "white": "animations/lottie_github_white.json",
+          "copper": "animations/lottie_github_copper.json"
+        }
+      },
+      "linkedin": {
+        "variants": {
+          "graphite": "animations/lottie_linkedin_graphite.json",
+          "white": "animations/lottie_linkedin_white.json",
+          "copper": "animations/lottie_linkedin_copper.json"
+        }
+      },
+      "discord": {
+        "variants": {
+          "graphite": "animations/lottie_discord_graphite.json",
+          "white": "animations/lottie_discord_white.json",
+          "copper": "animations/lottie_discord_copper.json"
+        }
+      },
+      "knowledge": {
+        "variants": {
+          "graphite": "animations/lottie_knowledge_graphite.json",
+          "white": "animations/lottie_knowledge_white.json",
+          "copper": "animations/lottie_knowledge_copper.json"
+        }
+      },
+      "search_to_x": {
+        "variants": {
+          "graphite": "animations/lottie_search_to_x_graphite.json",
+          "white": "animations/lottie_search_to_x_white.json",
+          "copper": "animations/lottie_search_to_x_copper.json"
+        }
+      }
+    }
+  }
 }

@@ -1,23 +1,22 @@
 """Responsibility: Behavior tests for canonical navigation; no visual preview is generated."""
-import json
 
 from playwright.sync_api import sync_playwright
 
-from support import ROOT, ENV, load_page, launch_browser
+from support import ROOT, ENV, load_page, launch_browser, new_page
 FIXTURE = '''{% import 'components/web/navigation.html' as n %}
 <nav data-ui-scroll-nav style="position:sticky;top:0;z-index:3;display:flex;gap:20px;background:var(--ui-color-bg)">{{ n.nav_link('Home','#home',true) }}{{ n.nav_link('Projects','#projects') }}{{ n.nav_link('Contact','#contact') }}</nav>
 <div id="diagonal">{{ n.diagonal('View Project','#projects') }}</div>
 <div id="editorial">{% call n.editorial('Home','Return to the beginning','#home') %}<span>Icon</span>{% endcall %}</div>
 <div id="filters" data-ui-filter="collection" style="display:flex;gap:20px">{{ n.filter_button('All','all',true) }}{{ n.filter_button('Selected','selected') }}</div>
 <div id="github">{% call n.disclosure('GitHub') %}{{ n.menu_link('Portfolio','#projects') }}{{ n.menu_link('Knowledge Base','#contact') }}{% endcall %}</div>
-<div id="areas">{% call n.disclosure('All areas','area') %}{{ n.area_option('All areas','all',true) }}{{ n.area_option('Data Analytics','analytics') }}{% endcall %}</div>
+<div id="areas">{% call n.disclosure(message('shared.catalog.areas'),'area') %}{{ n.area_option(message('shared.catalog.areas'),'all',true) }}{{ n.area_option('Data Analytics','analytics') }}{% endcall %}</div>
 <div id="back">{{ n.return_link('← Back to Portfolio','#projects') }}</div>
 <div id="top">{{ n.return_link('Back to Top ↑','#home',true) }}</div>
 <section data-ui-section id="home">Home</section><section data-ui-section id="projects">Projects</section><section data-ui-section id="contact">Contact</section>'''
 
 
-def load(page, theme='dark'):
-    load_page(page, ENV.from_string(FIXTURE).render(), theme, css=':root{--ui-sticky-offset:40px}section{height:850px}#diagonal,#editorial,#filters,#github,#areas,#back,#top{padding:12px 20px}#editorial{max-width:340px}')
+def load(page, theme='dark', lottie=False):
+    load_page(page, ENV.from_string(FIXTURE).render(), theme, lottie=lottie, css=':root{--ui-sticky-offset:40px}section{height:850px}#diagonal,#editorial,#filters,#github,#areas,#back,#top{padding:12px 20px}#editorial{max-width:340px}')
 
 
 def translate(locator):
@@ -81,17 +80,34 @@ def test(page, theme):
 
 
 def test_check_adapter(page):
-    load(page)
-    source = json.loads((ROOT/'assets/animations/lottie-checkbox-v1-orange.json').read_text())
-    # Contract mock only: the real player will be checked during shared asset integration.
-    page.evaluate('''source => { window.checkCalls=[]; const runtime={loadAnimation(opts){const p={destroy(){},goToAndStop(n){checkCalls.push(['frame',n])},setSpeed(n){checkCalls.push(['speed',n])},playSegments(s){checkCalls.push(['segment',s])},addEventListener(n,cb){if(n==='DOMLoaded')queueMicrotask(cb)}};checkCalls.push(['color',opts.animationData]);return p;}}; UI.navigation.connectChecks(runtime,source); }''', source)
-    page.wait_for_function("document.querySelectorAll('[data-ui-lottie-ready]').length===2")
+    requests=[]
+    page.on('request',lambda request:requests.append(request.url))
+    load(page,lottie=True)
+    page.wait_for_function("document.querySelectorAll('[data-ui-check-player][data-ui-lottie-ready]').length===2",timeout=15000)
+    assert page.locator('[data-ui-check-player] svg').count()==2
+    assert page.evaluate("window.lottie.version") == '5.12.2'
+    page.evaluate('''() => {window.checkCalls=[]; for(const host of document.querySelectorAll('[data-ui-check-player]')) {const p=UI.assets.get(host); const play=p.playSegments.bind(p);p.playSegments=(s,force)=>{checkCalls.push(s);return play(s,force);};}}''')
     area = page.locator('#areas details');area.locator('summary').click(); area.get_by_role('button',name='Data Analytics').click()
     assert area.get_attribute('open') is not None
     page.wait_for_function("!document.querySelector('#areas details').open")
-    segments = page.evaluate("checkCalls.filter(x=>x[0]==='segment').map(x=>x[1])")
+    segments = page.evaluate('checkCalls')
     assert [0,44] in segments and [85,119] in segments
-    print('PASS: checkbox adapter contract (mock), animation segments and delayed closing')
+    page.evaluate("UI.theme.set('light')")
+    page.wait_for_function("document.querySelectorAll('[data-ui-check-player][data-ui-lottie-ready]').length===2")
+    # Closed details hides the panel: Chromium innerText can be empty even with intact DOM labels.
+    assert area.get_attribute('open') is None
+    assert area.get_attribute('data-ui-value') == 'analytics'
+    selected = area.locator('button[aria-pressed=true]')
+    assert selected.count() == 1
+    assert selected.get_attribute('data-ui-filter-value') == 'analytics'
+    assert selected.locator('[data-ui-label]').all_text_contents() == ['Data Analytics', 'Data Analytics']
+    assert area.locator('summary [data-ui-label]').all_text_contents() == ['Data Analytics', 'Data Analytics']
+    assert area.locator('summary .ui-link__regular').inner_text() == 'Data Analytics'
+    assert area.locator('button[data-ui-filter-value="all"]').get_attribute('aria-pressed') == 'false'
+    assert page.evaluate('''() => {const h=document.querySelector('#areas [aria-pressed="true"] [data-ui-check-player]');return Math.abs(UI.assets.get(h).currentFrame-44)<1;}''')
+    assert sum(url.endswith('/vendor/lottie/lottie.min.js') for url in requests)==1
+    assert sum(url.endswith('/animations/lottie-checkbox-v1-orange.json') for url in requests)==1
+    print('PASS: real Lottie SVG, cached source/player, segments, delayed closing and theme reload with selection preserved')
 
 
 if __name__ == '__main__':
@@ -99,15 +115,15 @@ if __name__ == '__main__':
 
         browser = launch_browser(pw)
         errors = []
-        page = browser.new_page(viewport={'width': 1000, 'height': 700})
+        page = new_page(browser, viewport={'width': 1000, 'height': 700})
         page.set_default_timeout(5000)
         page.on('pageerror', lambda e: errors.append(str(e)))
         test(page, 'dark'); page.close()
-        page = browser.new_page(viewport={'width':1000,'height':700}); page.on('pageerror', lambda e: errors.append(str(e)))
+        page = new_page(browser, viewport={'width':1000,'height':700}); page.on('pageerror', lambda e: errors.append(str(e)))
         test(page, 'light'); page.close()
-        page = browser.new_page(viewport={'width':1000,'height':700}); page.on('pageerror', lambda e: errors.append(str(e)))
+        page = new_page(browser, viewport={'width':1000,'height':700}); page.on('pageerror', lambda e: errors.append(str(e)))
         test_check_adapter(page); page.close()
-        page = browser.new_page(viewport={'width':390,'height':844}, reduced_motion='reduce')
+        page = new_page(browser, viewport={'width':390,'height':844}, reduced_motion='reduce')
         page.on('pageerror', lambda e: errors.append(str(e)))
         load(page)
         link=page.locator('#diagonal a');link.hover()
@@ -118,7 +134,7 @@ if __name__ == '__main__':
         page.locator('#areas button').last.click()
         assert page.locator('#areas details').get_attribute('open') is None
         print('PASS: mobile width and reduced motion')
-        page = browser.new_page(java_script_enabled=False)
+        page = new_page(browser, java_script_enabled=False)
         load(page);page.locator('#github summary').click()
         assert page.locator('#github details').get_attribute('open') is not None
         assert page.locator('#github').get_by_role('link',name='Portfolio').is_visible()

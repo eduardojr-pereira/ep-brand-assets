@@ -25,7 +25,7 @@
                     (values.area === 'all' || card.dataset.areas.split(/\s+/).includes(values.area)) && query.every(t=>text.includes(t)) );
                 if (!card.hidden) total++;
             });
-            count.textContent = `${total} ${total === 1 ? count.dataset.singular : count.dataset.plural}`;
+            UI.i18n.bind(count,'text','shared.catalog.count',{count:total});
             empty.hidden = total !== 0;
             clear.hidden = !input.value;
             root.querySelector('.ui-catalog__info [data-ui-reset]').hidden = !input.value && groups.every(g => (g.dataset.uiValue || 'all') === 'all');
@@ -36,7 +36,7 @@
         all(root,'[data-ui-reset]').forEach(button=>button.addEventListener('click',()=>{
             input.value=''; groups.forEach(g=>window.UI.navigation.select(g,g.dataset.uiDefault || 'all',false)); update(); input.focus();
         }));
-        document.addEventListener('ui:languagechange',()=>{groups.forEach(g=>window.UI.navigation.select(g,g.dataset.uiValue || 'all',false));update();});
+        document.addEventListener('ui:languagechange',update);
         root.setAttribute('data-ui-enhanced','');
         update();
     }
@@ -54,24 +54,18 @@
         function schedule() {
             clearInterval(timer);
             const playing=requested && !reduced.matches;
-            if(toggle){toggle.textContent=playing?'Ⅱ':'▶';toggle.setAttribute('aria-label',playing?toggle.dataset.pause:toggle.dataset.play);toggle.disabled=reduced.matches;}
+            if(toggle){toggle.textContent=playing?'Ⅱ':'▶';UI.i18n.bind(toggle,'aria-label',playing?'shared.project.pause':'shared.project.play');toggle.disabled=reduced.matches;}
             if(playing && Number.isFinite(cycleDuration) && cycleDuration > 0 && visible && !document.hidden && !root.closest('[inert]') && !root.matches(':hover,:focus-within') && frames.length>1)
                 timer=setInterval(()=>{index=(index+1)%frames.length;render(true);},cycleDuration);
-        }
-        function theme() {
-            const light=document.documentElement.dataset.theme==='light';
-            frames.forEach(frame=>{const src=light?frame.dataset.lightSrc:frame.dataset.darkSrc;if(src && frame.getAttribute('src')!==src)frame.src=src;});
         }
         dots.forEach((dot,i)=>dot.addEventListener('click',()=>{index=i;render(true);schedule();}));
         toggle?.addEventListener('click',()=>{requested=!requested;schedule();});
         ['pointerenter','pointerleave','focusin','focusout'].forEach(event=>root.addEventListener(event,()=>requestAnimationFrame(schedule)));
         document.addEventListener('visibilitychange',schedule);
-        document.addEventListener('ui:themechange',theme);
-        document.addEventListener('ui:languagechange',schedule);
         root.addEventListener('ui:slidechange',schedule);
         reduced.addEventListener('change',schedule);
         if('IntersectionObserver' in window)new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;schedule();}).observe(root);
-        root.setAttribute('data-ui-enhanced','');render();theme();schedule();
+        root.setAttribute('data-ui-enhanced','');render();schedule();
     }
     function carousel(root) {
         const track=root.querySelector('[data-ui-carousel-track]'), slides=all(track,'[data-ui-slide]');
@@ -108,8 +102,9 @@
         function stop(){cancelAnimationFrame(raf);raf=0;last=0;}
         function eligible(){return !reduced.matches&&!paused&&!hover&&!focused&&visible&&!document.hidden;}
         function tick(now){raf=0;if(!eligible()){last=0;return;}const dt=last?Math.min((now-last)/1000,.05):0;last=now;offsets=offsets.map((o,i)=>(o+dt*(root.clientWidth<640?42:66)*(i===0?1:.65))%widths[i]);paint();raf=requestAnimationFrame(tick);}
-        function schedule(){if(eligible()){if(!raf)raf=requestAnimationFrame(tick);}else stop();toggle.textContent=paused?'▶':'Ⅱ';toggle.setAttribute('aria-label',paused?toggle.dataset.play:toggle.dataset.pause);}
-        function layout(){stop();lens?.remove();lens=null;lensTracks=[];link.removeAttribute('data-lens-active');root.toggleAttribute('data-ui-running',!reduced.matches);tracks.forEach((track,i)=>{const first=track.firstElementChild;track.replaceChildren(first);if(reduced.matches)return;const ratio=offsets[i]/widths[i];widths[i]=Math.max(1,first.getBoundingClientRect().width);offsets[i]=ratio*widths[i];const count=Math.ceil(root.clientWidth/widths[i])+2;for(let n=1;n<count;n++)track.append(first.cloneNode(true));});if(!reduced.matches){lens=lanes.cloneNode(true);lens.classList.add('ui-marquee__lens');lens.setAttribute('aria-hidden','true');link.append(lens);lensTracks=all(lens,'.ui-marquee__track');paint();}schedule();}
+        function schedule(){if(eligible()){if(!raf)raf=requestAnimationFrame(tick);}else stop();toggle.textContent=paused?'▶':'Ⅱ';UI.i18n.bind(toggle,'aria-label',paused?'shared.marquee.play':'shared.marquee.pause');}
+        function decorativeCopy(node){const copy=node.cloneNode(true);for(const element of [copy,...copy.querySelectorAll("*")])for(const attr of [...element.attributes])if(attr.name.startsWith("data-i18n-"))element.removeAttribute(attr.name);return copy;}
+        function layout(){stop();lens?.remove();lens=null;lensTracks=[];link.removeAttribute('data-lens-active');root.toggleAttribute('data-ui-running',!reduced.matches);tracks.forEach((track,i)=>{const first=track.firstElementChild;track.replaceChildren(first);if(reduced.matches)return;const ratio=offsets[i]/widths[i];widths[i]=Math.max(1,first.getBoundingClientRect().width);offsets[i]=ratio*widths[i];const count=Math.ceil(root.clientWidth/widths[i])+2;for(let n=1;n<count;n++)track.append(decorativeCopy(first));});if(!reduced.matches){lens=decorativeCopy(lanes);lens.classList.add('ui-marquee__lens');lens.setAttribute('aria-hidden','true');link.append(lens);lensTracks=all(lens,'.ui-marquee__track');paint();}schedule();}
         link.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){hover=true;schedule();}});
         link.addEventListener('pointermove',e=>{if(!fine.matches||reduced.matches||e.pointerType!=='mouse'||!lens)return;const r=link.getBoundingClientRect();link.style.setProperty('--ui-lens-x',`${e.clientX-r.left}px`);link.style.setProperty('--ui-lens-y',`${e.clientY-r.top}px`);link.setAttribute('data-lens-active','');});
         link.addEventListener('pointerleave',()=>{hover=false;link.removeAttribute('data-lens-active');schedule();});

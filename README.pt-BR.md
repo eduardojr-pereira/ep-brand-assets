@@ -76,6 +76,8 @@ Os componentes são mantidos no EP Brand e reutilizados quando pertinentes. O bu
 | Rodapés Markdown bilíngues | [`components/markdown/`](./components/markdown/) |
 | Scripts e interações compartilhados | [`scripts/`](./scripts/) |
 | Ordem de dependências | [`config/ui.json`](./config/ui.json) |
+| Traduções compartilhadas | [`config/translations.json`](./config/translations.json) |
+| Preparação da apresentação | [`tools/presentation.py`](./tools/presentation.py) |
 | Testes de regressão | [`tests/`](./tests/) |
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
@@ -88,7 +90,7 @@ Os componentes são mantidos no EP Brand e reutilizados quando pertinentes. O bu
 
 A paleta e a tipografia estão centralizadas em [Foundations](./styles/foundations.css). Os temas claro e escuro são definidos por tokens CSS. A biblioteca de movimento, incluindo tokens e animações genéricas, está em [Motion](./styles/motion.css). A ordem de carregamento é definida em [config/ui.json](./config/ui.json).
 
-O controlador global de tema, a internacionalização e o carregador de animações serão implementados no próximo lote. Header, Footer, builder e adaptadores Plotly ainda não integram a nova arquitetura. Os projetos conservarão suas traduções específicas; tema e idioma não alterarão os dados analíticos.
+O [controlador de tema](./scripts/theme.js) resolve e preserva uma preferência única. O [i18n](./scripts/i18n.js) traduz texto, atributos acessíveis, SVG e mensagens dinâmicas por meio de [chaves compartilhadas](./config/translations.json) e traduções locais validadas. O [carregador de ativos](./scripts/assets.js) resolve caminhos, variantes e animações a partir da mesma versão da biblioteca. Os estados dos componentes não são reinicializados pela tradução. Consulte o [contrato técnico](./docs/presentation.md). Header, Footer, builder e adaptadores Plotly ainda não integram a nova arquitetura.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
@@ -131,20 +133,26 @@ ep-brand-assets/
 │   ├── badges/
 │   ├── fonts/
 │   ├── icons/
-│   └── logos/
+│   ├── logos/
+│   └── vendor/lottie/
 ├── components/
 │   ├── markdown/
 │   └── web/
 │       ├── navigation.html
 │       ├── buttons.html
-│       └── interactive.html
+│       ├── interactive.html
+│       └── localization.html
 ├── config/
 │   ├── badges.json
 │   ├── brand.json
 │   ├── colormaps.json
+│   ├── translations.json
 │   └── ui.json
 ├── docs/
 ├── scripts/
+│   ├── theme.js
+│   ├── i18n.js
+│   ├── assets.js
 │   ├── scroll-trigger.js
 │   ├── navigation.js
 │   ├── buttons.js
@@ -158,6 +166,8 @@ ep-brand-assets/
 ├── tests/
 │   ├── support.py
 │   └── test_*.py
+├── tools/
+│   └── presentation.py
 ├── LICENSE-BRAND.md
 ├── LICENSE-CODE.txt
 ├── LICENSE-CONTENT.md
@@ -182,7 +192,7 @@ ep-brand-assets/
 
 A configuração [brand.json](./config/brand.json) define `asset_root` como caminho relativo à versão do EP Brand consumida. O futuro builder deverá resolver os recursos a partir do mesmo checkout ou referência imutável que fornece os componentes, sem dependência de uma branch mutável.
 
-Os templates de `components/web/` são macros Jinja com escape HTML; a ordem dos CSS e scripts consta em `config/ui.json`. A biblioteca ainda não possui um builder ativo. Os rodapés Markdown existentes são preservados, independentemente da nova arquitetura web. Não renomeie ativos compartilhados sem verificar os consumidores. Nenhuma geração local publica mudanças.
+Os templates de `components/web/` são macros Jinja com escape HTML. O módulo [`tools/presentation.py`](./tools/presentation.py) prepara o ambiente Jinja, as referências de mensagens e os recursos do head na ordem de `config/ui.json`. O futuro builder reutilizará esse contrato; ainda não há gerador de páginas ativo. Os rodapés Markdown existentes são preservados, independentemente da nova arquitetura web. Não renomeie ativos compartilhados sem verificar os consumidores. Nenhuma geração local publica mudanças.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
@@ -198,7 +208,7 @@ Com Python, Jinja2, Playwright e um navegador compatível com Chromium instalado
 python3 tests/support.py
 ```
 
-`UI_TEST_BROWSER` permite informar o executável do navegador. A suíte utiliza o manifesto de dependências, os componentes canônicos e as fontes reais do repositório. Os testes de componentes não substituem o aceite visual e funcional integrado no GitHub Pages. O player Lottie real, a tradução global, o formulário e a publicação ainda exigem validação.
+`UI_TEST_BROWSER` permite informar o executável do navegador. A suíte utiliza o manifesto de dependências, os componentes canônicos e as fontes reais do repositório. Os testes de componentes não substituem o aceite visual e funcional integrado no GitHub Pages. A suíte exige o player Lottie real, fixado em `config/ui.json`, e testa os serviços globais. Formulário real, integração dos consumidores e publicação permanecem pendentes.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 

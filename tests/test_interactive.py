@@ -1,14 +1,13 @@
 """Responsibility: Isolated integration checks of canonical templates, not a visual preview."""
 from playwright.sync_api import sync_playwright
 
-from support import ROOT, ENV, load_page, launch_browser
-LABELS = dict(collection='Collection', all='All', selected='Selected', learning='Learning Labs', all_areas='All areas', search='Search', placeholder='Project or technology…', clear_search='Clear search', clear='Clear filters', singular='project', plural='projects', empty='No matches', results='Project results', play='Play results', pause='Pause results', previous='Previous project', next='Next project', view='View Project')
+from support import ROOT, ENV, load_page, launch_browser, new_page
 PIXEL = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"%3E%3Crect width="200" height="100" fill="gray"/%3E%3C/svg%3E'
-PROJECTS = [dict(title='Bike Sharing', description='Demanda histórica', collection='selected', collection_label='Selected', areas=['analytics','ml'], topics=['Analytics','Machine Learning'], badges=[dict(src=PIXEL,label='Pandas')], search='regression', links=[dict(label='Notebook',href='#notebook',primary=False),dict(label='View Project',href='#bike',primary=True)], subtitle='Demand insights', href='#bike',frames=[dict(src=PIXEL,alt='Figure one',caption='Figure one'),dict(src=PIXEL,alt='Figure two',caption='Figure two')],metrics=[dict(value='100',label='Example metric'),dict(value='200',label='Another metric')]),dict(title='Hangman', description='Jogo da Forca', collection='learning', collection_label='Learning', areas=['python'], topics=['Python'], badges=[], search='game', links=[dict(label='View Project',href='#hangman',primary=True)],href='#hangman',frames=[],metrics=[])]
-FIXTURE = '''{% import 'components/web/interactive.html' as i %}<section id="catalog">{{ i.catalog('catalog', projects, areas, labels) }}</section><section id="selected">{{ i.selected_projects(projects,labels) }}</section><section id="marquee">{{ i.marquee('Contact invitation','LET’S CONNECT','example@example.org','#contact','Pause marquee','Play marquee') }}</section><section id="contact">Contact</section>'''
+PROJECTS = [dict(title='Bike Sharing', description='Demanda histórica', collection='selected', collection_label='Selected', areas=['analytics','ml'], topics=['Analytics','Machine Learning'], badges=[dict(src=PIXEL,label='Pandas')], search='regression', links=[dict(label=ENV.globals['message']('shared.project.notebook'),href='#notebook',primary=False),dict(label=ENV.globals['message']('shared.project.view'),href='#bike',primary=True)], subtitle='Demand insights', href='#bike',frames=[dict(src=PIXEL,alt='Figure one',caption='Figure one'),dict(src=PIXEL,alt='Figure two',caption='Figure two')],metrics=[dict(value='100',label='Example metric'),dict(value='200',label='Another metric')]),dict(title='Hangman', description='Jogo da Forca', collection='learning', collection_label='Learning', areas=['python'], topics=['Python'], badges=[], search='game', links=[dict(label=ENV.globals['message']('shared.project.view'),href='#hangman',primary=True)],href='#hangman',frames=[],metrics=[])]
+FIXTURE = '''{% import 'components/web/interactive.html' as i %}<section id="catalog">{{ i.catalog('catalog', projects, areas) }}</section><section id="selected">{{ i.selected_projects(projects) }}</section><section id="marquee">{{ i.marquee('example@example.org','#contact') }}</section><section id="contact">Contact</section>'''
 
 def load(page, theme='dark', scripts=True):
-    html=ENV.from_string(FIXTURE).render(projects=PROJECTS,areas=[dict(value='analytics',label='Analytics'),dict(value='python',label='Python')],labels=LABELS)
+    html=ENV.from_string(FIXTURE).render(projects=PROJECTS,areas=[dict(value='analytics',label='Analytics'),dict(value='python',label='Python')])
     load_page(page, html, theme, css='section{margin:20px;min-width:0}#contact{min-height:300px}', scripts=scripts)
 
 
@@ -17,7 +16,7 @@ def desktop(page, theme):
     cards=page.locator('[data-ui-project]:visible');assert cards.count()==2
     page.get_by_role('button',name='Learning Labs').click();assert cards.count()==1 and 'Hangman' in cards.first.inner_text()
     page.get_by_role('searchbox').fill('forca');assert cards.count()==1
-    page.get_by_role('searchbox').fill('xyz');assert cards.count()==0 and page.get_by_text('No matches').is_visible()
+    page.get_by_role('searchbox').fill('xyz');assert cards.count()==0 and page.get_by_text('No projects match your search.').is_visible()
     page.locator('.ui-catalog__info [data-ui-reset]').click();assert cards.count()==2
     page.locator('.ui-catalog__area summary').click();page.get_by_role('button',name='Analytics',exact=True).click();assert cards.count()==1 and 'Bike Sharing' in cards.first.inner_text()
     page.locator('.ui-catalog__info [data-ui-reset]').click();assert cards.count()==2
@@ -45,16 +44,16 @@ def desktop(page, theme):
 def main():
     with sync_playwright() as p:
         browser=launch_browser(p)
-        page=browser.new_page(viewport={'width':1280,'height':900});errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+        page=new_page(browser, viewport={'width':1280,'height':900});errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
         desktop(page,'dark');page.close()
-        page=browser.new_page(viewport={'width':1280,'height':900});page.on('pageerror',lambda e:errors.append(str(e)));desktop(page,'light');page.close();assert not errors,errors
-        mobile=browser.new_page(viewport={'width':390,'height':844},is_mobile=True,has_touch=True,reduced_motion='reduce');load(mobile)
+        page=new_page(browser, viewport={'width':1280,'height':900});page.on('pageerror',lambda e:errors.append(str(e)));desktop(page,'light');page.close();assert not errors,errors
+        mobile=new_page(browser, viewport={'width':390,'height':844},is_mobile=True,has_touch=True,reduced_motion='reduce');load(mobile)
         assert mobile.locator('[data-ui-marquee]').get_attribute('data-ui-running') is None
         assert mobile.locator('[data-ui-evidence-toggle]').is_disabled()
         assert mobile.evaluate('document.documentElement.scrollWidth<=innerWidth')
         mobile.locator('[data-ui-carousel] [data-ui-carousel-action="next"]').click();assert mobile.locator('[data-ui-carousel-count]').inner_text()=='02 / 02'
         print('PASS: mobile layout, reduced motion and carousel controls')
-        static=browser.new_page(java_script_enabled=False,viewport={'width':390,'height':844});load(static,scripts=False)
+        static=new_page(browser, java_script_enabled=False,viewport={'width':390,'height':844});load(static,scripts=False)
         assert static.locator('[data-ui-project]:visible').count()==2
         assert static.get_by_role('link',name='Contact invitation').is_visible()
         assert static.locator('[data-ui-frame]:visible').count()==1

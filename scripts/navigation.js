@@ -1,6 +1,6 @@
 /*
  * Responsibility: Menu disclosure, filter selection and active section navigation.
- * Temporary checkbox/label integration contracts are replaced by shared asset and i18n services in Lot 6; no preference ownership.
+ * Consumes global asset and i18n services; no preference ownership.
  */
 
 (() => {
@@ -10,61 +10,35 @@
     const option = '[data-ui-filter-value]';
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const closeTimers = new WeakMap();
-    const checks = new Map();
-    let checkRuntime = null;
-    function refreshChecks() {
-        if (!checkRuntime) return;
-        const raw = getComputedStyle(document.documentElement).getPropertyValue('--ui-color-accent').trim();
-        if (!/^#[0-9a-f]{6}$/i.test(raw)) return;
-        const color = [1, 3, 5].map(i => parseInt(raw.slice(i, i + 2), 16) / 255).concat(1);
+    const checkHost = item => item.querySelector('[data-ui-check-player]');
+    function initChecks() {
         for (const item of document.querySelectorAll(`${option}:has([data-ui-check])`)) {
-            const node = item.querySelector('[data-ui-check]');
-            const host = node.querySelector('[data-ui-check-player]');
-            checks.get(item)?.destroy();
-            node.removeAttribute('data-ui-lottie-ready');
-            host.replaceChildren();
-            const data = JSON.parse(JSON.stringify(checkRuntime.source));
-            function recolor(value) {
-                if (!value || typeof value !== 'object') return;
-                if ((value.ty === 'st' || value.ty === 'fl') && value.c?.a === 0) value.c.k = color;
-                for (const child of Object.values(value)) recolor(child);
-            }
-            recolor(data);
-            const player = checkRuntime.lottie.loadAnimation({ container: host, renderer: 'svg', loop: false, autoplay: false, animationData: data });
-            checks.set(item, player);
-            player.addEventListener('DOMLoaded', () => {
-                if (checks.get(item) !== player) return;
-                player.goToAndStop(item.getAttribute('aria-pressed') === 'true' ? 44 : 0, true);
-                node.setAttribute('data-ui-lottie-ready', '');
-            });
+            UI.assets.mount(checkHost(item), {id:'checkbox', colorToken:'--ui-color-accent',
+                onReady: player => snapCheck(player,item.getAttribute('aria-pressed') === 'true')});
         }
     }
-    function connectChecks(lottie, source) {
-        if (!lottie || typeof lottie.loadAnimation !== 'function' || !source) return false;
-        checkRuntime = { lottie, source };
-        refreshChecks();
-        return true;
+    function snapCheck(player, selected) {
+        player.resetSegments(true);
+        player.goToAndStop(selected ? 44 : 0, true);
     }
     function checkDuration() {
         const value = getComputedStyle(document.documentElement).getPropertyValue('--ui-duration-link').trim();
         return parseFloat(value) * (value.endsWith('ms') ? 1 : 1000) || 0;
     }
     function animateCheck(item, selected, animate) {
-        const player = checks.get(item);
-        if (!player || !item.querySelector('[data-ui-lottie-ready]')) return false;
-        if (reduced.matches || !animate || !checkDuration()) {
-            player.goToAndStop(selected ? 44 : 0, true);
+        const host = checkHost(item);
+        const player = host && UI.assets.get(host);
+        if (!player) return false;
+        if (reduced.matches || !animate || !checkDuration() || !player.frameRate) {
+            snapCheck(player, selected);
             return false;
         }
         const segment = selected ? [0, 44] : [85, 119];
-        player.setSpeed((segment[1] - segment[0]) / 48 / (checkDuration() / 1000));
+        player.setSpeed((segment[1] - segment[0]) / player.frameRate / (checkDuration() / 1000));
         player.playSegments(segment, true);
         return true;
     }
 
-    const setLabel = (element, label) => {
-        for (const part of element.querySelectorAll('[data-ui-label]')) part.textContent = label;
-    };
     function select(group, value, notify = true) {
         const options = [...group.querySelectorAll(option)].filter(el => el.closest(filter) === group);
         const chosen = options.find(el => el.dataset.uiFilterValue === value);
@@ -78,7 +52,8 @@
         }
         group.dataset.uiValue = value;
         if (group.matches(dropdown)) {
-            setLabel(group.querySelector('summary'), chosen.querySelector('[data-ui-label]').textContent);
+            for (const part of group.querySelector('summary').querySelectorAll('[data-ui-label]'))
+                UI.i18n.bindFrom(part, chosen.querySelector('[data-ui-label]'));
             group.dataset.uiFiltered = String(value !== (group.dataset.uiDefault || 'all'));
         }
         if (notify) group.dispatchEvent(new CustomEvent('ui:filterchange', {
@@ -92,9 +67,8 @@
         if (restore) el.querySelector('summary').focus();
     }
     function init() {
-        document.addEventListener('ui:themechange', refreshChecks);
-        reduced.addEventListener('change', refreshChecks);
-        if (checkRuntime) refreshChecks();
+        initChecks();
+        reduced.addEventListener('change', () => { for (const item of document.querySelectorAll(`${option}:has([data-ui-check])`)) animateCheck(item,item.getAttribute('aria-pressed') === 'true',false); });
         for (const group of document.querySelectorAll(filter)) {
             const selected = [...group.querySelectorAll(option)].find(el => el.getAttribute('aria-pressed') === 'true');
             if (selected) select(group, selected.dataset.uiFilterValue, false);
@@ -197,7 +171,7 @@
         update();
     }
     window.UI ??= {};
-    window.UI.navigation = Object.freeze({ setLabel, select, connectChecks });
+    window.UI.navigation = Object.freeze({ select });
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
     else init();
 })();

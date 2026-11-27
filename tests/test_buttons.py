@@ -1,12 +1,12 @@
 """Responsibility: Browser behavior tests for the shared action macros, not a design preview."""
 from playwright.sync_api import sync_playwright
 
-from support import ROOT, ENV, load_page, launch_browser
+from support import ROOT, ENV, load_page, launch_browser, new_page
 FIXTURE = '''{% import 'components/web/buttons.html' as b %}
-<div class="row" id="learn">{{ b.radial_link('Learn More','#contact') }}</div>
+<div class="row" id="learn">{{ b.radial_link(message('shared.action.learn'),'#contact') }}</div>
 <div class="row" id="arrows">{{ b.carousel_arrow('Previous project','previous',true) }}{{ b.carousel_arrow('Next project') }}</div>
-<div class="row" id="orbits">{{ b.orbit_link('hero-test','Selected Projects','SELECTED PROJECTS','#projects') }}{{ b.orbit_link('cta-test','Say Hello','SAY HELLO','#contact','cta') }}</div>
-<form id="form">{{ b.send_action('Send message','Message sent',"We'll be in touch soon.",'Sending…','Unable to send. Try again.') }}</form>
+<div class="row" id="orbits">{{ b.orbit_link('hero-test',message('shared.action.selected'),message('shared.action.selected_ring'),'#projects') }}{{ b.orbit_link('cta-test',message('shared.action.hello'),message('shared.action.hello_ring'),'#contact','cta') }}</div>
+<form id="form">{{ b.send_action() }}</form>
 <div style="height:1100px"></div><section id="projects">Projects</section><section id="contact">Contact</section>'''
 
 
@@ -47,7 +47,7 @@ def desktop(page, theme):
     assert orbit.locator('.ui-action__moving').evaluate('e=>getComputedStyle(e).animationDuration') == '3.37s'
     page.mouse.move(0,0); page.wait_for_timeout(900)
     assert all(abs(v) < .05 for v in matrix(orbit.locator('.ui-action__body'))[2:])
-    page.evaluate("UI.actions.setOrbitLabel(document.querySelector('[data-ui-orbit]'),'Projetos Selecionados','PROJETOS SELECIONADOS')")
+    page.evaluate("UI.i18n.set('pt-BR')")
     assert page.get_by_role('link',name='Projetos Selecionados').count() == 1
     assert 'PROJETOS SELECIONADOS' in page.locator('[data-ui-ring-label]').first.text_content()
     assert page.locator('svg defs [id]').count() == 4
@@ -80,7 +80,7 @@ def send(page):
     assert button.is_disabled()
     assert abs(before['width']-button.bounding_box()['width']) < .1
     assert abs(height-root.bounding_box()['height']) < .1
-    page.evaluate("UI.actions.setSendLabels(document.querySelector('[data-ui-send]'),{idle:'Enviar mensagem',success:'Mensagem enviada',successFeedback:'Entraremos em contato em breve.'})")
+    page.evaluate("UI.i18n.set('pt-BR')")
     assert root.get_by_role('status').text_content() == 'Entraremos em contato em breve.'
     page.evaluate("UI.actions.setSendState(document.querySelector('[data-ui-send]'),'idle')")
     assert not button.is_disabled()
@@ -93,13 +93,13 @@ if __name__ == '__main__':
         browser = launch_browser(pw)
         errors = []
         for theme in ['dark','light']:
-            page = browser.new_page(viewport={'width':1200,'height':800}); page.set_default_timeout(5000)
+            page = new_page(browser, viewport={'width':1200,'height':800}); page.set_default_timeout(5000)
             page.on('pageerror',lambda e:errors.append(str(e)))
             desktop(page,theme)
-        page = browser.new_page(viewport={'width':1200,'height':800}); page.set_default_timeout(5000)
+        page = new_page(browser, viewport={'width':1200,'height':800}); page.set_default_timeout(5000)
         page.on('pageerror',lambda e:errors.append(str(e)))
         send(page)
-        page = browser.new_page(viewport={'width':390,'height':844},has_touch=True,is_mobile=True,reduced_motion='reduce')
+        page = new_page(browser, viewport={'width':390,'height':844},has_touch=True,is_mobile=True,reduced_motion='reduce')
         page.on('pageerror',lambda e:errors.append(str(e)))
         load(page)
         orbit = page.get_by_role('link',name='Selected Projects'); orbit.focus()
@@ -108,7 +108,7 @@ if __name__ == '__main__':
         assert orbit.locator('.ui-action__idle').evaluate('e=>getComputedStyle(e).opacity') == '1'
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
         print('PASS: mobile, touch and reduced motion')
-        page = browser.new_page(java_script_enabled=False);load(page)
+        page = new_page(browser, java_script_enabled=False);load(page)
         assert page.get_by_role('link',name='Learn More').get_attribute('href') == '#contact'
         assert page.get_by_role('button',name='Send message').is_enabled()
         print('PASS: native link and submit without JavaScript')

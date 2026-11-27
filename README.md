@@ -76,6 +76,8 @@ Components are maintained in EP Brand and reused where relevant. The canonical b
 | Bilingual Markdown footers | [`components/markdown/`](./components/markdown/) |
 | Shared scripts and interactions | [`scripts/`](./scripts/) |
 | Dependency order | [`config/ui.json`](./config/ui.json) |
+| Shared translations | [`config/translations.json`](./config/translations.json) |
+| Presentation preparation | [`tools/presentation.py`](./tools/presentation.py) |
 | Regression tests | [`tests/`](./tests/) |
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
@@ -88,7 +90,7 @@ Components are maintained in EP Brand and reused where relevant. The canonical b
 
 The palette and typography are centralized in [Foundations](./styles/foundations.css). Light and dark themes are defined by CSS tokens. Shared motion tokens and generic animations live in [Motion](./styles/motion.css). Loading order is declared in [config/ui.json](./config/ui.json).
 
-The global theme controller, internationalization and animation asset loader are pending the next lot. Header, Footer, the builder and Plotly adapters are not yet part of the new architecture. Projects retain their content translations; theme and language changes must not alter analytical data.
+The [theme controller](./scripts/theme.js) resolves and persists a single preference. [Internationalization](./scripts/i18n.js) binds text, accessible attributes, SVG labels and dynamic messages using [shared keys](./config/translations.json) and validated local translations. The [asset loader](./scripts/assets.js) resolves paths, variants and animations from the same library version. Translation does not reset component state. See the [technical contract](./docs/presentation.md). Header, Footer, the builder and Plotly adapters are not yet part of the new architecture.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
@@ -131,20 +133,26 @@ ep-brand-assets/
 │   ├── badges/
 │   ├── fonts/
 │   ├── icons/
-│   └── logos/
+│   ├── logos/
+│   └── vendor/lottie/
 ├── components/
 │   ├── markdown/
 │   └── web/
 │       ├── navigation.html
 │       ├── buttons.html
-│       └── interactive.html
+│       ├── interactive.html
+│       └── localization.html
 ├── config/
 │   ├── badges.json
 │   ├── brand.json
 │   ├── colormaps.json
+│   ├── translations.json
 │   └── ui.json
 ├── docs/
 ├── scripts/
+│   ├── theme.js
+│   ├── i18n.js
+│   ├── assets.js
 │   ├── scroll-trigger.js
 │   ├── navigation.js
 │   ├── buttons.js
@@ -158,6 +166,8 @@ ep-brand-assets/
 ├── tests/
 │   ├── support.py
 │   └── test_*.py
+├── tools/
+│   └── presentation.py
 ├── LICENSE-BRAND.md
 ├── LICENSE-CODE.txt
 ├── LICENSE-CONTENT.md
@@ -182,7 +192,7 @@ ep-brand-assets/
 
 [brand.json](./config/brand.json) declares `asset_root` relative to the consumed EP Brand version. The future builder must resolve resources from the same checkout or immutable reference as the components, not a mutable branch.
 
-The templates in `components/web/` are HTML-autoescaped Jinja macros; the CSS and script loading order is in `config/ui.json`. No builder is currently active. Existing Markdown footer templates are preserved independently of the new web architecture. Do not rename shared assets without checking consumers. Local generation does not publish changes.
+The templates in `components/web/` are HTML-autoescaped Jinja macros. [`tools/presentation.py`](./tools/presentation.py) prepares the Jinja environment, message references and head resources in the order declared by `config/ui.json`. The future builder will reuse this contract; no page builder is currently active. Existing Markdown footer templates are preserved independently of the new web architecture. Do not rename shared assets without checking consumers. Local generation does not publish changes.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
@@ -198,7 +208,7 @@ With Python, Jinja2, Playwright and a Chromium-compatible browser installed, run
 python3 tests/support.py
 ```
 
-`UI_TEST_BROWSER` can specify the browser executable. The suite uses the dependency manifest, canonical components and the actual repository fonts. Component tests do not replace integrated visual and functional acceptance on GitHub Pages. Real Lottie playback, global translation, the contact form and publication still require validation.
+`UI_TEST_BROWSER` can specify the browser executable. The suite uses the dependency manifest, canonical components and the actual repository fonts. Component tests do not replace integrated visual and functional acceptance on GitHub Pages. The suite requires the real Lottie player pinned in `config/ui.json` and tests the global presentation services. Real contact transport, consumer integration and publication remain pending.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 

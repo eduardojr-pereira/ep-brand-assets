@@ -124,3 +124,6 @@ button, input, select, textarea {
     outline: 2px solid var(--ui-color-focus);
     outline-offset: 4px;
 }
+
+/* Keep the initial translated document from flashing the fallback locale. */
+:root[data-ui-localizing] body { visibility: hidden; }

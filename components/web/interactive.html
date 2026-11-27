@@ -1,50 +1,51 @@
 {# Responsibility: Canonical Jinja structures for cards, badges, carousels and marquee.
-   All content, assets and labels supplied by the consumer; no local behavior. #}
+   Consumer supplies project content and asset paths; shared labels use the global dictionary. #}
 
+{% import 'components/web/localization.html' as t %}
 {% import 'components/web/navigation.html' as n %}
 {% import 'components/web/buttons.html' as b %}
 {% macro badges(items) -%}
-{% if items %}<div class="ui-badges">{% for item in items %}<img src="{{ item.src }}" alt="{{ item.label }}" loading="lazy" decoding="async">{% endfor %}</div>{% endif %}
+{% if items %}<div class="ui-badges">{% for item in items %}<img src="{{ item.src }}" alt="{{ t.value(item.label) }}"{{ t.binding(item.label,"alt") }} {% if item.en_src and item.pt_br_src %} data-en-src="{{ item.en_src }}" data-pt-br-src="{{ item.pt_br_src }}"{% endif %}{% if item.light and item.dark %} data-light-src="{{ item.light }}" data-dark-src="{{ item.dark }}"{% endif %} loading="lazy" decoding="async">{% endfor %}</div>{% endif %}
 {%- endmacro %}
-{% macro project_card(project, labels) -%}
+{% macro project_card(project) -%}
 <article class="ui-project-card" data-ui-project data-collection="{{ project.collection }}" data-areas="{{ project.areas|join(' ') }}" data-search="{{ project.search|default('') }}">
-<div class="ui-project-card__head"><span class="ui-project-card__eyebrow">{{ project.collection_label }}</span></div>
-<h3>{{ project.title }}</h3><p>{{ project.description }}</p>
-{% if project.topics %}<div class="ui-project-card__topics">{{ project.topics|join(' · ') }}</div>{% endif %}
+<div class="ui-project-card__head"><span class="ui-project-card__eyebrow"{{ t.binding(project.collection_label) }}>{{ t.value(project.collection_label) }}</span></div>
+<h3{{ t.binding(project.title) }}>{{ t.value(project.title) }}</h3><p{{ t.binding(project.description) }}>{{ t.value(project.description) }}</p>
+{% if project.topics %}<div class="ui-project-card__topics">{% for topic in project.topics %}{% if not loop.first %} · {% endif %}<span{{ t.binding(topic) }}>{{ t.value(topic) }}</span>{% endfor %}</div>{% endif %}
 {{ badges(project.badges) }}
-<div class="ui-project-card__links">{% for item in project.links %}{% if item.primary %}<span class="ui-project-card__primary">{{ n.diagonal(item.label,item.href) }}</span>{% else %}<a class="ui-link ui-underline ui-link--muted" href="{{ item.href }}">{{ item.label }}</a>{% endif %}{% endfor %}</div>
+<div class="ui-project-card__links">{% for item in project.links %}{% if item.primary %}<span class="ui-project-card__primary">{{ n.diagonal(item.label,item.href) }}</span>{% else %}<a class="ui-link ui-underline ui-link--muted" href="{{ item.href }}"{{ t.binding(item.label) }}>{{ t.value(item.label) }}</a>{% endif %}{% endfor %}</div>
 </article>
 {%- endmacro %}
-{% macro catalog(id, projects, areas, labels) -%}
+{% macro catalog(id, projects, areas) -%}
 <div class="ui-catalog" data-ui-catalog>
 <div class="ui-catalog__controls">
-<div class="ui-catalog__collections" data-ui-filter="collection" role="group" aria-label="{{ labels.collection }}">{{ n.filter_button(labels.all,'all',true) }}{{ n.filter_button(labels.selected,'selected') }}{{ n.filter_button(labels.learning,'learning') }}</div>
-<div class="ui-catalog__area">{% call n.disclosure(labels.all_areas,'area') %}{{ n.area_option(labels.all_areas,'all',true) }}{% for area in areas %}{{ n.area_option(area.label,area.value) }}{% endfor %}{% endcall %}</div>
-<div class="ui-catalog__search"><label class="ui-interactive-sr" for="{{ id }}-search">{{ labels.search }}</label><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="{{ id }}-search" data-ui-search type="search" autocomplete="off" placeholder="{{ labels.placeholder }}"><button type="button" class="ui-link" data-ui-clear-search aria-label="{{ labels.clear_search }}" hidden>×</button></div>
-<div class="ui-catalog__info"><button class="ui-link ui-underline ui-underline--always ui-link--accent" type="button" data-ui-reset hidden>{{ labels.clear }}</button><span role="status" data-ui-count data-singular="{{ labels.singular }}" data-plural="{{ labels.plural }}"></span></div>
+<div class="ui-catalog__collections" data-ui-filter="collection" role="group" aria-label="{{ t.value(message("shared.catalog.collection")) }}"{{ t.binding(message("shared.catalog.collection"),"aria-label") }}>{{ n.filter_button(message("shared.catalog.all"),'all',true) }}{{ n.filter_button(message("shared.catalog.selected"),'selected') }}{{ n.filter_button(message("shared.catalog.learning"),'learning') }}</div>
+<div class="ui-catalog__area">{% call n.disclosure(message("shared.catalog.areas"),'area') %}{{ n.area_option(message("shared.catalog.areas"),'all',true) }}{% for area in areas %}{{ n.area_option(area.label,area.value) }}{% endfor %}{% endcall %}</div>
+<div class="ui-catalog__search"><label class="ui-interactive-sr" for="{{ id }}-search"{{ t.binding(message("shared.catalog.search")) }}>{{ t.value(message("shared.catalog.search")) }}</label><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="{{ id }}-search" data-ui-search type="search" autocomplete="off" placeholder="{{ t.value(message("shared.catalog.placeholder")) }}"{{ t.binding(message("shared.catalog.placeholder"),"placeholder") }}><button type="button" class="ui-link" data-ui-clear-search aria-label="{{ t.value(message("shared.catalog.clear_search")) }}"{{ t.binding(message("shared.catalog.clear_search"),"aria-label") }} hidden>×</button></div>
+<div class="ui-catalog__info"><button class="ui-link ui-underline ui-underline--always ui-link--accent" type="button" data-ui-reset hidden{{ t.binding(message("shared.catalog.clear")) }}>{{ t.value(message("shared.catalog.clear")) }}</button><span role="status" data-ui-count></span></div>
 </div>
-<div class="ui-catalog__grid">{% for project in projects %}{{ project_card(project,labels) }}{% endfor %}</div>
-<div class="ui-catalog__empty" data-ui-empty hidden>{{ labels.empty }}<div><button class="ui-link ui-underline ui-underline--always ui-link--accent" type="button" data-ui-reset>{{ labels.clear }}</button></div></div>
+<div class="ui-catalog__grid">{% for project in projects %}{{ project_card(project) }}{% endfor %}</div>
+<div class="ui-catalog__empty" data-ui-empty hidden><span{{ t.binding(message("shared.catalog.empty")) }}>{{ t.value(message("shared.catalog.empty")) }}</span><div><button class="ui-link ui-underline ui-underline--always ui-link--accent" type="button" data-ui-reset{{ t.binding(message("shared.catalog.clear")) }}>{{ t.value(message("shared.catalog.clear")) }}</button></div></div>
 </div>
 {%- endmacro %}
-{% macro evidence(frames, labels) -%}
+{% macro evidence(frames) -%}
 {% if frames %}<figure class="ui-evidence" data-ui-evidence>
-<div class="ui-evidence__head"><span>{{ labels.results }}</span>{% if frames|length > 1 %}<button class="ui-link ui-evidence__toggle" type="button" data-ui-evidence-toggle data-play="{{ labels.play }}" data-pause="{{ labels.pause }}" aria-label="{{ labels.pause }}">Ⅱ</button>{% endif %}</div>
-<div class="ui-evidence__window">{% for frame in frames %}<img data-ui-frame src="{{ frame.src }}" alt="{{ frame.alt }}"{% if frame.light %} data-light-src="{{ frame.light }}"{% endif %}{% if frame.dark %} data-dark-src="{{ frame.dark }}"{% endif %}{% if not loop.first %} hidden{% endif %} decoding="async">{% endfor %}</div>
-<figcaption class="ui-evidence__caption"><span>{% for frame in frames %}<span data-ui-caption{% if not loop.first %} hidden{% endif %}>{{ frame.caption }}</span>{% endfor %}</span>{% if frames|length > 1 %}<span class="ui-evidence__dots" role="group" aria-label="{{ labels.results }}">{% for frame in frames %}<button type="button" data-ui-frame-index="{{ loop.index0 }}" aria-label="{{ frame.caption }}" aria-current="{{ 'true' if loop.first else 'false' }}"></button>{% endfor %}</span>{% endif %}</figcaption>
+<div class="ui-evidence__head"><span{{ t.binding(message("shared.project.results")) }}>{{ t.value(message("shared.project.results")) }}</span>{% if frames|length > 1 %}<button class="ui-link ui-evidence__toggle" type="button" data-ui-evidence-toggle aria-label="{{ t.value(message("shared.project.pause")) }}"{{ t.binding(message("shared.project.pause"),"aria-label") }}>Ⅱ</button>{% endif %}</div>
+<div class="ui-evidence__window">{% for frame in frames %}<img data-ui-frame src="{{ frame.src }}" alt="{{ t.value(frame.alt) }}"{{ t.binding(frame.alt,"alt") }}{% if frame.light %} data-light-src="{{ frame.light }}"{% endif %}{% if frame.dark %} data-dark-src="{{ frame.dark }}"{% endif %}{% if not loop.first %} hidden{% endif %} decoding="async">{% endfor %}</div>
+<figcaption class="ui-evidence__caption"><span>{% for frame in frames %}<span data-ui-caption{% if not loop.first %} hidden{% endif %}{{ t.binding(frame.caption) }}>{{ t.value(frame.caption) }}</span>{% endfor %}</span>{% if frames|length > 1 %}<span class="ui-evidence__dots" role="group" aria-label="{{ t.value(message("shared.project.results")) }}"{{ t.binding(message("shared.project.results"),"aria-label") }}>{% for frame in frames %}<button type="button" data-ui-frame-index="{{ loop.index0 }}" aria-label="{{ t.value(frame.caption) }}"{{ t.binding(frame.caption,"aria-label") }} aria-current="{{ 'true' if loop.first else 'false' }}"></button>{% endfor %}</span>{% endif %}</figcaption>
 </figure>{% endif %}
 {%- endmacro %}
-{% macro selected_projects(projects, labels) -%}
+{% macro selected_projects(projects) -%}
 {% if projects %}<div class="ui-selected" data-ui-carousel>
-<div class="ui-selected__track" data-ui-carousel-track tabindex="0" role="region" aria-label="{{ labels.selected }}">{% for project in projects %}<article class="ui-feature" data-ui-slide>
-<div class="ui-feature__copy"><span class="ui-feature__index">{{ '%02d'|format(loop.index) }}</span><h2>{{ project.title }}</h2>{% if project.subtitle %}<p class="ui-feature__subtitle">{{ project.subtitle }}</p>{% endif %}<p class="ui-feature__description">{{ project.description }}</p>{{ badges(project.badges) }}<div class="ui-feature__link">{{ n.diagonal(labels.view,project.href,true,true) }}</div></div>
-<div class="ui-feature__evidence">{{ evidence(project.frames,labels) }}{% if project.metrics %}<div class="ui-feature__metrics">{% for metric in project.metrics %}<div><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></div>{% endfor %}</div>{% endif %}</div>
+<div class="ui-selected__track" data-ui-carousel-track tabindex="0" role="region" aria-label="{{ t.value(message("shared.action.selected")) }}"{{ t.binding(message("shared.action.selected"),"aria-label") }}>{% for project in projects %}<article class="ui-feature" data-ui-slide>
+<div class="ui-feature__copy"><span class="ui-feature__index">{{ '%02d'|format(loop.index) }}</span><h2{{ t.binding(project.title) }}>{{ t.value(project.title) }}</h2>{% if project.subtitle %}<p class="ui-feature__subtitle"{{ t.binding(project.subtitle) }}>{{ t.value(project.subtitle) }}</p>{% endif %}<p class="ui-feature__description"{{ t.binding(project.description) }}>{{ t.value(project.description) }}</p>{{ badges(project.badges) }}<div class="ui-feature__link">{{ n.diagonal(message("shared.project.view"),project.href,true,true) }}</div></div>
+<div class="ui-feature__evidence">{{ evidence(project.frames) }}{% if project.metrics %}<div class="ui-feature__metrics">{% for metric in project.metrics %}<div><strong>{{ metric.value }}</strong><span{{ t.binding(metric.label) }}>{{ t.value(metric.label) }}</span></div>{% endfor %}</div>{% endif %}</div>
 </article>{% endfor %}</div>
-<div class="ui-selected__footer"><span data-ui-carousel-count aria-live="polite">01 / {{ '%02d'|format(projects|length) }}</span><div class="ui-selected__progress" aria-hidden="true"><span></span></div><div class="ui-selected__arrows">{{ b.carousel_arrow(labels.previous,'previous',true) }}{{ b.carousel_arrow(labels.next,'next',projects|length == 1) }}</div></div>
+<div class="ui-selected__footer"><span data-ui-carousel-count aria-live="polite">01 / {{ '%02d'|format(projects|length) }}</span><div class="ui-selected__progress" aria-hidden="true"><span></span></div><div class="ui-selected__arrows">{{ b.carousel_arrow(message("shared.project.previous"),'previous',true) }}{{ b.carousel_arrow(message("shared.project.next"),'next',projects|length == 1) }}</div></div>
 </div>{% endif %}
 {%- endmacro %}
-{% macro marquee(label, heading, email, href, pause, play) -%}
-<div class="ui-marquee" data-ui-marquee><a class="ui-marquee__link" href="{{ href }}" aria-label="{{ label }}" data-ui-lens>
-<div class="ui-marquee__lanes" aria-hidden="true">{% for word in [heading,email] %}<div class="ui-marquee__lane{% if loop.last %} ui-marquee__lane--email{% endif %}"><div class="ui-marquee__track"><span class="ui-marquee__unit"><span>{{ word }}</span>{{ n.arrow() }}</span></div></div>{% endfor %}</div>
-</a><div class="ui-marquee__control"><button class="ui-link" type="button" data-ui-marquee-toggle data-play="{{ play }}" data-pause="{{ pause }}" aria-label="{{ pause }}">Ⅱ</button></div></div>
+{% macro marquee(email, href) -%}
+<div class="ui-marquee" data-ui-marquee><a class="ui-marquee__link" href="{{ href }}" aria-label="{{ t.value(message("shared.marquee.label")) }}"{{ t.binding(message("shared.marquee.label"),"aria-label") }} data-ui-lens>
+<div class="ui-marquee__lanes" aria-hidden="true">{% for word in [message("shared.marquee.heading"),email] %}<div class="ui-marquee__lane{% if loop.last %} ui-marquee__lane--email{% endif %}"><div class="ui-marquee__track"><span class="ui-marquee__unit"><span{{ t.binding(word) }}>{{ t.value(word) }}</span>{{ n.arrow() }}</span></div></div>{% endfor %}</div>
+</a><div class="ui-marquee__control"><button class="ui-link" type="button" data-ui-marquee-toggle aria-label="{{ t.value(message("shared.marquee.pause")) }}"{{ t.binding(message("shared.marquee.pause"),"aria-label") }}>Ⅱ</button></div></div>
 {%- endmacro %}

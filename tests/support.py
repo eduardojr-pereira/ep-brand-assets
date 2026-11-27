@@ -1,51 +1,61 @@
 """Responsibility: shared browser fixture, dependency loading and font validation.
 No component assertions or production rendering logic.
 """
-import base64
 import json
 import os
-from pathlib import Path
+import sys
+import mimetypes
 import shutil
-
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from pathlib import Path
+from urllib.parse import urlparse, unquote
 
 ROOT = Path(__file__).resolve().parents[1]
-ENV = Environment(loader=FileSystemLoader(ROOT), autoescape=select_autoescape(['html'], default_for_string=True))
-DEPENDENCIES = json.loads((ROOT / 'config/ui.json').read_text())
+sys.path.insert(0, str(ROOT / 'tools'))
+from presentation import environment, head_resources, DEPENDENCIES, dictionaries
+ENV = environment()
 FONT_PATHS = ('assets/fonts/manrope/Manrope.ttf', 'assets/fonts/inter/Inter.ttf')
+ORIGIN = 'http://127.0.0.1:18765'
+
 
 def launch_browser(playwright):
     executable = os.getenv('UI_TEST_BROWSER') or shutil.which('chromium') or shutil.which('google-chrome')
     return playwright.chromium.launch(headless=True, **({'executable_path': executable} if executable else {}))
 
-def load_page(page, body, theme='dark', *, css='', scripts=True):
-    """Build an in-memory test document using canonical sources and manifest order."""
-    styles = '\n'.join((ROOT / name).read_text() for name in DEPENDENCIES['styles'])
-    missing = []
-    for name in FONT_PATHS:
-        path = ROOT / name
-        if not path.is_file():
-            missing.append(name)
-            uri = 'data:font/ttf;base64,'
-        else:
-            uri = 'data:font/ttf;base64,' + base64.b64encode(path.read_bytes()).decode('ascii')
-        styles = styles.replace('../' + name, uri)
-    if missing and os.getenv('UI_TEST_ALLOW_MISSING_FONTS') != '1':
+
+def new_page(browser, *, locale="en-US", **options):
+    """Explicit fixture locale; startup tests may request a different browser language."""
+    return browser.new_page(locale=locale, **options)
+
+
+def load_page(page, body, theme='dark', *, css='', scripts=True, local=None, lottie=False, title='Fixture', title_key=None):
+    """Serve a same-origin browser fixture from actual canonical files, without a live network."""
+    missing = [name for name in FONT_PATHS if not (ROOT / name).is_file()]
+    if missing:
         raise AssertionError(f'Missing canonical fonts: {missing}')
-    head = ''.join(f'<script>{(ROOT / name).read_text()}</script>' for name in DEPENDENCIES['head_scripts']) if scripts else ''
-    # Inline classic scripts execute immediately, so place the deferred group after the body content.
-    deferred = ''.join(f'<script>{(ROOT / name).read_text()}</script>' for name in DEPENDENCIES['defer_scripts']) if scripts else ''
-    document = f'<!doctype html><html data-theme="{theme}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>{styles}\n{css}</style>{head}</head><body>{body}{deferred}</body></html>'
+    page.emulate_media(color_scheme=theme)
+    page.unroute(ORIGIN + '/**')
+    head = head_resources('/',local,scripts)
+    from html import escape
+    title_attr = f' data-i18n-text="{escape(title_key)}"' if title_key else ''
+    document = f'<!doctype html><html lang="en" data-theme="{theme}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title{title_attr}>{escape(title)}</title>{head}<style>{css}</style></head><body>{body}</body></html>'
+    def serve(route):
+        path = unquote(urlparse(route.request.url).path).lstrip('/')
+        if path == 'fixture':
+            route.fulfill(status=200,content_type='text/html',body=document); return
+        if path == 'assets/' + DEPENDENCIES['lottie']['runtime'] and not lottie:
+            route.fulfill(status=404,body='Runtime intentionally unavailable (fallback test)'); return
+        file = (ROOT / path).resolve()
+        if not file.is_relative_to(ROOT) or not file.is_file():
+            route.fulfill(status=404,body='Not found'); return
+        route.fulfill(status=200,content_type=mimetypes.guess_type(file.name)[0] or 'application/octet-stream',body=file.read_bytes())
+    page.route(ORIGIN+'/**',serve)
     errors = []
     page.on('pageerror', lambda error: errors.append(str(error)))
-    page.set_content(document)
-    if not missing:
-        assert page.evaluate('''async () => {
+    page.goto(ORIGIN+'/fixture',wait_until='domcontentloaded')
+    assert page.evaluate('''async () => {
           await Promise.all([document.fonts.load('400 16px Inter'), document.fonts.load('600 20px Manrope')]);
           return ['Inter','Manrope'].every(name => [...document.fonts].some(font => font.family === name && font.status === 'loaded'));
         }'''), 'Canonical fonts did not load'
-    else:
-        page.evaluate('document.fonts.ready')
     assert not errors, errors
 
 
@@ -67,6 +77,20 @@ def validate_contract():
     assert '--ui-color-ink:' not in (ROOT / 'styles/buttons.css').read_text()
     assert '--ui-distance-text:' in (ROOT / 'styles/motion.css').read_text()
     assert '--ui-distance-text:' not in (ROOT / 'styles/links.css').read_text()
+    dictionaries()
+    # No legacy local translation adapters or independent language/theme preference.
+    for name in ('navigation','buttons','interactive'):
+        source = (ROOT / 'scripts' / (name + '.js')).read_text()
+        assert not re.search(r'\b(?:setLabel|setOrbitLabel|setSendLabels|connectChecks|localStorage|navigator\.language)\b',source),name
+    for name in ('navigation','buttons','interactive'):
+        source = (ROOT / 'components/web' / (name + '.html')).read_text()
+        assert not re.search(r'data-(?:singular|plural|play|pause)=',source),name
+    assert all((ROOT/'assets'/path).is_file() for spec in DEPENDENCIES['lottie']['animations'].values() for path in ([spec['file']] if 'file' in spec else spec['variants'].values()))
+    import hashlib
+    lottie = DEPENDENCIES['lottie']
+    for path, source in [(lottie['runtime'],'build/player/lottie.min.js'),(lottie['license'],'LICENSE.md')]:
+        data=(ROOT/'assets'/path).read_bytes()
+        assert hashlib.sha1(f'blob {len(data)}\0'.encode()+data).hexdigest()==lottie['source_files'][source],path
     print('PASS: canonical dependencies, responsibility headers, neutral names and token ownership', flush=True)
 
 
