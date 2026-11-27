@@ -212,6 +212,7 @@ ep-brand-assets/
 - `assets/` — Visual identity resources and fonts.
 - `components/` — Markdown footers and canonical Jinja macros.
 - `config/` — Institutional data, catalogues and dependency order.
+- Project registry and per-project metadata: see [catalog contract](./docs/catalog.md). Build-time Python dependencies are pinned in [`requirements.txt`](./requirements.txt); analytical and browser-test dependencies remain separate.
 - `docs/` — Technical documentation and attribution.
 - `scripts/` and `styles/` — Shared behavior and presentation.
 - `tests/` — Component tests with shared infrastructure.

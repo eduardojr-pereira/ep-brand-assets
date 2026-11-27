@@ -77,6 +77,21 @@ def load_page(page, body, theme='dark', *, css='', scripts=True, local=None, lot
 def validate_contract():
     """Reject stale references, duplicate manifest entries and parallel implementations."""
     import re
+    # Require explicit ownership and boundaries in every first-party source header.
+    for folder, suffix, delimiters in [
+        ('styles', '.css', ('/*', '*/')), ('scripts', '.js', ('/*', '*/')),
+        ('components/web', '.html', ('{#', '#}')), ('templates', '.html', ('{#', '#}')),
+        ('tools', '.py', ('"""', '"""')), ('tests', '.py', ('"""', '"""')),
+    ]:
+        for path in (ROOT / folder).rglob('*' + suffix):
+            source = path.read_text(encoding='utf-8').lstrip()
+            start, end = delimiters
+            assert source.startswith(start), f'Missing responsibility header: {path}'
+            header, separator, _ = source[len(start):].partition(end)
+            assert separator, f'Unclosed responsibility header: {path}'
+            for field in ('Responsibility', 'Boundaries'):
+                matches = re.findall(r'^\s*\*?\s*' + field + r':[^\S\n]*(\S.*)$', header, re.M)
+                assert len(matches) == 1, f'Missing or duplicate {field}: {path}'
     dependencies = sum((DEPENDENCIES[key] for key in ('styles', 'head_scripts', 'defer_scripts')), [])
     assert len(dependencies) == len(set(dependencies)), 'Duplicate dependencies'
     actual = {str(p.relative_to(ROOT)) for folder, suffix in [('styles', '.css'), ('scripts', '.js')] for p in (ROOT / folder).rglob('*' + suffix)}
