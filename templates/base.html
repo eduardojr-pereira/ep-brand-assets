@@ -1,0 +1,27 @@
+{# Responsibility: Define the common HTML document and canonical head resources.
+   Boundaries: No project-specific content, asset selection, preference state or deployment. #}
+{% import 'components/web/localization.html' as t %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title{{ t.binding(message(title_key)) }}>{{ t.value(message(title_key)) }}</title>
+<link rel="icon" href="{{ favicon_src }}">
+{{ head }}
+</head>
+<body>
+{% block header %}{% endblock %}
+<main>
+{% block content %}
+{% for section in sections %}
+<section id="{{ section.id }}" data-ui-section>
+{% if loop.first %}<h1{{ t.binding(message(section.label)) }}>{{ t.value(message(section.label)) }}</h1>{% else %}<h2{{ t.binding(message(section.label)) }}>{{ t.value(message(section.label)) }}</h2>{% endif %}
+{% for key in section.paragraphs %}<p{{ t.binding(message(key)) }}>{{ t.value(message(key)) }}</p>{% endfor %}
+</section>
+{% endfor %}
+{% endblock %}
+</main>
+{% block footer %}{% endblock %}
+</body>
+</html>

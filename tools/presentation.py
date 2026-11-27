@@ -94,7 +94,7 @@ def page_config(asset_base, local=None):
 
 
 def head_resources(resource_base, local=None, scripts=True):
-    """Resolve canonical resources at one base; the future builder owns that base."""
+    """Resolve canonical resources at one base; the builder owns that base."""
     base = resource_base.rstrip('/') + '/'
     asset_root = json.loads((ROOT / 'config/brand.json').read_text())['asset_root']
     tags = [page_config(base + asset_root + '/', local)] if scripts else []

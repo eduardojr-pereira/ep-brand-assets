@@ -67,7 +67,7 @@ The centralized library contains 57 SVGs: 48 technologies, 3 licenses and 6 stat
 
 ## Shared Components
 
-Components are maintained in EP Brand and reused where relevant. The canonical builder is still pending; the current templates are Jinja macros, not published pages.
+Components are maintained in EP Brand and reused where relevant. The canonical [builder](./docs/builder.md) and structural templates are implemented; actual consumer pages and publication remain pending.
 
 | Component | Source |
 |---|---|
@@ -92,7 +92,7 @@ Components are maintained in EP Brand and reused where relevant. The canonical b
 
 The palette and typography are centralized in [Foundations](./styles/foundations.css). Light and dark themes are defined by CSS tokens. Shared motion tokens and generic animations live in [Motion](./styles/motion.css). Loading order is declared in [config/ui.json](./config/ui.json).
 
-The [theme controller](./scripts/theme.js) resolves and persists a single preference. [Internationalization](./scripts/i18n.js) binds text, accessible attributes, SVG labels and dynamic messages using [shared keys](./config/translations.json) and validated local translations. The [asset loader](./scripts/assets.js) resolves paths, variants and animations from the same library version. Translation does not reset component state. See the [technical contract](./docs/presentation.md). The [canonical Header and Footer](./docs/shell.md) consume these same services and shared components. The [Plotly adapter](./docs/plotly.md) is implemented; the builder and real consumer integration remain pending.
+The [theme controller](./scripts/theme.js) resolves and persists a single preference. [Internationalization](./scripts/i18n.js) binds text, accessible attributes, SVG labels and dynamic messages using [shared keys](./config/translations.json) and validated local translations. The [asset loader](./scripts/assets.js) resolves paths, variants and animations from the same library version. Translation does not reset component state. See the [technical contract](./docs/presentation.md). The [canonical Header and Footer](./docs/shell.md) consume these same services and shared components. The [Plotly adapter](./docs/plotly.md) is implemented; real consumer integration remains pending.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
@@ -196,12 +196,21 @@ ep-brand-assets/
 ├── tests/
 │   ├── support.py
 │   └── test_*.py
+├── templates/
+│   ├── base.html
+│   ├── landing.html
+│   └── report.html
 ├── tools/
+│   ├── builder.py
+│   ├── catalog.py
+│   ├── routing.py
+│   ├── resources.py
 │   ├── presentation.py
 │   ├── badge_catalog.py
 │   ├── render_badges.py
 │   ├── artifact_preview.py
 │   └── plotly_presentation.py
+├── requirements.txt
 ├── LICENSE-BRAND.md
 ├── LICENSE-CODE.txt
 ├── LICENSE-CONTENT.md
@@ -225,9 +234,9 @@ ep-brand-assets/
 
 ## Usage and Integration
 
-[brand.json](./config/brand.json) declares `asset_root` relative to the consumed EP Brand version. The future builder must resolve resources from the same checkout or immutable reference as the components, not a mutable branch.
+[brand.json](./config/brand.json) declares `asset_root` relative to the consumed EP Brand version. The builder resolves resources from the same checkout or immutable reference as the components, not a mutable branch.
 
-The templates in `components/web/` are HTML-autoescaped Jinja macros. [`tools/presentation.py`](./tools/presentation.py) prepares the Jinja environment, message references and head resources in the order declared by `config/ui.json`. The future builder will reuse this contract; no page builder is currently active. Existing Markdown footer templates are preserved independently of the new web architecture. Do not rename shared assets without checking consumers. Local generation does not publish changes.
+The templates in `components/web/` are HTML-autoescaped Jinja macros. [`tools/presentation.py`](./tools/presentation.py) prepares the Jinja environment, message references and head resources in the order declared by `config/ui.json`. The [builder](./docs/builder.md) reuses this contract for explicitly declared static pages; final consumer composition remains pending. Existing Markdown footer templates are preserved independently of the new web architecture. Do not rename shared assets without checking consumers. Local generation does not publish changes.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 

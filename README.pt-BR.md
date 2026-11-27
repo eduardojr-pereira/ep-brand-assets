@@ -67,7 +67,7 @@ A biblioteca centralizada contém 57 badges SVG: 48 de tecnologias, 3 de licenç
 
 ## Componentes Compartilhados
 
-Os componentes são mantidos no EP Brand e reutilizados quando pertinentes. O builder canônico ainda será implementado; os templates atuais são macros Jinja, não páginas publicadas.
+Os componentes são mantidos no EP Brand e reutilizados quando pertinentes. O [builder canônico](./docs/builder.md) e os templates estruturais estão implementados; as páginas reais dos consumidores e a publicação permanecem pendentes.
 
 | Componente | Fonte |
 |---|---|
@@ -92,7 +92,7 @@ Os componentes são mantidos no EP Brand e reutilizados quando pertinentes. O bu
 
 A paleta e a tipografia estão centralizadas em [Foundations](./styles/foundations.css). Os temas claro e escuro são definidos por tokens CSS. A biblioteca de movimento, incluindo tokens e animações genéricas, está em [Motion](./styles/motion.css). A ordem de carregamento é definida em [config/ui.json](./config/ui.json).
 
-O [controlador de tema](./scripts/theme.js) resolve e preserva uma preferência única. O [i18n](./scripts/i18n.js) traduz texto, atributos acessíveis, SVG e mensagens dinâmicas por meio de [chaves compartilhadas](./config/translations.json) e traduções locais validadas. O [carregador de ativos](./scripts/assets.js) resolve caminhos, variantes e animações a partir da mesma versão da biblioteca. Os estados dos componentes não são reinicializados pela tradução. Consulte o [contrato técnico](./docs/presentation.md). O [Header e Footer canônicos](./docs/shell.md) consomem os mesmos serviços e componentes compartilhados. O [adaptador Plotly](./docs/plotly.md) está implementado; o builder e a integração dos consumidores reais permanecem pendentes.
+O [controlador de tema](./scripts/theme.js) resolve e preserva uma preferência única. O [i18n](./scripts/i18n.js) traduz texto, atributos acessíveis, SVG e mensagens dinâmicas por meio de [chaves compartilhadas](./config/translations.json) e traduções locais validadas. O [carregador de ativos](./scripts/assets.js) resolve caminhos, variantes e animações a partir da mesma versão da biblioteca. Os estados dos componentes não são reinicializados pela tradução. Consulte o [contrato técnico](./docs/presentation.md). O [Header e Footer canônicos](./docs/shell.md) consomem os mesmos serviços e componentes compartilhados. O [adaptador Plotly](./docs/plotly.md) está implementado; a integração dos consumidores reais permanece pendente.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
@@ -196,12 +196,21 @@ ep-brand-assets/
 ├── tests/
 │   ├── support.py
 │   └── test_*.py
+├── templates/
+│   ├── base.html
+│   ├── landing.html
+│   └── report.html
 ├── tools/
+│   ├── builder.py
+│   ├── catalog.py
+│   ├── routing.py
+│   ├── resources.py
 │   ├── presentation.py
 │   ├── badge_catalog.py
 │   ├── render_badges.py
 │   ├── artifact_preview.py
 │   └── plotly_presentation.py
+├── requirements.txt
 ├── LICENSE-BRAND.md
 ├── LICENSE-CODE.txt
 ├── LICENSE-CONTENT.md
@@ -225,9 +234,9 @@ ep-brand-assets/
 
 ## Uso e Integração
 
-A configuração [brand.json](./config/brand.json) define `asset_root` como caminho relativo à versão do EP Brand consumida. O futuro builder deverá resolver os recursos a partir do mesmo checkout ou referência imutável que fornece os componentes, sem dependência de uma branch mutável.
+A configuração [brand.json](./config/brand.json) define `asset_root` como caminho relativo à versão do EP Brand consumida. O builder resolve os recursos a partir do mesmo checkout ou referência imutável que fornece os componentes, sem dependência de uma branch mutável.
 
-Os templates de `components/web/` são macros Jinja com escape HTML. O módulo [`tools/presentation.py`](./tools/presentation.py) prepara o ambiente Jinja, as referências de mensagens e os recursos do head na ordem de `config/ui.json`. O futuro builder reutilizará esse contrato; ainda não há gerador de páginas ativo. Os rodapés Markdown existentes são preservados, independentemente da nova arquitetura web. Não renomeie ativos compartilhados sem verificar os consumidores. Nenhuma geração local publica mudanças.
+Os templates de `components/web/` são macros Jinja com escape HTML. O módulo [`tools/presentation.py`](./tools/presentation.py) prepara o ambiente Jinja, as referências de mensagens e os recursos do head na ordem de `config/ui.json`. O [builder](./docs/builder.md) reutiliza esse contrato para páginas estáticas explicitamente declaradas; a composição final dos consumidores permanece pendente. Os rodapés Markdown existentes são preservados, independentemente da nova arquitetura web. Não renomeie ativos compartilhados sem verificar os consumidores. Nenhuma geração local publica mudanças.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 

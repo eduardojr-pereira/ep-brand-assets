@@ -1,0 +1,7 @@
+{# Responsibility: Compose the landing shell using canonical Header and Footer.
+   Boundaries: No final landing design, project discovery, URL hardcoding or duplicated UI logic. #}
+{% extends 'templates/base.html' %}
+{% import 'components/web/header.html' as h %}
+{% import 'components/web/footer.html' as f %}
+{% block header %}{{ h.landing_header(brand,navigation) }}{% endblock %}
+{% block footer %}{{ f.footer(brand,navigation,'',logo_src,privacy_href,terms_href) }}{% endblock %}
