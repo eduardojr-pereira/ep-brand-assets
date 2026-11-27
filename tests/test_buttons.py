@@ -1,7 +1,7 @@
 """Responsibility: Browser behavior tests for the shared action macros, not a design preview."""
 from playwright.sync_api import sync_playwright
 
-from support import ROOT, ENV, load_page, launch_browser, new_page
+from support import ROOT, ENV, load_page, launch_browser, new_page, close_browser
 FIXTURE = '''{% import 'components/web/buttons.html' as b %}
 <div class="row" id="learn">{{ b.radial_link(message('shared.action.learn'),'#contact') }}</div>
 <div class="row" id="arrows">{{ b.carousel_arrow('Previous project','previous',true) }}{{ b.carousel_arrow('Next project') }}</div>
@@ -91,16 +91,16 @@ if __name__ == '__main__':
     with sync_playwright() as pw:
 
         browser = launch_browser(pw)
-        errors = []
+
         for theme in ['dark','light']:
             page = new_page(browser, viewport={'width':1200,'height':800}); page.set_default_timeout(5000)
-            page.on('pageerror',lambda e:errors.append(str(e)))
+
             desktop(page,theme)
         page = new_page(browser, viewport={'width':1200,'height':800}); page.set_default_timeout(5000)
-        page.on('pageerror',lambda e:errors.append(str(e)))
+
         send(page)
         page = new_page(browser, viewport={'width':390,'height':844},has_touch=True,is_mobile=True,reduced_motion='reduce')
-        page.on('pageerror',lambda e:errors.append(str(e)))
+
         load(page)
         orbit = page.get_by_role('link',name='Selected Projects'); orbit.focus()
         assert all(abs(v) < .05 for v in matrix(orbit.locator('.ui-action__body'))[2:])
@@ -112,5 +112,5 @@ if __name__ == '__main__':
         assert page.get_by_role('link',name='Learn More').get_attribute('href') == '#contact'
         assert page.get_by_role('button',name='Send message').is_enabled()
         print('PASS: native link and submit without JavaScript')
-        assert not errors,errors
-        browser.close()
+
+        close_browser(browser)

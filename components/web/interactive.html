@@ -8,13 +8,16 @@
 {% if items %}<div class="ui-badges">{% for item in items %}<img src="{{ item.src }}" alt="{{ t.value(item.label) }}"{{ t.binding(item.label,"alt") }} {% if item.en_src and item.pt_br_src %} data-en-src="{{ item.en_src }}" data-pt-br-src="{{ item.pt_br_src }}"{% endif %}{% if item.light and item.dark %} data-light-src="{{ item.light }}" data-dark-src="{{ item.dark }}"{% endif %} loading="lazy" decoding="async">{% endfor %}</div>{% endif %}
 {%- endmacro %}
 {% macro project_card(project) -%}
-<article class="ui-project-card" data-ui-project data-collection="{{ project.collection }}" data-areas="{{ project.areas|join(' ') }}" data-search="{{ project.search|default('') }}">
+<article class="ui-project-card" data-ui-project data-collection="{{ project.collection }}" data-areas="{{ project.areas|join(' ') }}" data-search="{{ search_text([project.title, project.description, project.collection_label, project.search|default('')] + (project.topics|default([],true)|list) + (project.badges|default([],true)|map(attribute='label')|list) + (project.links|default([],true)|map(attribute='label')|list)) }}">
 <div class="ui-project-card__head"><span class="ui-project-card__eyebrow"{{ t.binding(project.collection_label) }}>{{ t.value(project.collection_label) }}</span></div>
 <h3{{ t.binding(project.title) }}>{{ t.value(project.title) }}</h3><p{{ t.binding(project.description) }}>{{ t.value(project.description) }}</p>
 {% if project.topics %}<div class="ui-project-card__topics">{% for topic in project.topics %}{% if not loop.first %} · {% endif %}<span{{ t.binding(topic) }}>{{ t.value(topic) }}</span>{% endfor %}</div>{% endif %}
 {{ badges(project.badges) }}
-<div class="ui-project-card__links">{% for item in project.links %}{% if item.primary %}<span class="ui-project-card__primary">{{ n.diagonal(item.label,item.href) }}</span>{% else %}<a class="ui-link ui-underline ui-link--muted" href="{{ item.href }}"{{ t.binding(item.label) }}>{{ t.value(item.label) }}</a>{% endif %}{% endfor %}</div>
+<div class="ui-project-card__links">{% for item in project.links %}{% if item.primary %}<span class="ui-project-card__primary">{{ n.diagonal(item.label,item.href) }}</span>{% else %}{{ n.text_link(item.label,item.href) }}{% endif %}{% endfor %}</div>
 </article>
+{%- endmacro %}
+{% macro reset_filters(hidden=false) -%}
+<button class="ui-link ui-underline ui-underline--always ui-link--accent" type="button" data-ui-reset{% if hidden %} hidden{% endif %}{{ t.binding(message("shared.catalog.clear")) }}>{{ t.value(message("shared.catalog.clear")) }}</button>
 {%- endmacro %}
 {% macro catalog(id, projects, areas) -%}
 <div class="ui-catalog" data-ui-catalog>
@@ -22,10 +25,10 @@
 <div class="ui-catalog__collections" data-ui-filter="collection" role="group" aria-label="{{ t.value(message("shared.catalog.collection")) }}"{{ t.binding(message("shared.catalog.collection"),"aria-label") }}>{{ n.filter_button(message("shared.catalog.all"),'all',true) }}{{ n.filter_button(message("shared.catalog.selected"),'selected') }}{{ n.filter_button(message("shared.catalog.learning"),'learning') }}</div>
 <div class="ui-catalog__area">{% call n.disclosure(message("shared.catalog.areas"),'area') %}{{ n.area_option(message("shared.catalog.areas"),'all',true) }}{% for area in areas %}{{ n.area_option(area.label,area.value) }}{% endfor %}{% endcall %}</div>
 <div class="ui-catalog__search"><label class="ui-interactive-sr" for="{{ id }}-search"{{ t.binding(message("shared.catalog.search")) }}>{{ t.value(message("shared.catalog.search")) }}</label><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="{{ id }}-search" data-ui-search type="search" autocomplete="off" placeholder="{{ t.value(message("shared.catalog.placeholder")) }}"{{ t.binding(message("shared.catalog.placeholder"),"placeholder") }}><button type="button" class="ui-link" data-ui-clear-search aria-label="{{ t.value(message("shared.catalog.clear_search")) }}"{{ t.binding(message("shared.catalog.clear_search"),"aria-label") }} hidden>×</button></div>
-<div class="ui-catalog__info"><button class="ui-link ui-underline ui-underline--always ui-link--accent" type="button" data-ui-reset hidden{{ t.binding(message("shared.catalog.clear")) }}>{{ t.value(message("shared.catalog.clear")) }}</button><span role="status" data-ui-count></span></div>
+<div class="ui-catalog__info">{{ reset_filters(true) }}<span role="status" data-ui-count></span></div>
 </div>
 <div class="ui-catalog__grid">{% for project in projects %}{{ project_card(project) }}{% endfor %}</div>
-<div class="ui-catalog__empty" data-ui-empty hidden><span{{ t.binding(message("shared.catalog.empty")) }}>{{ t.value(message("shared.catalog.empty")) }}</span><div><button class="ui-link ui-underline ui-underline--always ui-link--accent" type="button" data-ui-reset{{ t.binding(message("shared.catalog.clear")) }}>{{ t.value(message("shared.catalog.clear")) }}</button></div></div>
+<div class="ui-catalog__empty" data-ui-empty hidden><span{{ t.binding(message("shared.catalog.empty")) }}>{{ t.value(message("shared.catalog.empty")) }}</span><div>{{ reset_filters() }}</div></div>
 </div>
 {%- endmacro %}
 {% macro evidence(frames) -%}

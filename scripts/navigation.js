@@ -161,6 +161,14 @@
         }
         window.addEventListener('scroll', schedule, { passive: true });
         window.addEventListener('resize', schedule);
+        document.addEventListener('ui:languagechange', schedule);
+        document.addEventListener('ui:themechange', schedule);
+        // Section heights can change without a window resize (fonts, images, filtering).
+        if ('ResizeObserver' in window) {
+            const geometry = new ResizeObserver(schedule);
+            geometry.observe(document.body);
+            for (const group of groups) for (const item of group.items) geometry.observe(item.section);
+        }
         window.addEventListener('scrollend', unlock);
         window.addEventListener('wheel', unlock, { passive: true });
         window.addEventListener('touchstart', unlock, { passive: true });

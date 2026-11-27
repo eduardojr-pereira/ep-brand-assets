@@ -1,6 +1,6 @@
 /*
  * Responsibility: Orbit magnetism, motion pause and transport-independent send state.
- * No network submission or language preference; temporary label adapters are replaced in Lot 6.
+ * No network submission or language preference; consumes the global i18n bindings.
  */
 
 (() => {

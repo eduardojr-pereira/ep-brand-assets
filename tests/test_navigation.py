@@ -2,7 +2,7 @@
 
 from playwright.sync_api import sync_playwright
 
-from support import ROOT, ENV, load_page, launch_browser, new_page
+from support import ROOT, ENV, load_page, launch_browser, new_page, close_browser
 FIXTURE = '''{% import 'components/web/navigation.html' as n %}
 <nav data-ui-scroll-nav style="position:sticky;top:0;z-index:3;display:flex;gap:20px;background:var(--ui-color-bg)">{{ n.nav_link('Home','#home',true) }}{{ n.nav_link('Projects','#projects') }}{{ n.nav_link('Contact','#contact') }}</nav>
 <div id="diagonal">{{ n.diagonal('View Project','#projects') }}</div>
@@ -79,6 +79,22 @@ def test(page, theme):
     print(f'PASS: {theme} links, arrow, underline, stable nav, filters, dropdowns, return links, editorial layout, scroll state')
 
 
+def test_geometry(page):
+    body = '''<nav data-ui-scroll-nav><a href="#one">One</a><a href="#two">Two</a><a href="#three">Three</a></nav><section id="one"><p data-i18n-text="content.geometry">Short</p></section><section id="two">Two</section><section id="three">Three</section>'''
+    local={'en':{'content.geometry':'Short'},'pt-BR':{'content.geometry':' '.join(['Uma descrição longa']*300)}}
+    load_page(page,body,local=local,css='nav{height:40px}section{min-height:850px}p{margin:0;width:260px}html{overflow-anchor:none}')
+    page.evaluate("window.scrollTo(0,document.getElementById('two').offsetTop+10)")
+    page.wait_for_function("document.querySelector('nav a:nth-child(2)').getAttribute('aria-current')==='location'")
+    before=page.evaluate('scrollY')
+    page.evaluate("UI.i18n.set('pt-BR')")
+    page.wait_for_function("document.querySelector('nav a:nth-child(1)').getAttribute('aria-current')==='location'")
+    assert page.evaluate('scrollY')==before
+    page.evaluate("document.querySelector('#one p').style.display='none'")
+    page.wait_for_function("document.querySelector('nav a:nth-child(2)').getAttribute('aria-current')==='location'")
+    assert page.evaluate('scrollY')==before
+    print('PASS: active section after locale and layout changes without scrolling')
+
+
 def test_check_adapter(page):
     requests=[]
     page.on('request',lambda request:requests.append(request.url))
@@ -114,17 +130,19 @@ if __name__ == '__main__':
     with sync_playwright() as pw:
 
         browser = launch_browser(pw)
-        errors = []
+
         page = new_page(browser, viewport={'width': 1000, 'height': 700})
         page.set_default_timeout(5000)
-        page.on('pageerror', lambda e: errors.append(str(e)))
+
         test(page, 'dark'); page.close()
-        page = new_page(browser, viewport={'width':1000,'height':700}); page.on('pageerror', lambda e: errors.append(str(e)))
+        page = new_page(browser, viewport={'width':1000,'height':700})
         test(page, 'light'); page.close()
-        page = new_page(browser, viewport={'width':1000,'height':700}); page.on('pageerror', lambda e: errors.append(str(e)))
+        page = new_page(browser, viewport={'width':1000,'height':700})
         test_check_adapter(page); page.close()
+        page = new_page(browser, viewport={'width':1000,'height':700})
+        test_geometry(page); page.close()
         page = new_page(browser, viewport={'width':390,'height':844}, reduced_motion='reduce')
-        page.on('pageerror', lambda e: errors.append(str(e)))
+
         load(page)
         link=page.locator('#diagonal a');link.hover()
         assert translate(link.locator('.ui-link__move')) == [0,0]
@@ -139,5 +157,5 @@ if __name__ == '__main__':
         assert page.locator('#github details').get_attribute('open') is not None
         assert page.locator('#github').get_by_role('link',name='Portfolio').is_visible()
         print('PASS: native disclosure without JavaScript')
-        assert not errors, errors
-        browser.close()
+
+        close_browser(browser)

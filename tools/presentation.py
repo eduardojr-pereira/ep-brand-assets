@@ -1,9 +1,11 @@
-"""Responsibility: Prepare validated shared/local translation data and Jinja bindings.
+"""Responsibility: Validate shared/local translations and bindings, prepare bilingual search metadata,
+page configuration and ordered head resources.
 No page composition, runtime preference, asset copying or component-specific logic.
 """
 import json
 import re
 from pathlib import Path
+from html.parser import HTMLParser
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup, escape
 
@@ -43,8 +45,37 @@ def environment(local=None):
         if not isinstance(value, str):
             raise ValueError(f'Dynamic plural requires runtime arguments: {key}')
         return {'key': key, 'text': value}
-    env.globals['message'] = message
+    def search_text(refs):
+        parts = []
+        for ref in refs:
+            if isinstance(ref, dict):
+                parts.extend(data[locale][ref['key']] for locale in LOCALES)
+            elif ref is not None:
+                parts.append(str(ref))
+        return ' '.join(dict.fromkeys(parts))
+    env.globals.update(message=message, search_text=search_text)
     return env
+
+
+def validate_bindings(html, local=None):
+    """Reject missing/invalid static binding keys before publishing generated HTML."""
+    messages = dictionaries(local)
+    targets = {'text', 'aria-label', 'placeholder', 'alt', 'title'}
+    class Validator(HTMLParser):
+        def handle_starttag(self, tag, attrs):
+            for name, key in attrs:
+                if not name.startswith('data-i18n-'):
+                    continue
+                target = name.removeprefix('data-i18n-')
+                if target not in targets or not key or key not in messages['en']:
+                    raise ValueError(f'Invalid translation binding: {name}={key}')
+                value = messages['en'][key]
+                if not isinstance(value, str) or re.search(r'\{\w+\}', value):
+                    raise ValueError(f'Static binding requires a complete message: {key}')
+        handle_startendtag = handle_starttag
+    validator = Validator()
+    validator.feed(str(html))
+    validator.close()
 
 
 def page_config(asset_base, local=None):

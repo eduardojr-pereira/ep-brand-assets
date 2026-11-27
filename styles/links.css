@@ -157,9 +157,7 @@
 [aria-pressed="true"] .ui-area-check__fallback path { visibility: visible; }
 .ui-area-check:has([data-ui-lottie-ready]) .ui-area-check__fallback { visibility: hidden; }
 [data-ui-section] { scroll-margin-top: var(--ui-sticky-offset, 0px); }
-:root[data-ui-smooth-scroll] { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
-    :root[data-ui-smooth-scroll] { scroll-behavior: auto; }
     .ui-link--diagonal:is(:hover, :focus-visible) :is(.ui-link__move, .ui-link__arrow) { transform: none; }
     .ui-return:is(:hover, :focus-visible) .ui-return__current { transform: none; color: var(--ui-color-accent); }
     .ui-return:is(:hover, :focus-visible) .ui-return__next { visibility: hidden; }

@@ -9,7 +9,7 @@
     const selector = targets.map(t => `[data-i18n-${t}]`).join(',');
     let data;
     try { data = JSON.parse(document.getElementById('ui-config').textContent).translations; }
-    catch { return; }
+    catch (error) { console.error('UI translation configuration unavailable:', error); return; }
     const locales = Object.keys(data);
     const normalize = value => {
         const lang = String(value || '').toLowerCase();
@@ -20,29 +20,30 @@
     let locale = resolve();
     let ready = false;
     const bindings = new WeakMap();
-    function format(key, args = {}) {
-        let value = data[locale]?.[key];
+    function format(key, args = {}, language = locale) {
+        let value = data[language]?.[key];
         if (value === undefined) throw new Error(`Unknown translation key: ${key}`);
-        if (typeof value === 'object') value = value[args.count === 0 ? 'other' : new Intl.PluralRules(locale).select(args.count)] || value.other;
+        if (typeof value === 'object') value = value[args.count === 0 ? 'other' : new Intl.PluralRules(language).select(args.count)] || value.other;
         return value.replace(/\{(\w+)\}/g, (_, name) => {
             if (!(name in args)) throw new Error(`Missing translation argument: ${key}.${name}`);
-            return typeof args[name] === 'number' ? new Intl.NumberFormat(locale).format(args[name]) : String(args[name]);
+            return typeof args[name] === 'number' ? new Intl.NumberFormat(language).format(args[name]) : String(args[name]);
         });
     }
     function write(node, target, value) {
         if (target === 'text') { if (node.textContent !== value) node.textContent = value; }
         else if (node.getAttribute(target) !== value) node.setAttribute(target, value);
     }
-    function render(node) {
-        for (const target of targets) {
-            const key = node.getAttribute(`data-i18n-${target}`);
-            if (key) write(node, target, format(key, bindings.get(node)?.[target] || {}));
+    function plan(language) {
+        const updates = [];
+        for (const node of document.querySelectorAll(selector)) {
+            for (const target of targets) {
+                const key = node.getAttribute(`data-i18n-${target}`);
+                if (key) updates.push([node, target, format(key, bindings.get(node)?.[target] || {}, language)]);
+            }
         }
+        return updates;
     }
-    function apply(scope = document) {
-        if (scope.matches?.(selector)) render(scope);
-        scope.querySelectorAll(selector).forEach(render);
-    }
+    function apply(updates) { for (const update of updates) write(...update); }
     function bind(node, target, key, args = {}) {
         if (!targets.includes(target)) throw new RangeError('Unsupported translation target');
         const value = format(key, args);
@@ -61,30 +62,37 @@
         if (key) bind(node, target, key, bindings.get(source)?.[target] || {});
         else { clear(node, target); write(node, target, target === 'text' ? source.textContent : source.getAttribute(target) || ''); }
     }
-    function change(value) {
+    function change(value, persist = false) {
         if (!locales.includes(value)) throw new RangeError('Unsupported locale');
-        if (locale === value && ready) return;
+        const changed = value !== locale;
+        const updates = ready && changed ? plan(value) : [];
+        // Resolve every binding before committing DOM, preference and event.
+        apply(updates);
         locale = value; root.lang = locale;
-        if (ready) {
-            apply();
-            document.dispatchEvent(new CustomEvent('ui:languagechange', {detail: {locale}}));
-        }
+        if (persist) { try { localStorage.setItem(storageKey, value); } catch {} }
+        if (ready && changed) document.dispatchEvent(new CustomEvent('ui:languagechange', {detail: {locale}}));
     }
-    function set(value) {
-        if (!locales.includes(value)) throw new RangeError('Unsupported locale');
-        try { localStorage.setItem(storageKey, value); } catch {}
-        change(value);
-    }
+    function set(value) { change(value, true); }
     window.UI.i18n = Object.freeze({current: () => locale, set, format, bind, clear, bindFrom});
     root.lang = locale;
     // Only conceal untranslated markup on cold startup; no arbitrary timeout.
     if (locale !== 'en' && document.readyState === 'loading' && !document.body) root.setAttribute('data-ui-localizing', '');
     function initialize() {
-        try { apply(); ready = true; }
-        finally { root.removeAttribute('data-ui-localizing'); }
+        try { apply(plan(locale)); }
+        catch (error) {
+            // No partial writes were made. Keep the server-rendered English fallback.
+            locale = 'en'; root.lang = locale;
+            console.error('UI translation startup failed:', error);
+        } finally {
+            ready = true;
+            root.removeAttribute('data-ui-localizing');
+        }
         document.dispatchEvent(new CustomEvent('ui:languagechange', {detail: {locale}}));
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialize, {once:true});
     else initialize();
-    window.addEventListener('storage', e => { if (e.key === storageKey || e.key === null) change(resolve()); });
+    window.addEventListener('storage', e => {
+        if (e.key !== storageKey && e.key !== null) return;
+        try { change(resolve()); } catch (error) { console.error('UI translation change rejected:', error); }
+    });
 })();

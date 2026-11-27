@@ -22,6 +22,17 @@
     --ui-delay-hero-detail: 700ms;
     --ui-duration-orbit: 20s;
     --ui-duration-arrow-cycle: 3370ms;
+    --ui-delay-arrow-trail-first: calc(var(--ui-duration-arrow-cycle) * 500 / 3370);
+    --ui-delay-arrow-trail-second: calc(var(--ui-duration-arrow-cycle) * 1267 / 3370);
+    --ui-delay-arrow-trail-third: calc(var(--ui-duration-arrow-cycle) * 2034 / 3370);
+    --ui-delay-slide-subtitle: 100ms;
+    --ui-delay-slide-description: 160ms;
+    --ui-delay-slide-badges: 220ms;
+    --ui-delay-slide-link: 280ms;
+    --ui-duration-slide-evidence: 1120ms;
+    --ui-speed-marquee-compact: 42;
+    --ui-speed-marquee: 66;
+    --ui-speed-marquee-secondary: .65;
     --ui-distance-text: 8px;
     --ui-distance-arrow: 3px;
     --ui-duration-evidence-entry: 850ms;
@@ -50,6 +61,8 @@
         --ui-delay-hero-detail: 0ms;
     }
 }
+
+:root[data-ui-smooth-scroll] { scroll-behavior: smooth; }
 
 /* Motion targets are dedicated wrappers, not interactive components. */
 [data-motion] {

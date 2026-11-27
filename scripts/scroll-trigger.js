@@ -30,15 +30,17 @@
         document.querySelectorAll(selector).forEach(showImmediately);
     }
 
-    function initialize() {
+    function initialize(resuming = false) {
         if (!active) return;
+        const entered = new WeakSet();
         try {
             observer = new IntersectionObserver(entries => {
                 for (const entry of entries) {
                     const element = entry.target;
                     if (entry.isIntersecting) {
+                        entered.add(element);
                         reveal(element);
-                    } else if (element.dataset.scrollTrigger === 'repeat' &&
+                    } else if ((!resuming || entered.has(element)) && element.dataset.scrollTrigger === 'repeat' &&
                                !element.matches(':focus-within, :target')) {
                         // Rearm only when completely outside the viewport.
                         const box = element.getBoundingClientRect();
@@ -54,7 +56,7 @@
                     showImmediately(element);
                 } else if (element.dataset.scrollTrigger === 'load') {
                     reveal(element);
-                } else {
+                } else if (!(resuming && element.dataset.scrollTrigger === 'once' && element.hasAttribute(state))) {
                     observer.observe(element);
                 }
             }
@@ -70,7 +72,7 @@
         document.readyState === 'loading' && !document.body;
     if (active) root.setAttribute('data-ui-motion', 'active');
 
-    document.addEventListener('DOMContentLoaded', initialize, { once: true });
+    document.addEventListener('DOMContentLoaded', () => initialize(), { once: true });
     document.addEventListener('animationend', event => {
         if (event.animationName === 'ui-motion-enter' && event.target.matches(selector)) {
             event.target.setAttribute(state, 'visible');
@@ -83,7 +85,15 @@
             target = target.parentElement?.closest(selector);
         }
     });
-    reduced.addEventListener('change', event => { if (event.matches) stop(); });
+    reduced.addEventListener('change', event => {
+        if (event.matches) { stop(); return; }
+        if (!('IntersectionObserver' in window) || document.readyState === 'loading') return;
+        // Restore explicit replay and repeat-on-reentry, never hide previously visible content.
+        document.querySelectorAll(selector).forEach(showImmediately);
+        active = true;
+        root.setAttribute('data-ui-motion', 'active');
+        initialize(true);
+    });
 
     // For an explicit replay (e.g. after the locale controller swaps content).
     // The caller owns any fade-out and must perform the text change first.

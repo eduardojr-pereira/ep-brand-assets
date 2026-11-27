@@ -1,7 +1,7 @@
 """Responsibility: Isolated integration checks of canonical templates, not a visual preview."""
 from playwright.sync_api import sync_playwright
 
-from support import ROOT, ENV, load_page, launch_browser, new_page
+from support import ROOT, ENV, load_page, launch_browser, new_page, close_browser
 PIXEL = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"%3E%3Crect width="200" height="100" fill="gray"/%3E%3C/svg%3E'
 PROJECTS = [dict(title='Bike Sharing', description='Demanda histórica', collection='selected', collection_label='Selected', areas=['analytics','ml'], topics=['Analytics','Machine Learning'], badges=[dict(src=PIXEL,label='Pandas')], search='regression', links=[dict(label=ENV.globals['message']('shared.project.notebook'),href='#notebook',primary=False),dict(label=ENV.globals['message']('shared.project.view'),href='#bike',primary=True)], subtitle='Demand insights', href='#bike',frames=[dict(src=PIXEL,alt='Figure one',caption='Figure one'),dict(src=PIXEL,alt='Figure two',caption='Figure two')],metrics=[dict(value='100',label='Example metric'),dict(value='200',label='Another metric')]),dict(title='Hangman', description='Jogo da Forca', collection='learning', collection_label='Learning', areas=['python'], topics=['Python'], badges=[], search='game', links=[dict(label=ENV.globals['message']('shared.project.view'),href='#hangman',primary=True)],href='#hangman',frames=[],metrics=[])]
 FIXTURE = '''{% import 'components/web/interactive.html' as i %}<section id="catalog">{{ i.catalog('catalog', projects, areas) }}</section><section id="selected">{{ i.selected_projects(projects) }}</section><section id="marquee">{{ i.marquee('example@example.org','#contact') }}</section><section id="contact">Contact</section>'''
@@ -44,9 +44,9 @@ def desktop(page, theme):
 def main():
     with sync_playwright() as p:
         browser=launch_browser(p)
-        page=new_page(browser, viewport={'width':1280,'height':900});errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+        page=new_page(browser, viewport={'width':1280,'height':900})
         desktop(page,'dark');page.close()
-        page=new_page(browser, viewport={'width':1280,'height':900});page.on('pageerror',lambda e:errors.append(str(e)));desktop(page,'light');page.close();assert not errors,errors
+        page=new_page(browser, viewport={'width':1280,'height':900});desktop(page,'light');page.close()
         mobile=new_page(browser, viewport={'width':390,'height':844},is_mobile=True,has_touch=True,reduced_motion='reduce');load(mobile)
         assert mobile.locator('[data-ui-marquee]').get_attribute('data-ui-running') is None
         assert mobile.locator('[data-ui-evidence-toggle]').is_disabled()
@@ -59,6 +59,6 @@ def main():
         assert static.locator('[data-ui-frame]:visible').count()==1
         assert not static.locator('.ui-catalog__controls').is_visible()
         print('PASS: static content and links without JavaScript')
-        browser.close()
+        close_browser(browser)
 
 if __name__=='__main__':main()

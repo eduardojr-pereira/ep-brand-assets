@@ -1,5 +1,5 @@
-"""Responsibility: shared browser fixture, dependency loading and font validation.
-No component assertions or production rendering logic.
+"""Responsibility: shared browser fixtures, font/dependency validation, error tracking,
+architectural checks and suite orchestration. No production rendering logic.
 """
 import json
 import os
@@ -8,13 +8,15 @@ import mimetypes
 import shutil
 from pathlib import Path
 from urllib.parse import urlparse, unquote
+from weakref import WeakKeyDictionary
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
-from presentation import environment, head_resources, DEPENDENCIES, dictionaries
+from presentation import environment, head_resources, DEPENDENCIES, dictionaries, validate_bindings
 ENV = environment()
 FONT_PATHS = ('assets/fonts/manrope/Manrope.ttf', 'assets/fonts/inter/Inter.ttf')
 ORIGIN = 'http://127.0.0.1:18765'
+_BROWSER_ERRORS = WeakKeyDictionary()
 
 
 def launch_browser(playwright):
@@ -24,7 +26,18 @@ def launch_browser(playwright):
 
 def new_page(browser, *, locale="en-US", **options):
     """Explicit fixture locale; startup tests may request a different browser language."""
-    return browser.new_page(locale=locale, **options)
+    page = browser.new_page(locale=locale, **options)
+    errors = _BROWSER_ERRORS.setdefault(browser, [])
+    page.on('pageerror', lambda error: errors.append(str(error)))
+    return page
+
+
+def close_browser(browser):
+    """Fail on errors throughout every fixture, including pages already closed."""
+    try:
+        assert not _BROWSER_ERRORS.get(browser), _BROWSER_ERRORS.get(browser)
+    finally:
+        browser.close()
 
 
 def load_page(page, body, theme='dark', *, css='', scripts=True, local=None, lottie=False, title='Fixture', title_key=None):
@@ -38,6 +51,7 @@ def load_page(page, body, theme='dark', *, css='', scripts=True, local=None, lot
     from html import escape
     title_attr = f' data-i18n-text="{escape(title_key)}"' if title_key else ''
     document = f'<!doctype html><html lang="en" data-theme="{theme}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title{title_attr}>{escape(title)}</title>{head}<style>{css}</style></head><body>{body}</body></html>'
+    validate_bindings(document, local)
     def serve(route):
         path = unquote(urlparse(route.request.url).path).lstrip('/')
         if path == 'fixture':
@@ -49,14 +63,12 @@ def load_page(page, body, theme='dark', *, css='', scripts=True, local=None, lot
             route.fulfill(status=404,body='Not found'); return
         route.fulfill(status=200,content_type=mimetypes.guess_type(file.name)[0] or 'application/octet-stream',body=file.read_bytes())
     page.route(ORIGIN+'/**',serve)
-    errors = []
-    page.on('pageerror', lambda error: errors.append(str(error)))
     page.goto(ORIGIN+'/fixture',wait_until='domcontentloaded')
     assert page.evaluate('''async () => {
           await Promise.all([document.fonts.load('400 16px Inter'), document.fonts.load('600 20px Manrope')]);
           return ['Inter','Manrope'].every(name => [...document.fonts].some(font => font.family === name && font.status === 'loaded'));
         }'''), 'Canonical fonts did not load'
-    assert not errors, errors
+    assert not _BROWSER_ERRORS.get(page.context.browser), _BROWSER_ERRORS.get(page.context.browser)
 
 
 def validate_contract():
@@ -79,9 +91,18 @@ def validate_contract():
     assert '--ui-distance-text:' not in (ROOT / 'styles/links.css').read_text()
     dictionaries()
     # No legacy local translation adapters or independent language/theme preference.
-    for name in ('navigation','buttons','interactive'):
-        source = (ROOT / 'scripts' / (name + '.js')).read_text()
-        assert not re.search(r'\b(?:setLabel|setOrbitLabel|setSendLabels|connectChecks|localStorage|navigator\.language)\b',source),name
+    for path in (ROOT / 'scripts').glob('*.js'):
+        source = path.read_text()
+        assert not re.search(r'\b(?:setLabel|setOrbitLabel|setSendLabels|connectChecks)\b',source),path.name
+        if path.name not in {'theme.js','i18n.js'}:
+            assert 'localStorage' not in source, path.name
+        if path.name != 'i18n.js':
+            assert not re.search(r'navigator\.languages?',source),path.name
+    for path in (ROOT / 'styles').glob('*.css'):
+        if path.name != 'motion.css':
+            assert 'data-ui-smooth-scroll' not in path.read_text(),path.name
+    for path in [*(ROOT/'tests').glob('*.py'),*(ROOT/'tools').glob('*.py')]:
+        assert 'Responsibility:' in path.read_text(), path.name
     for name in ('navigation','buttons','interactive'):
         source = (ROOT / 'components/web' / (name + '.html')).read_text()
         assert not re.search(r'data-(?:singular|plural|play|pause)=',source),name

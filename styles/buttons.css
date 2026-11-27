@@ -82,9 +82,9 @@
 .ui-action--orbit:is(:hover, :focus-visible) .ui-action__idle { opacity: 0; }
 .ui-action--orbit:is(:hover, :focus-visible) .ui-action__moving { animation: ui-orbit-arrow var(--ui-duration-arrow-cycle) linear infinite; }
 .ui-action--orbit:is(:hover, :focus-visible) .ui-action__trail { animation: ui-orbit-trail var(--ui-duration-arrow-cycle) linear infinite; }
-.ui-action__trail--1 { animation-delay: 500ms !important; }
-.ui-action__trail--2 { animation-delay: 1267ms !important; }
-.ui-action__trail--3 { animation-delay: 2034ms !important; }
+.ui-action__trail--1 { animation-delay: var(--ui-delay-arrow-trail-first) !important; }
+.ui-action__trail--2 { animation-delay: var(--ui-delay-arrow-trail-second) !important; }
+.ui-action__trail--3 { animation-delay: var(--ui-delay-arrow-trail-third) !important; }
 @keyframes ui-orbit-turn { to { transform: rotate(360deg); } }
 @keyframes ui-orbit-arrow {
     0%, 4% { opacity: 0; transform: translateY(-13px); }

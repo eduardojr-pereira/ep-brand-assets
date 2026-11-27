@@ -91,11 +91,11 @@
         animation:ui-motion-enter var(--ui-duration-slide-entry) var(--ui-ease-smooth) both;
     }
     .ui-feature[data-ui-slide-enter] .ui-feature__copy h2 { animation-duration:950ms; }
-    .ui-feature[data-ui-slide-enter] .ui-feature__subtitle { animation-delay:100ms; }
-    .ui-feature[data-ui-slide-enter] .ui-feature__description { animation-delay:160ms; }
-    .ui-feature[data-ui-slide-enter] .ui-badges { animation-delay:220ms; }
-    .ui-feature[data-ui-slide-enter] .ui-feature__link { animation-delay:280ms; }
-    .ui-feature[data-ui-slide-enter] .ui-feature__evidence { --ui-motion-from-x:12px; --ui-motion-from-y:0px; animation-duration:1120ms; }
+    .ui-feature[data-ui-slide-enter] .ui-feature__subtitle { animation-delay:var(--ui-delay-slide-subtitle); }
+    .ui-feature[data-ui-slide-enter] .ui-feature__description { animation-delay:var(--ui-delay-slide-description); }
+    .ui-feature[data-ui-slide-enter] .ui-badges { animation-delay:var(--ui-delay-slide-badges); }
+    .ui-feature[data-ui-slide-enter] .ui-feature__link { animation-delay:var(--ui-delay-slide-link); }
+    .ui-feature[data-ui-slide-enter] .ui-feature__evidence { --ui-motion-from-x:12px; --ui-motion-from-y:0px; animation-duration:var(--ui-duration-slide-evidence); }
     .ui-feature[data-ui-slide-enter="reverse"] .ui-feature__evidence { --ui-motion-from-x:-12px; }
     .ui-feature[data-ui-slide-enter] :focus-within { animation:none; }
 }

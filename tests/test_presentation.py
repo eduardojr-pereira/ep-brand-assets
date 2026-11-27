@@ -1,7 +1,7 @@
 """Responsibility: Integration tests for shared locale, theme and asset contracts."""
 from copy import deepcopy
 from playwright.sync_api import sync_playwright
-from support import ROOT, ENV, load_page, launch_browser, dictionaries, environment, head_resources, DEPENDENCIES, new_page
+from support import ROOT, ENV, load_page, launch_browser, dictionaries, environment, head_resources, DEPENDENCIES, new_page, close_browser, validate_bindings
 from test_interactive import PROJECTS, FIXTURE as INTERACTIVE
 
 LOCAL = {
@@ -87,6 +87,17 @@ def startup(browser):
     page=new_page(browser, locale='pt-BR',java_script_enabled=False);fixture(page,scripts=False)
     assert page.title()=='Portfolio test' and page.locator('body').is_visible();page.close()
     print('PASS: unsupported locale falls back to English; no-JS English fallback',flush=True)
+    page=new_page(browser,locale='pt-BR')
+    # Simulate a malformed runtime binding added after server-side validation.
+    body='<span id="valid" data-i18n-text="shared.nav.home">Home</span><script>const bad=document.createElement("span");bad.setAttribute("data-i18n-text","content.missing");bad.textContent="English fallback";document.body.append(bad);</script>'
+    load_page(page,body)
+    assert page.locator('#valid').inner_text()=='Home'
+    assert page.locator('html').get_attribute('lang')=='en'
+    assert page.evaluate("UI.i18n.current()")=='en'
+    assert page.locator('body').is_visible()
+    assert page.locator('html').get_attribute('data-ui-localizing') is None
+    page.close()
+    print('PASS: startup failure preserves complete English fallback and reveals page',flush=True)
 
 
 def validate():
@@ -101,11 +112,81 @@ def validate():
     assert head.index('ui-config')<head.index('scripts/theme.js')<head.index('styles/foundations.css')
     assert '../assets/' in head
     print('PASS: validated translation ownership, key parity and canonical head order',flush=True)
+    for html in ['<span data-i18n-text="content.missing">X</span>', '<span data-i18n-text="shared.catalog.count">0</span>', '<span data-i18n-invalid="shared.nav.home">Home</span>']:
+        try: validate_bindings(html,LOCAL)
+        except ValueError: pass
+        else: raise AssertionError('Invalid generated binding accepted')
+    validate_bindings('<span data-i18n-text="shared.nav.home">Home</span>',LOCAL)
+    print('PASS: generation rejects unknown keys, unsupported targets and incomplete static messages',flush=True)
+
+def atomic_and_search(page):
+    fixture(page)
+    page.evaluate("UI.i18n.set('en')")
+    search=page.get_by_role('searchbox')
+    cards=page.locator('[data-ui-project]:visible')
+    search.fill('Demand forecast')
+    assert cards.count()==1
+    page.evaluate("UI.i18n.set('pt-BR')")
+    assert search.input_value()=='Demand forecast' and cards.count()==1
+    assert page.locator('[data-ui-count]').inner_text()=='1 projeto'
+    search.fill('Previsão da demanda')
+    assert cards.count()==1
+    page.evaluate("UI.i18n.set('en')")
+    assert search.input_value()=='Previsão da demanda' and cards.count()==1
+    assert page.locator('[data-ui-count]').inner_text()=='1 project'
+    print('PASS: bilingual search index preserves English and Portuguese queries across locale changes',flush=True)
+    # Inject an invalid runtime binding after valid generation; no partial translation or saved preference.
+    result=page.evaluate("""() => {
+        let events=0; document.addEventListener('ui:languagechange',()=>events++);
+        const invalid=document.createElement('span'); invalid.textContent='Unchanged';
+        invalid.setAttribute('data-i18n-text','content.missing'); document.body.append(invalid);
+        const original=document.title; let rejected=false;
+        try { UI.i18n.set('pt-BR'); } catch { rejected=true; }
+        const stable=rejected && document.title===original && UI.i18n.current()==='en' &&
+            document.documentElement.lang==='en' && localStorage.getItem('ui.locale')==='en' && events===0;
+        invalid.remove(); UI.i18n.set('pt-BR');
+        return stable && events===1 && document.title==='Teste do portfólio';
+    }""")
+    assert result
+    print('PASS: atomic language change, stored preference and event on rejected binding; recovery',flush=True)
+
+
+def asset_recovery(page):
+    load_page(page,'<div id="host" style="width:40px;height:40px"></div><span id="fallback">Fallback</span>',lottie=True)
+    counts={'runtime':0,'source':0}
+    def fail_once(route,kind):
+        counts[kind]+=1
+        if counts[kind]==1: route.fulfill(status=503,body='Temporary test failure')
+        else: route.fallback()
+    page.route('**/vendor/lottie/lottie.min.js',lambda route:fail_once(route,'runtime'))
+    page.route('**/animations/lottie_home_white.json',lambda route:fail_once(route,'source'))
+    mount="UI.assets.mount(document.querySelector('#host'),{id:'checkbox'})"
+    with page.expect_console_message(predicate=lambda message: 'UI animation unavailable: checkbox' in message.text):
+        page.evaluate(mount)
+    assert page.locator('#host').get_attribute('data-ui-lottie-ready') is None
+    assert page.locator('#fallback').is_visible()
+    page.evaluate(mount)
+    page.wait_for_function("document.querySelector('#host').hasAttribute('data-ui-lottie-ready')")
+    assert counts['runtime']==2
+    mount="UI.assets.mount(document.querySelector('#host'),{id:'home',variant:'theme'})"
+    with page.expect_console_message(predicate=lambda message: 'UI animation unavailable: home' in message.text):
+        page.evaluate(mount)
+    assert page.locator('#host').get_attribute('data-ui-lottie-ready') is None
+    page.evaluate(mount)
+    page.wait_for_function("document.querySelector('#host').hasAttribute('data-ui-lottie-ready')")
+    assert counts=={'runtime':2,'source':2}
+    page.evaluate("UI.assets.unmount(document.querySelector('#host'))")
+    assert page.locator('#host svg').count()==0
+    print('PASS: retry after real runtime/source failures, static fallback and disposal',flush=True)
+
 
 if __name__=='__main__':
     validate()
     with sync_playwright() as pw:
         browser=launch_browser(pw)
-        page=new_page(browser, viewport={'width':1280,'height':900},locale='en-US');errors=[];page.on('pageerror',lambda error:errors.append(str(error)))
-        switches(page);assert not errors,errors;page.close()
-        startup(browser);browser.close()
+        page=new_page(browser, viewport={'width':1280,'height':900},locale='en-US')
+        switches(page);page.close()
+        startup(browser)
+        page=new_page(browser,viewport={'width':1280,'height':900});atomic_and_search(page);page.close()
+        page=new_page(browser,viewport={'width':1280,'height':900});asset_recovery(page);page.close()
+        close_browser(browser)

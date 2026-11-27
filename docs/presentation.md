@@ -19,7 +19,7 @@ The locale precedence is an explicit stored choice (`ui.locale`), first supporte
 
 ## Translation references
 
-`environment(local)` validates keys, locale parity and message arguments, then exposes `message(key)` to Jinja. Shared keys use `shared.*`; local keys use `content.*` and cannot override shared strings. Supply local translations in the same locale-first JSON structure as `config/translations.json`. The builder will merge project-specific dictionaries at page generation. Literal strings passed to macros are invariant data (e.g. Python, a project name unchanged across locales); use `message(key)` for any translated content. Example:
+`environment(local)` validates keys, locale parity and message arguments, then exposes `message(key)` to Jinja. Shared keys use `shared.*`; local keys use `content.*` and cannot override shared strings. Supply local translations in the same locale-first JSON structure as `config/translations.json`. The builder will merge project-specific dictionaries at page generation and must call `validate_bindings(html, local)` before writing each rendered document. Static binding keys must exist and require no runtime arguments. The runtime resolves all bindings against the candidate locale before committing any text, preference or event; invalid changes leave the previous state intact. Catalogue search metadata uses the same bilingual dictionary at render time. Literal strings passed to macros are invariant data (e.g. Python, a project name unchanged across locales); use `message(key)` for any translated content. Example:
 
 ```jinja
 {% import 'components/web/navigation.html' as n %}
@@ -34,7 +34,7 @@ A macro writes the English fallback and `data-i18n-text`, `data-i18n-aria-label`
 
 Runtime: Lottie-web 5.12.2, upstream `airbnb/lottie-web` commit `846dbf2a5c40df245db4307490cecae02b9dcca4`; `build/player/lottie.min.js` and `LICENSE.md` are stored verbatim in `assets/vendor/lottie/`, with their upstream Git blob hashes in the manifest. The original MIT notice is preserved. The installer verifies both before writing. No runtime CDN fetch or additional copy per component. Future build consumers must publish the canonical asset paths from the same version. Other original visual assets and licenses are unchanged.
 
-Images can declare light/dark or EN/PT-BR source pairs; `UI.assets` selects the appropriate source after global state changes. A localized pair takes precedence over a theme pair, so do not supply conflicting pairs; use an intrinsically theme-aware SVG for localized badges. The `badges(items)` macro accepts resolved pairs from the canonical catalog. The actual builder/catalog integration and integrated theme/locale visual verification remain pending.
+Images can declare light/dark or EN/PT-BR source pairs; `UI.assets` selects the appropriate source after global state changes. A localized pair takes precedence over a theme pair, so do not supply conflicting pairs; use an intrinsically theme-aware SVG for localized badges. The `badges(items)` macro accepts resolved pairs from the canonical catalog. The actual builder/catalog integration and integrated theme/locale visual verification remain pending. Failed runtime/source requests are evicted; a subsequent mount or relevant theme refresh can retry. Static fallbacks remain accessible and failures are reported to the browser console.
 
 ## Validation
 

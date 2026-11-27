@@ -20,7 +20,7 @@
             const query = normalize(input.value).split(/\s+/).filter(Boolean);
             let total = 0;
             all(root,'[data-ui-project]').forEach(card => {
-                const text = normalize(`${card.textContent} ${card.dataset.search} ${all(card,'img').map(i=>i.alt).join(' ')}`);
+                const text = normalize(card.dataset.search);
                 card.hidden = !( (values.collection === 'all' || values.collection === card.dataset.collection) &&
                     (values.area === 'all' || card.dataset.areas.split(/\s+/).includes(values.area)) && query.every(t=>text.includes(t)) );
                 if (!card.hidden) total++;
@@ -36,7 +36,6 @@
         all(root,'[data-ui-reset]').forEach(button=>button.addEventListener('click',()=>{
             input.value=''; groups.forEach(g=>window.UI.navigation.select(g,g.dataset.uiDefault || 'all',false)); update(); input.focus();
         }));
-        document.addEventListener('ui:languagechange',update);
         root.setAttribute('data-ui-enhanced','');
         update();
     }
@@ -98,10 +97,12 @@
         const link=root.querySelector('[data-ui-lens]'), lanes=root.querySelector('.ui-marquee__lanes'), toggle=root.querySelector('[data-ui-marquee-toggle]');
         const tracks=all(lanes,'.ui-marquee__track');
         let lens=null,lensTracks=[], widths=[1,1], offsets=[0,0], paused=false, hover=false, focused=false, visible=!('IntersectionObserver' in window), raf=0,last=0;
+        const motion = getComputedStyle(root);
+        const speeds = {compact:parseFloat(motion.getPropertyValue('--ui-speed-marquee-compact')), full:parseFloat(motion.getPropertyValue('--ui-speed-marquee')), secondary:parseFloat(motion.getPropertyValue('--ui-speed-marquee-secondary'))};
         function paint(){tracks.forEach((track,i)=>{const transform=`translate3d(${i===0?offsets[i]-widths[i]:-offsets[i]}px,0,0)`;track.style.transform=transform;if(lensTracks[i])lensTracks[i].style.transform=transform;});}
         function stop(){cancelAnimationFrame(raf);raf=0;last=0;}
         function eligible(){return !reduced.matches&&!paused&&!hover&&!focused&&visible&&!document.hidden;}
-        function tick(now){raf=0;if(!eligible()){last=0;return;}const dt=last?Math.min((now-last)/1000,.05):0;last=now;offsets=offsets.map((o,i)=>(o+dt*(root.clientWidth<640?42:66)*(i===0?1:.65))%widths[i]);paint();raf=requestAnimationFrame(tick);}
+        function tick(now){raf=0;if(!eligible()){last=0;return;}const dt=last?Math.min((now-last)/1000,.05):0;last=now;offsets=offsets.map((o,i)=>(o+dt*(root.clientWidth<640?speeds.compact:speeds.full)*(i===0?1:speeds.secondary))%widths[i]);paint();raf=requestAnimationFrame(tick);}
         function schedule(){if(eligible()){if(!raf)raf=requestAnimationFrame(tick);}else stop();toggle.textContent=paused?'▶':'Ⅱ';UI.i18n.bind(toggle,'aria-label',paused?'shared.marquee.play':'shared.marquee.pause');}
         function decorativeCopy(node){const copy=node.cloneNode(true);for(const element of [copy,...copy.querySelectorAll("*")])for(const attr of [...element.attributes])if(attr.name.startsWith("data-i18n-"))element.removeAttribute(attr.name);return copy;}
         function layout(){stop();lens?.remove();lens=null;lensTracks=[];link.removeAttribute('data-lens-active');root.toggleAttribute('data-ui-running',!reduced.matches);tracks.forEach((track,i)=>{const first=track.firstElementChild;track.replaceChildren(first);if(reduced.matches)return;const ratio=offsets[i]/widths[i];widths[i]=Math.max(1,first.getBoundingClientRect().width);offsets[i]=ratio*widths[i];const count=Math.ceil(root.clientWidth/widths[i])+2;for(let n=1;n<count;n++)track.append(decorativeCopy(first));});if(!reduced.matches){lens=decorativeCopy(lanes);lens.classList.add('ui-marquee__lens');lens.setAttribute('aria-hidden','true');link.append(lens);lensTracks=all(lens,'.ui-marquee__track');paint();}schedule();}

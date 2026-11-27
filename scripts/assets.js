@@ -18,19 +18,19 @@
             script.src = url(settings.runtime);
             script.onload = () => {
                 const api = window.lottie;
-                if (!api || api.version !== settings.version) reject(new Error('Invalid Lottie runtime'));
+                if (!api || api.version !== settings.version) { script.remove(); reject(new Error('Invalid Lottie runtime')); }
                 else resolve(api);
             };
-            script.onerror = () => reject(new Error('Lottie runtime unavailable'));
+            script.onerror = () => { script.remove(); reject(new Error('Lottie runtime unavailable')); };
             document.head.append(script);
-        });
+        }).catch(error => { runtime = undefined; throw error; });
         return runtime;
     }
     function source(path) {
         if (!sources.has(path)) sources.set(path, fetch(url(path)).then(response => {
             if (!response.ok) throw new Error(`Asset unavailable: ${path}`);
             return response.json();
-        }));
+        }).catch(error => { sources.delete(path); throw error; }));
         return sources.get(path);
     }
     function recolor(value, rgba) {
@@ -67,8 +67,18 @@
                 host.setAttribute('data-ui-lottie-ready',''); onReady?.(animation);
             };
             animation.addEventListener('DOMLoaded', loaded);
-            animation.addEventListener('data_failed', () => { if (entry.player === animation) dispose(host,entry); });
-        } catch { /* Keep the static accessible fallback. */ }
+            animation.addEventListener('data_failed', () => {
+                if (entry.player !== animation) return;
+                sources.delete(path);
+                dispose(host,entry);
+                console.warn(`UI animation data failed: ${id}`);
+            });
+        } catch (error) {
+            if (mounts.get(host) === entry && generation === entry.generation) {
+                dispose(host,entry);
+                console.warn(`UI animation unavailable: ${id}`, error);
+            }
+        }
     }
     function mount(host, options) {
         unmount(host);
