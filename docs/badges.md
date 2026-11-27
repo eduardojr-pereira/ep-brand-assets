@@ -116,7 +116,7 @@ The current library contains 57 SVGs. The following inventory records the canoni
 | Category | Badge | Path |
 |---|---|---|
 
-The shared `badges(items)` and `method_badges(items)` macros in `components/web/badges.html` consume canonical paths and localized labels. The shared asset service applies explicit image variants. The future builder resolves catalog paths and standalone embedding where required.
+The shared `badges(items)` and `method_badges(items)` macros in `components/web/badges.html` consume canonical paths and localized labels. The shared asset service applies explicit image variants. The canonical structural builder and resource allowlist are implemented. Consumer-specific badge selection, resolved catalog paths and any required standalone embedding remain explicit integration tasks; they are not automatically published by the current builder.
 
 Generated HTML is a consumer of the canonical library,
 not an independent source of badge artwork.

@@ -4,7 +4,7 @@
 
 ## Integration contract
 
-The future builder supplies one compatible Plotly.js runtime per page, from the project dependency (e.g. the installed Python Plotly bundle). The shared adapter does not fetch a CDN, ship another Plotly runtime, or load it on pages without graphs. Use the shared editorial headings and analytical figure/surface primitives outside the mount. Give each chart a unique ID. Example:
+The canonical structural builder is implemented; real chart integration must supply one compatible Plotly.js runtime per page with graphs, from the project dependency (e.g. the installed Python Plotly bundle). The current structural build does not distribute a chart runtime. The shared adapter does not fetch a CDN, ship another Plotly runtime, or load it on pages without graphs. Use the shared editorial headings and analytical figure/surface primitives outside the mount. Give each chart a unique ID. Example:
 
 ```python
 import json
