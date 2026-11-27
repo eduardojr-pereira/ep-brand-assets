@@ -1,4 +1,6 @@
-"""Responsibility: Verify shared analytical composition, semantics and responsive behavior."""
+"""Responsibility: Verify shared analytical composition, semantics and responsive behavior.
+Boundaries: No production rendering, model validation or integrated visual acceptance.
+"""
 from playwright.sync_api import sync_playwright
 from support import environment, load_page, launch_browser, new_page, close_browser
 from presentation import validate_bindings

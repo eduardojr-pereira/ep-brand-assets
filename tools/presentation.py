@@ -1,6 +1,5 @@
-"""Responsibility: Validate shared/local translations and bindings, prepare bilingual search metadata,
-page configuration and ordered head resources.
-No page composition, runtime preference, asset copying or component-specific logic.
+"""Responsibility: Validate shared/local translations and bindings, prepare bilingual search metadata, page configuration and ordered head resources.
+Boundaries: No page composition, runtime preference, asset copying or component-specific logic.
 """
 import json
 import re

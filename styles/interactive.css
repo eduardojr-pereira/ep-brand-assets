@@ -1,6 +1,6 @@
 /*
- * Responsibility: Card, catalogue, carousel, evidence and marquee layout and presentation.
- * Consumes shared links, actions and motion; does not own theme or language.
+ * Responsibility: Style card, catalogue, carousel, evidence and marquee layout and presentation.
+ * Boundaries: Consume shared links, actions and motion; no theme or language ownership.
  */
 
 .ui-interactive-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }

@@ -1,5 +1,5 @@
-"""Responsibility: shared browser fixtures, font/dependency validation, error tracking,
-architectural checks and suite orchestration. No production rendering logic.
+"""Responsibility: Provide shared browser fixtures, font/dependency validation, error tracking, architectural checks and suite orchestration.
+Boundaries: No production rendering logic.
 """
 import json
 import os

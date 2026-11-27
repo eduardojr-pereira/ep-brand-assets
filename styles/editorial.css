@@ -1,5 +1,7 @@
-/* Responsibility: Shared editorial typography, section headings and report introduction layout.
- * No theme values, animation keyframes, analytical surfaces or consumer overrides. */
+/*
+ * Responsibility: Style shared editorial typography, section headings and report introduction layout.
+ * Boundaries: No theme values, animation keyframes, analytical surfaces or consumer overrides.
+ */
 .ui-section-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; border-bottom:1px solid var(--ui-color-border); padding-bottom:clamp(10px,1.7vh,20px); margin-bottom:clamp(20px,3vh,34px); }
 .ui-section-heading__title { min-width:0; font-family:var(--ui-font-heading); font-size:clamp(32px,min(5.8vw,10vh),100px); letter-spacing:-.065em; line-height:1; font-weight:var(--ui-weight-medium); text-transform:uppercase; margin:0; overflow-wrap:anywhere; --ui-motion-duration:var(--ui-duration-section-title); }
 .ui-section-heading__description { font-size:clamp(12px,1.05vw,16px); line-height:1.5; max-width:30ch; color:var(--ui-color-muted); margin:0; min-width:0; overflow-wrap:anywhere; --ui-motion-duration:var(--ui-duration-section-copy); --ui-motion-delay:var(--ui-delay-section-copy); }

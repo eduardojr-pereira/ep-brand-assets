@@ -1,6 +1,6 @@
 /*
- * Responsibility: Motion tokens, timing, reusable keyframes and reduced-motion primitives.
- * Does not manage component state, language or theme preference.
+ * Responsibility: Define motion tokens, timing, reusable keyframes and reduced-motion primitives.
+ * Boundaries: No component state, language or theme preference management.
  */
 
 :root {

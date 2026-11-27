@@ -1,4 +1,6 @@
-"""Responsibility: Regression tests for canonical Header/Footer composition and consumption."""
+"""Responsibility: Test canonical Header/Footer composition and consumption regressions.
+Boundaries: No production shell implementation or integrated visual acceptance.
+"""
 import json
 from playwright.sync_api import sync_playwright
 from support import ROOT, environment, load_page, launch_browser, new_page, close_browser

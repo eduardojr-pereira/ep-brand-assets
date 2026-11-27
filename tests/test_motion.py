@@ -1,4 +1,6 @@
-"""Responsibility: verify motion first paint, triggers, replay and fallbacks."""
+"""Responsibility: Verify motion first paint, triggers, replay and fallbacks.
+Boundaries: No production animation implementation or integrated visual acceptance.
+"""
 from support import load_page, launch_browser, new_page, close_browser
 from playwright.sync_api import sync_playwright
 fixture='''<section id="hero" data-motion="reveal-left" data-scroll-trigger="load" style="--ui-motion-distance:100vw;--ui-motion-opacity:.15;--ui-motion-duration:1650ms;--ui-motion-delay:50ms">Hero</section><script>window.initialOpacity=getComputedStyle(document.querySelector('#hero')).opacity;</script><div class="spacer"></div><section id="once" data-motion="reveal-up" data-scroll-trigger="once">Once</section><div class="spacer"></div><section id="repeat" data-motion="scale-in" data-scroll-trigger="repeat">Repeat</section><div class="spacer"></div><section id="focus" data-motion="fade-in" data-scroll-trigger="once"><button>Focus</button></section><div class="spacer"></div>'''

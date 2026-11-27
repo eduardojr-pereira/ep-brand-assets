@@ -1,5 +1,7 @@
-/* Responsibility: Single locale preference, message resolution, formatting and DOM bindings.
- * Synchronous head initialization; never resets component state or replays animations. */
+/*
+ * Responsibility: Own the single locale preference, message resolution, formatting and DOM bindings; initialize synchronously in the head.
+ * Boundaries: No resetting component state or replaying animations.
+ */
 (() => {
     'use strict';
     window.UI ??= {};

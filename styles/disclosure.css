@@ -1,5 +1,7 @@
-/* Responsibility: Shared indexed disclosures, search control and state-driven artwork.
- * Consumer-specific list and preview layout is excluded. */
+/*
+ * Responsibility: Style shared indexed disclosures, search controls and state-driven artwork.
+ * Boundaries: Consumer-specific list and preview layout is excluded.
+ */
 .ui-indexed-list { border-top:1px solid var(--ui-color-border); }
 .ui-indexed-item { border-bottom:1px solid var(--ui-color-border); min-width:0; }
 .ui-indexed-item > summary { display:grid; grid-template-columns:3ch minmax(0,1fr) 24px; align-items:center; gap:var(--ui-space-4); padding:var(--ui-space-5) 0; list-style:none; cursor:pointer; }

@@ -1,5 +1,7 @@
-/* Responsibility: Resolve canonical asset URLs, load/cache canonical JSON sources and animation player,
- * mount/dispose Lottie instances, apply themed asset variants. No selection or locale state. */
+/*
+ * Responsibility: Resolve canonical asset URLs, cache JSON sources and the animation player, mount/dispose Lottie instances and apply themed asset variants.
+ * Boundaries: No selection or locale state.
+ */
 (() => {
     'use strict';
     window.UI ??= {};

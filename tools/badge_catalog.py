@@ -1,5 +1,5 @@
-"""Responsibility: Canonical badge metadata, active IDs and technology ordering.
-No SVG generation, page building, language/theme preference or publication.
+"""Responsibility: Manage canonical badge metadata, active IDs and technology ordering.
+Boundaries: No SVG generation, page building, language/theme preference or publication.
 """
 import json
 import re

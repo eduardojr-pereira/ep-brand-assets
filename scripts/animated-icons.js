@@ -1,5 +1,7 @@
-/* Responsibility: Shared animated link icon hover/focus playback and static presentation.
- * UI.assets exclusively owns source/runtime loading, caching, recoloring and disposal. */
+/*
+ * Responsibility: Manage shared animated link icon hover and focus playback and static presentation.
+ * Boundaries: UI.assets exclusively owns source/runtime loading, caching, recoloring and disposal.
+ */
 (() => {
     'use strict';
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');

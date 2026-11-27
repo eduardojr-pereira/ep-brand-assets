@@ -1,4 +1,6 @@
-"""Responsibility: Behavior tests for canonical navigation; no visual preview is generated."""
+"""Responsibility: Test canonical navigation behavior.
+Boundaries: No production navigation implementation or visual preview.
+"""
 
 from playwright.sync_api import sync_playwright
 

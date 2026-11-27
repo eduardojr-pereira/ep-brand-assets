@@ -1,5 +1,7 @@
-/* Responsibility: Shared badge group geometry and informational method tags.
- * Graphical badge artwork is generated offline; global theme owns semantic colors. */
+/*
+ * Responsibility: Style shared badge group geometry and informational method tags.
+ * Boundaries: Graphical badge artwork is generated offline; the global theme owns semantic colors.
+ */
 .ui-badges { display:flex; flex-wrap:wrap; align-items:center; gap:10px 15px; }
 .ui-badges .ui-badge-link { display:block; min-width:0; max-width:100%; }
 .ui-badges img { display:block; height:var(--ui-badge-height,22px); width:auto; max-width:100%; object-fit:contain; }

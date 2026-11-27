@@ -1,4 +1,6 @@
-"""Responsibility: Integration tests for shared locale, theme and asset contracts."""
+"""Responsibility: Test integration of shared locale, theme and asset contracts.
+Boundaries: No production preference or asset service implementation.
+"""
 from copy import deepcopy
 from playwright.sync_api import sync_playwright
 from support import ROOT, ENV, load_page, launch_browser, dictionaries, environment, head_resources, DEPENDENCIES, new_page, close_browser, validate_bindings

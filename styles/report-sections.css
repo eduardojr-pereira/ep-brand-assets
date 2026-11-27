@@ -1,5 +1,7 @@
-/* Responsibility: Artifact Explorer and static reference layouts.
- * Shared disclosure, search and analytical primitives own their respective styling. */
+/*
+ * Responsibility: Style Artifact Explorer and static reference layouts.
+ * Boundaries: Shared disclosure, search and analytical primitives own their respective styling.
+ */
 .ui-artifact-explorer,.ui-artifact-layout,.ui-artifact-previews,.ui-artifact-preview { min-width:0; }
 .ui-artifact-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:var(--ui-space-6); }
 .ui-artifact-list ul,.ui-reference-topics { list-style:none; margin:0; padding:0; }

@@ -1,4 +1,6 @@
-"""Responsibility: Validate shared editorial composition, responsiveness and native fallback."""
+"""Responsibility: Validate shared editorial composition, responsiveness and native fallback.
+Boundaries: No consumer page implementation or integrated visual acceptance.
+"""
 from playwright.sync_api import sync_playwright
 from support import environment, load_page, launch_browser, new_page, close_browser
 from presentation import validate_bindings

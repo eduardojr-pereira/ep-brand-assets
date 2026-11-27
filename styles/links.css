@@ -1,6 +1,6 @@
 /*
- * Responsibility: Visual presentation of links, navigation, disclosure and filter controls.
- * Consumes foundation and motion tokens; does not own shared token values.
+ * Responsibility: Style links, navigation, disclosure and filter controls.
+ * Boundaries: Consume foundation and motion tokens; no shared token value ownership.
  */
 
 .ui-link {

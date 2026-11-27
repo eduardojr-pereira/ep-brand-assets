@@ -1,4 +1,6 @@
-"""Responsibility: Isolated integration checks of canonical templates, not a visual preview."""
+"""Responsibility: Perform isolated integration checks of canonical interactive templates.
+Boundaries: No production implementation or visual preview.
+"""
 from playwright.sync_api import sync_playwright
 
 from support import ROOT, ENV, load_page, launch_browser, new_page, close_browser

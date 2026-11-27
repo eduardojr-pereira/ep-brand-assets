@@ -1,4 +1,6 @@
-"""Responsibility: Browser behavior tests for the shared action macros, not a design preview."""
+"""Responsibility: Test shared action macro behavior in the browser.
+Boundaries: No production behavior or visual preview.
+"""
 from playwright.sync_api import sync_playwright
 
 from support import ROOT, ENV, load_page, launch_browser, new_page, close_browser

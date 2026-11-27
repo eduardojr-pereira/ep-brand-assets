@@ -1,4 +1,6 @@
-"""Responsibility: Real Plotly regression tests for locale, presentation and interaction preservation."""
+"""Responsibility: Run real Plotly regressions for locale, presentation and interaction preservation.
+Boundaries: No project model evaluation or production chart implementation.
+"""
 from copy import deepcopy
 import json
 from playwright.sync_api import sync_playwright

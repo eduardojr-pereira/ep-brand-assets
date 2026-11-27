@@ -1,5 +1,5 @@
-"""Responsibility: Validate chart presentation bindings and resolve analytical palettes from the canonical catalog.
-Serialize inert chart specifications; no chart calculation, runtime distribution or page building.
+"""Responsibility: Validate chart presentation bindings, resolve analytical palettes from the canonical catalog and serialize inert chart specifications.
+Boundaries: No chart calculation, runtime distribution or page building.
 """
 import json
 import re

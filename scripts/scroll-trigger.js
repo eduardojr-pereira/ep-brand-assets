@@ -1,6 +1,6 @@
 /*
- * Responsibility: Scroll and load animation triggers, interruption and explicit replay.
- * Load synchronously in the head; does not own translation or theme preference.
+ * Responsibility: Manage scroll/load animation triggers, interruption and explicit replay; initialize synchronously in the head.
+ * Boundaries: No translation or theme preference ownership.
  */
 
 (() => {

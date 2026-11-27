@@ -1,5 +1,7 @@
-/* Responsibility: Shared search controls, state-driven Search-to-X artwork and normalized matching.
- * No independent locale, theme, preference or animation loader. */
+/*
+ * Responsibility: Manage shared search controls, state-driven Search-to-X artwork and normalized matching.
+ * Boundaries: No independent locale, theme, preference or animation loader.
+ */
 (() => {
     'use strict';
     window.UI ??= {};

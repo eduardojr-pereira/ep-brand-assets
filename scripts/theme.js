@@ -1,5 +1,7 @@
-/* Responsibility: Resolve, persist and apply the single global theme preference.
- * Load synchronously in the head before rendering. No component styling or asset logic. */
+/*
+ * Responsibility: Resolve, persist and apply the single global theme preference; initialize synchronously in the head before rendering.
+ * Boundaries: No component styling or asset logic.
+ */
 (() => {
     'use strict';
     window.UI ??= {};

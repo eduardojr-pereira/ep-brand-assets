@@ -1,5 +1,7 @@
-/* Responsibility: File list filtering and preview selection; never fetches or executes artifact content.
- * Shared localization bindings, search matching and animation remain canonical services. */
+/*
+ * Responsibility: Manage file list filtering and preview selection without retrieving or executing artifact content.
+ * Boundaries: Localization bindings, search matching and animation remain canonical services.
+ */
 (() => {
     'use strict';
     function init(root) {

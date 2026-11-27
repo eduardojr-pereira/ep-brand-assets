@@ -1,4 +1,6 @@
-"""Responsibility: Targeted safe-preview, report localization and disclosure-state regressions."""
+"""Responsibility: Test safe-preview, report localization and disclosure-state regressions.
+Boundaries: No consumer report generation or publication.
+"""
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from playwright.sync_api import sync_playwright

@@ -1,6 +1,6 @@
 /*
- * Responsibility: Semantic colours, typography, spacing and document foundations.
- * Does not own theme preference, component layout or motion.
+ * Responsibility: Define semantic colors, typography, spacing and document foundations.
+ * Boundaries: No theme preference, component layout or motion ownership.
  */
 
 @font-face {

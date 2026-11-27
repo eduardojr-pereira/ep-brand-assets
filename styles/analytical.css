@@ -1,5 +1,7 @@
-/* Responsibility: Optional content surfaces, responsive grids, metrics and analytical presentation.
- * No chart library adapters, project-specific layouts, preference state or hover interaction. */
+/*
+ * Responsibility: Style optional content surfaces, responsive grids, metrics and analytical presentation.
+ * Boundaries: No chart library adapters, project-specific layouts, preference state or hover interaction.
+ */
 .ui-surface { min-width:0; padding:22px; background:var(--ui-color-surface); border:1px solid var(--ui-color-border); border-radius:16px; box-shadow:0 6px 18px rgb(0 0 0 / .10); }
 .ui-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:18px; min-width:0; }
 .ui-grid > * { min-width:0; }

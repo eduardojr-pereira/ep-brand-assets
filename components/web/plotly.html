@@ -1,4 +1,5 @@
-{# Responsibility: Accessible Plotly graph mount and static fallback. No graph data or runtime loading. #}
+{# Responsibility: Compose accessible Plotly graph mounts and static fallbacks.
+   Boundaries: No graph data or runtime loading. #}
 {% import 'components/web/localization.html' as t %}
 {% macro chart(id, label, fallback=none) -%}
 <div class="ui-plotly" data-ui-plotly-container>

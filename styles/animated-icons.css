@@ -1,4 +1,7 @@
-/* Responsibility: Shared animated artwork layers and static fallback visibility. */
+/*
+ * Responsibility: Style shared animated artwork layers and static fallback visibility.
+ * Boundaries: Playback, asset loading and preference management belong to canonical scripts.
+ */
 .ui-icon-art { display:grid; position:relative; place-items:center; width:100%; aspect-ratio:1; color:var(--ui-color-text); }
 .ui-icon-art > * { grid-area:1/1; width:100%; height:100%; }
 .ui-icon-art__fallback { display:grid; place-items:center; font-size:var(--ui-text-lg); font-weight:var(--ui-weight-bold); }

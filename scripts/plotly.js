@@ -1,5 +1,7 @@
-/* Responsibility: Apply canonical presentation to Plotly figures, using the single UI theme/locale.
- * Per-graph serialized updates; no analytical transformations, runtime downloads or independent preferences. */
+/*
+ * Responsibility: Apply canonical presentation to Plotly figures through the single UI theme and locale, with serialized per-graph updates.
+ * Boundaries: No analytical transformations, runtime downloads or independent preferences.
+ */
 (() => {
     'use strict';
     window.UI ??= {};

@@ -1,6 +1,6 @@
 /*
- * Responsibility: Button surfaces, radial fill and action-specific visual states and motion.
- * Does not define shared colours or manage form transport.
+ * Responsibility: Style button surfaces, radial fill, action-specific visual states and motion.
+ * Boundaries: No shared color definitions or form transport management.
  */
 
 .ui-action, .ui-action.ui-link {

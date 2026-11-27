@@ -1,4 +1,6 @@
-"""Responsibility: Focused catalog, SVG regeneration and canonical badge markup tests."""
+"""Responsibility: Test the catalog, SVG regeneration and canonical badge markup.
+Boundaries: No production badge generation workflow or publication.
+"""
 from collections import Counter
 from support import environment, load_page, launch_browser, new_page, close_browser
 from badge_catalog import load_catalog, technology_ids, active_entry

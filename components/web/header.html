@@ -1,5 +1,5 @@
-{# Responsibility: Shared header structure for the landing page and report navigation.
-   The caller supplies destinations and report sections; preferences and links remain canonical. #}
+{# Responsibility: Compose the shared header for landing and report navigation.
+   Boundaries: Caller supplies destinations and report sections; preferences and links remain canonical. #}
 {% import 'components/web/localization.html' as t %}
 {% import 'components/web/navigation.html' as n %}
 {% macro header(brand, navigation, sections, home_href, back_href=none) -%}

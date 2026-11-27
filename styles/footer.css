@@ -1,5 +1,7 @@
-/* Responsibility: Footer layout, editorial spacing, optical icon scales and contextual placement.
- * Link effects, radial fill, colors and translation are provided by canonical shared resources. */
+/*
+ * Responsibility: Style footer layout, editorial spacing, optical icon scales and contextual placement.
+ * Boundaries: Link effects, radial fill, colors and translation are provided by canonical shared resources.
+ */
 .ui-footer { padding:clamp(3rem,6vw,5.4rem) var(--ui-page-gutter) 1.35rem; border-top:1px solid var(--ui-color-border); background:var(--ui-color-bg); color:var(--ui-color-text); }
 .ui-footer__layout { display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:18px; }
 .ui-footer__about { grid-column:1/6; min-width:0; display:flex; flex-direction:column; align-items:flex-start; }

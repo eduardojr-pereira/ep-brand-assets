@@ -1,4 +1,4 @@
-{# Responsibility: Declarative text/attribute bindings for translated references.
-   Literal values are permitted only for invariant data; no dictionaries or behavior. #}
+{# Responsibility: Declare text and attribute bindings for translated references.
+   Boundaries: Literal values are for invariant data only; no dictionaries or behavior. #}
 {% macro value(ref) -%}{{ ref.text if ref is mapping else ref }}{%- endmacro %}
 {% macro binding(ref, target='text') -%}{% if ref is mapping %} data-i18n-{{ target }}="{{ ref.key }}"{% endif %}{%- endmacro %}

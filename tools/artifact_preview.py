@@ -1,5 +1,5 @@
 """Responsibility: Prepare bounded, inert previews of explicitly authorized published artifacts.
-No discovery, file copying, external fetching, HTML execution or page building.
+Boundaries: No discovery, file copying, external fetching, HTML execution or page building.
 """
 import csv
 import io

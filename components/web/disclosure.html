@@ -1,5 +1,5 @@
-{# Responsibility: Reusable native disclosure rows, search control and state-driven search-to-close artwork.
-   Consumer supplies localized labels and panel content; no locale state. #}
+{# Responsibility: Compose reusable native disclosure rows, search controls and state-driven search-to-close artwork.
+   Boundaries: Consumer supplies localized labels and panel content; no locale state. #}
 {% import 'components/web/localization.html' as t %}
 {% macro toggle_art() -%}
 <span class="ui-toggle-art" data-ui-toggle-art aria-hidden="true"><svg class="ui-toggle-art__fallback" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="6"/><path d="m14.5 14.5 5 5"/></svg><svg class="ui-toggle-art__close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m5 5 14 14M19 5 5 19"/></svg><span data-ui-toggle-player></span></span>

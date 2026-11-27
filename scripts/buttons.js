@@ -1,6 +1,6 @@
 /*
- * Responsibility: Orbit magnetism, motion pause and transport-independent send state.
- * No network submission or language preference; consumes the global i18n bindings.
+ * Responsibility: Manage orbit magnetism, motion pause and transport-independent send state.
+ * Boundaries: No network submission or language preference; consume global i18n bindings.
  */
 
 (() => {

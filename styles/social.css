@@ -1,4 +1,7 @@
-/* Responsibility: Shared social action geometry and contextual contrast. Reuses the canonical radial fill. */
+/*
+ * Responsibility: Style shared social action geometry and contextual contrast using the canonical radial fill.
+ * Boundaries: No independent radial fill, playback or preference logic.
+ */
 .ui-social { display:flex; flex-direction:column; align-items:flex-start; gap:var(--ui-space-3); min-width:0; }
 .ui-social__title { margin:0; font-family:var(--ui-font-body); font-size:var(--ui-text-sm); font-weight:var(--ui-weight-semibold); line-height:1.4; }
 .ui-social__links { display:flex; flex-wrap:wrap; align-items:center; gap:var(--ui-space-3); }

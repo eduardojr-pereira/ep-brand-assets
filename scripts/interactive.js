@@ -1,6 +1,6 @@
 /*
- * Responsibility: Catalogue filtering, slide/evidence controls and marquee motion.
- * No project data ownership, theme preference or independent translations.
+ * Responsibility: Manage catalogue filtering, slide/evidence controls and marquee motion.
+ * Boundaries: No project data ownership, theme preference or independent translations.
  */
 
 (() => {

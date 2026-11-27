@@ -1,6 +1,6 @@
 /*
- * Responsibility: Menu disclosure, filter selection and active section navigation.
- * Consumes global asset and i18n services; no preference ownership.
+ * Responsibility: Manage menu disclosure, filter selection and active section navigation.
+ * Boundaries: Consume global asset and i18n services; no preference ownership.
  */
 
 (() => {

@@ -1,5 +1,7 @@
-/* Responsibility: Place the same navigation nodes in the responsive disclosure and
- * measure the sticky offset. Preference buttons call the global services, no local state. */
+/*
+ * Responsibility: Place the same navigation nodes in responsive disclosure and measure the sticky offset.
+ * Boundaries: Preference buttons call global services; no local preference state.
+ */
 (() => {
     'use strict';
     function init(header) {

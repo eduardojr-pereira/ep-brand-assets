@@ -1,5 +1,5 @@
-"""Responsibility: Offline SVG maintenance from the canonical manifest and prepared PNGs.
-Checks by default. Explicit writes only; no network, source preparation, build or publication.
+"""Responsibility: Maintain SVGs offline from the canonical manifest and prepared PNGs; check by default, write explicitly.
+Boundaries: No network, source preparation, build or publication.
 """
 import argparse
 import base64
