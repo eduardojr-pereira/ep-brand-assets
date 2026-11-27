@@ -14,6 +14,9 @@
     --ui-duration-underline: 550ms;
     --ui-duration-fill: 550ms;
     --ui-duration-reveal: 650ms;
+    --ui-duration-section-title: 950ms;
+    --ui-duration-section-copy: 850ms;
+    --ui-delay-section-copy: 100ms;
     --ui-duration-hero-line: 1650ms;
     --ui-duration-hero-fade: 1350ms;
     --ui-duration-header-entry: 1350ms;
@@ -52,6 +55,9 @@
         --ui-duration-underline: 0ms;
         --ui-duration-fill: 0ms;
         --ui-duration-reveal: 0ms;
+        --ui-duration-section-title: 0ms;
+        --ui-duration-section-copy: 0ms;
+        --ui-delay-section-copy: 0ms;
         --ui-duration-evidence-entry: 0ms;
         --ui-duration-slide-entry: 0ms;
         --ui-duration-hero-line: 0ms;

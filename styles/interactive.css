@@ -6,6 +6,7 @@
 .ui-interactive-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 :is(.ui-catalog,.ui-selected,.ui-marquee) [hidden] { display:none !important; }
 .ui-badges { display:flex; flex-wrap:wrap; align-items:center; gap:10px 15px; }
+.ui-badges .ui-badge-link { display:block; min-width:0; max-width:100%; }
 .ui-badges img { display:block; height:var(--ui-badge-height,22px); width:auto; max-width:100%; object-fit:contain; }
 .ui-catalog__controls { display:flex; align-items:center; gap:clamp(16px,2.2vw,34px); flex-wrap:wrap; padding-bottom:16px; border-bottom:1px solid var(--ui-color-border); margin-bottom:18px; }
 .ui-catalog__collections { display:flex; gap:clamp(8px,1.1vw,18px); flex-wrap:wrap; font-size:.84rem; }
@@ -22,7 +23,6 @@
 .ui-project-card { display:flex; flex-direction:column; gap:12px; min-width:0; padding:22px; background:var(--ui-color-surface); border:1px solid var(--ui-color-border); border-radius:16px; box-shadow:0 6px 18px rgb(0 0 0 / .10); transition:transform var(--ui-duration-nav) var(--ui-ease-smooth), border-color var(--ui-duration-color), box-shadow var(--ui-duration-nav) var(--ui-ease-smooth); }
 .ui-project-card h3 { font-size:clamp(20px,1.65vw,24px); line-height:1.25; font-weight:var(--ui-weight-semibold); letter-spacing:-.035em; margin:0; }
 .ui-project-card p { font-size:14px; line-height:1.6; color:var(--ui-color-muted); margin:0; flex:1; }
-.ui-project-card__eyebrow { color:var(--ui-color-accent); font-size:11px; letter-spacing:.09em; font-weight:var(--ui-weight-bold); text-transform:uppercase; }
 .ui-project-card__topics { font-size:12px; line-height:1.45; color:var(--ui-color-muted); }
 .ui-project-card__links { display:flex; align-items:center; flex-wrap:wrap; gap:12px 18px; border-top:1px solid var(--ui-color-border); padding-top:14px; margin-top:2px; font-size:12px; }
 .ui-project-card__primary { margin-left:auto; font-size:13px; font-weight:var(--ui-weight-bold); --ui-link-arrow-size:16px; }
@@ -36,9 +36,6 @@
 .ui-feature { flex:0 0 100%; min-width:0; display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:clamp(24px,4.5vw,86px); scroll-snap-align:start; padding:4px 0 6px; }
 .ui-feature__copy { display:flex; flex-direction:column; align-items:flex-start; gap:clamp(9px,1.6vh,18px); min-width:0; }
 .ui-feature__index { font-size:12px; color:var(--ui-color-accent); letter-spacing:.08em; font-variant-numeric:tabular-nums; }
-.ui-feature h2 { font-size:clamp(36px,min(5.1vw,9.2vh),86px); font-weight:var(--ui-weight-medium); letter-spacing:-.065em; line-height:1.03; margin:0; }
-.ui-feature__subtitle { font-size:clamp(17px,min(1.65vw,3vh),27px); font-weight:var(--ui-weight-medium); margin:0; line-height:1.17; }
-.ui-feature__description { font-size:clamp(14px,1.1vw,18px); line-height:1.5; max-width:54ch; margin:0; color:var(--ui-color-muted); }
 .ui-feature__link { margin-top:auto; min-width:min(100%,240px); --ui-link-padding:9px 4px 6px 0; --ui-link-arrow-size:24px; font-size:15px; font-weight:var(--ui-weight-semibold); }
 .ui-feature__evidence { display:flex; flex-direction:column; justify-content:space-between; min-width:0; gap:clamp(9px,1.6vh,18px); }
 .ui-evidence { margin:0; min-width:0; }
@@ -90,9 +87,9 @@
         --ui-motion-from-x:0px; --ui-motion-from-y:16px; --ui-motion-from-scale:1; --ui-motion-from-opacity:0;
         animation:ui-motion-enter var(--ui-duration-slide-entry) var(--ui-ease-smooth) both;
     }
-    .ui-feature[data-ui-slide-enter] .ui-feature__copy h2 { animation-duration:950ms; }
-    .ui-feature[data-ui-slide-enter] .ui-feature__subtitle { animation-delay:var(--ui-delay-slide-subtitle); }
-    .ui-feature[data-ui-slide-enter] .ui-feature__description { animation-delay:var(--ui-delay-slide-description); }
+    .ui-feature[data-ui-slide-enter] .ui-project-title { animation-duration:950ms; }
+    .ui-feature[data-ui-slide-enter] .ui-project-subtitle { animation-delay:var(--ui-delay-slide-subtitle); }
+    .ui-feature[data-ui-slide-enter] .ui-project-description { animation-delay:var(--ui-delay-slide-description); }
     .ui-feature[data-ui-slide-enter] .ui-badges { animation-delay:var(--ui-delay-slide-badges); }
     .ui-feature[data-ui-slide-enter] .ui-feature__link { animation-delay:var(--ui-delay-slide-link); }
     .ui-feature[data-ui-slide-enter] .ui-feature__evidence { --ui-motion-from-x:12px; --ui-motion-from-y:0px; animation-duration:var(--ui-duration-slide-evidence); }

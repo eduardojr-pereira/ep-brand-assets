@@ -145,7 +145,9 @@ ep-brand-assets/
 │       ├── header.html
 │       ├── footer.html
 │       ├── animated_icons.html
-│       └── social.html
+│       ├── social.html
+│       ├── editorial.html
+│       └── hero_projects.html
 ├── config/
 │   ├── badges.json
 │   ├── brand.json
@@ -173,7 +175,8 @@ ep-brand-assets/
 │   ├── header.css
 │   ├── footer.css
 │   ├── animated-icons.css
-│   └── social.css
+│   ├── social.css
+│   └── editorial.css
 ├── tests/
 │   ├── support.py
 │   └── test_*.py

@@ -4,12 +4,13 @@
 {% import 'components/web/localization.html' as t %}
 {% import 'components/web/navigation.html' as n %}
 {% import 'components/web/buttons.html' as b %}
+{% import 'components/web/editorial.html' as e %}
 {% macro badges(items) -%}
-{% if items %}<div class="ui-badges">{% for item in items %}<img src="{{ item.src }}" alt="{{ t.value(item.label) }}"{{ t.binding(item.label,"alt") }} {% if item.en_src and item.pt_br_src %} data-en-src="{{ item.en_src }}" data-pt-br-src="{{ item.pt_br_src }}"{% endif %}{% if item.light and item.dark %} data-light-src="{{ item.light }}" data-dark-src="{{ item.dark }}"{% endif %} loading="lazy" decoding="async">{% endfor %}</div>{% endif %}
+{% if items %}<div class="ui-badges">{% for item in items %}{% if item.href %}<a class="ui-badge-link" href="{{ item.href }}">{% endif %}<img src="{{ item.src }}" alt="{{ t.value(item.label) }}"{{ t.binding(item.label,"alt") }} {% if item.en_src and item.pt_br_src %} data-en-src="{{ item.en_src }}" data-pt-br-src="{{ item.pt_br_src }}"{% endif %}{% if item.light and item.dark %} data-light-src="{{ item.light }}" data-dark-src="{{ item.dark }}"{% endif %} loading="lazy" decoding="async">{% if item.href %}</a>{% endif %}{% endfor %}</div>{% endif %}
 {%- endmacro %}
 {% macro project_card(project) -%}
 <article class="ui-project-card" data-ui-project data-collection="{{ project.collection }}" data-areas="{{ project.areas|join(' ') }}" data-search="{{ search_text([project.title, project.description, project.collection_label, project.search|default('')] + (project.topics|default([],true)|list) + (project.badges|default([],true)|map(attribute='label')|list) + (project.links|default([],true)|map(attribute='label')|list)) }}">
-<div class="ui-project-card__head"><span class="ui-project-card__eyebrow"{{ t.binding(project.collection_label) }}>{{ t.value(project.collection_label) }}</span></div>
+<div class="ui-project-card__head">{{ e.eyebrow(project.collection_label) }}</div>
 <h3{{ t.binding(project.title) }}>{{ t.value(project.title) }}</h3><p{{ t.binding(project.description) }}>{{ t.value(project.description) }}</p>
 {% if project.topics %}<div class="ui-project-card__topics">{% for topic in project.topics %}{% if not loop.first %} · {% endif %}<span{{ t.binding(topic) }}>{{ t.value(topic) }}</span>{% endfor %}</div>{% endif %}
 {{ badges(project.badges) }}
@@ -41,7 +42,7 @@
 {% macro selected_projects(projects) -%}
 {% if projects %}<div class="ui-selected" data-ui-carousel>
 <div class="ui-selected__track" data-ui-carousel-track tabindex="0" role="region" aria-label="{{ t.value(message("shared.action.selected")) }}"{{ t.binding(message("shared.action.selected"),"aria-label") }}>{% for project in projects %}<article class="ui-feature" data-ui-slide>
-<div class="ui-feature__copy"><span class="ui-feature__index">{{ '%02d'|format(loop.index) }}</span><h2{{ t.binding(project.title) }}>{{ t.value(project.title) }}</h2>{% if project.subtitle %}<p class="ui-feature__subtitle"{{ t.binding(project.subtitle) }}>{{ t.value(project.subtitle) }}</p>{% endif %}<p class="ui-feature__description"{{ t.binding(project.description) }}>{{ t.value(project.description) }}</p>{{ badges(project.badges) }}<div class="ui-feature__link">{{ n.diagonal(message("shared.project.view"),project.href,true,true) }}</div></div>
+<div class="ui-feature__copy"><span class="ui-feature__index">{{ '%02d'|format(loop.index) }}</span>{{ e.project_title(project.title) }}{{ e.project_subtitle(project.subtitle) }}{{ e.project_description(project.description) }}{{ badges(project.badges) }}<div class="ui-feature__link">{{ n.diagonal(message("shared.project.view"),project.href,true,true) }}</div></div>
 <div class="ui-feature__evidence">{{ evidence(project.frames) }}{% if project.metrics %}<div class="ui-feature__metrics">{% for metric in project.metrics %}<div><strong>{{ metric.value }}</strong><span{{ t.binding(metric.label) }}>{{ t.value(metric.label) }}</span></div>{% endfor %}</div>{% endif %}</div>
 </article>{% endfor %}</div>
 <div class="ui-selected__footer"><span data-ui-carousel-count aria-live="polite">01 / {{ '%02d'|format(projects|length) }}</span><div class="ui-selected__progress" aria-hidden="true"><span></span></div><div class="ui-selected__arrows">{{ b.carousel_arrow(message("shared.project.previous"),'previous',true) }}{{ b.carousel_arrow(message("shared.project.next"),'next',projects|length == 1) }}</div></div>

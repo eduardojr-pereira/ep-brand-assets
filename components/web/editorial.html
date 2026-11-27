@@ -1,0 +1,24 @@
+{# Responsibility: Shared editorial headings, labels and project typography.
+   Consumers supply translated references; animation uses the global motion primitives. #}
+{% import 'components/web/localization.html' as t %}
+{% macro section_heading(title, description=none, id=none, level=2) -%}
+<header class="ui-section-heading">
+{% set tag = 'h1' if level == 1 else 'h2' %}<{{ tag }} class="ui-section-heading__title"{% if id %} id="{{ id }}"{% endif %} data-motion="reveal-up" data-scroll-trigger="repeat"{{ t.binding(title) }}>{{ t.value(title) }}</{{ tag }}>
+{% if description %}<p class="ui-section-heading__description" data-motion="fade" data-scroll-trigger="repeat"{{ t.binding(description) }}>{{ t.value(description) }}</p>{% endif %}
+</header>
+{%- endmacro %}
+{% macro eyebrow(label) -%}
+<span class="ui-eyebrow"{{ t.binding(label) }}>{{ t.value(label) }}</span>
+{%- endmacro %}
+{% macro project_title(title, level=2, id=none) -%}
+{% set tag = 'h1' if level == 1 else 'h2' %}<{{ tag }} class="ui-project-title"{% if id %} id="{{ id }}"{% endif %}{{ t.binding(title) }}>{{ t.value(title) }}</{{ tag }}>
+{%- endmacro %}
+{% macro project_subtitle(subtitle) -%}
+{% if subtitle %}<p class="ui-project-subtitle"{{ t.binding(subtitle) }}>{{ t.value(subtitle) }}</p>{% endif %}
+{%- endmacro %}
+{% macro project_description(description) -%}
+<p class="ui-project-description"{{ t.binding(description) }}>{{ t.value(description) }}</p>
+{%- endmacro %}
+{% macro minor_heading(label, id=none, level=2) -%}
+{% set tag = 'h3' if level == 3 else 'h2' %}<{{ tag }} class="ui-minor-heading"{% if id %} id="{{ id }}"{% endif %}{{ t.binding(label) }}>{{ t.value(label) }}</{{ tag }}>
+{%- endmacro %}

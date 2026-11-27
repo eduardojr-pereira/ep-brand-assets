@@ -5,19 +5,20 @@
 {% import 'components/web/buttons.html' as b %}
 {% import 'components/web/animated_icons.html' as art %}
 {% import 'components/web/social.html' as s %}
+{% import 'components/web/editorial.html' as e %}
 {% macro footer(brand,navigation,landing_url,logo_src,privacy_href,terms_href,year=2026,report=false) -%}
 {% set base = (brand.website if landing_url is none else landing_url) if report else '' %}
 <footer class="ui-footer" data-ui-footer aria-label="{{ t.value(message('shared.footer.region')) }}"{{ t.binding(message('shared.footer.region'),'aria-label') }}>
 <div class="ui-footer__layout">
 <section class="ui-footer__about" aria-labelledby="ui-footer-about">
 <a class="ui-footer__brand" href="{{ n.landing_href(navigation,'home',base) }}"><img src="{{ logo_src }}" alt="" width="70" height="70" loading="lazy"><span><strong>{{ brand.name }}</strong><span class="ui-footer__role"{{ t.binding(message('shared.brand.tagline')) }}>{{ t.value(message('shared.brand.tagline')) }}</span></span></a>
-<h2 id="ui-footer-about" class="ui-footer__heading"{{ t.binding(message('shared.nav.about')) }}>{{ t.value(message('shared.nav.about')) }}</h2>
+{{ e.minor_heading(message('shared.nav.about'),'ui-footer-about') }}
 <div class="ui-footer__bio">{% for key in ['shared.footer.bio1','shared.footer.bio2','shared.footer.bio3'] %}<p{{ t.binding(message(key)) }}>{{ t.value(message(key)) }}</p>{% endfor %}</div>
 <div class="ui-footer__learn">{{ b.radial_link(message('shared.action.learn'),n.landing_href(navigation,'about',base)) }}</div>
 </section>
 <section class="ui-footer__editorial" aria-label="{{ t.value(message('shared.footer.editorial')) }}"{{ t.binding(message('shared.footer.editorial'),'aria-label') }}><span class="ui-footer__watermark" aria-hidden="true"{{ t.binding(message('shared.footer.explore')) }}>{{ t.value(message('shared.footer.explore')) }}</span>
-<div class="ui-footer__groups"><div><h2 id="ui-footer-navigation" class="ui-footer__heading"{{ t.binding(message('shared.footer.navigation')) }}>{{ t.value(message('shared.footer.navigation')) }}</h2><nav aria-labelledby="ui-footer-navigation">{% for item in navigation.sections %}{% call n.editorial(message(item.label),message(item.description),base+'#'+item.id) %}{{ art.icon(item.animation) }}{% endcall %}{% endfor %}</nav></div>
-<div><h2 id="ui-footer-repositories" class="ui-footer__heading"{{ t.binding(message('shared.footer.repositories')) }}>{{ t.value(message('shared.footer.repositories')) }}</h2><nav aria-labelledby="ui-footer-repositories">{% for item in navigation.repositories %}{% call n.editorial(message(item.label),message(item.description),brand[item.brand_key]) %}<span class="ui-footer__number">{{ '%02d'|format(loop.index) }}</span>{% endcall %}{% endfor %}</nav>{% if report %}{{ s.follow_connect(brand,navigation) }}{% endif %}</div></div></section>
+<div class="ui-footer__groups"><div>{{ e.minor_heading(message('shared.footer.navigation'),'ui-footer-navigation') }}<nav aria-labelledby="ui-footer-navigation">{% for item in navigation.sections %}{% call n.editorial(message(item.label),message(item.description),base+'#'+item.id) %}{{ art.icon(item.animation) }}{% endcall %}{% endfor %}</nav></div>
+<div>{{ e.minor_heading(message('shared.footer.repositories'),'ui-footer-repositories') }}<nav aria-labelledby="ui-footer-repositories">{% for item in navigation.repositories %}{% call n.editorial(message(item.label),message(item.description),brand[item.brand_key]) %}<span class="ui-footer__number">{{ '%02d'|format(loop.index) }}</span>{% endcall %}{% endfor %}</nav>{% if report %}{{ s.follow_connect(brand,navigation) }}{% endif %}</div></div></section>
 </div>
 <div class="ui-footer__bottom"><small>© {{ year }} {{ brand.name }}</small><nav class="ui-footer__legal" aria-label="{{ t.value(message('shared.footer.legal')) }}"{{ t.binding(message('shared.footer.legal'),'aria-label') }}>{{ n.text_link(message('shared.footer.privacy'),privacy_href) }}{{ n.text_link(message('shared.footer.terms'),terms_href) }}{% if report %}{{ n.return_link(message('shared.nav.top'),'#top',true) }}{% endif %}</nav></div>
 </footer>

@@ -8,6 +8,8 @@
 - `components/web/animated_icons.html`, `styles/animated-icons.css`, `scripts/animated-icons.js`: shared link artwork, fallback, hover/focus playback intent and final-frame reduced motion. Asset loading and variants are owned by UI.assets (see [presentation.md](presentation.md)).
 - `components/web/social.html` and `styles/social.css`: Follow & Connect content, shared radial fill, icon geometry and contextual contrast. The parent controls placement; no separate player or preference state.
 
+Footer headings use the shared [editorial primitives](editorial.md); placement and spacing remain shell responsibilities.
+
 ## Usage
 
 Load brand and navigation from the same immutable EP Brand version. The canonical landing destination is `brand.website`; `legacy_website` is historical only. Section roles home/about/portfolio resolve to IDs in `navigation.sections` through `navigation.landing_href`. Do not hardcode fragments or repeat URLs. The builder must verify actual target sections before publication.

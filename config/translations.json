@@ -75,7 +75,11 @@
     "shared.footer.legal": "Legal",
     "shared.footer.privacy": "Privacy Policy",
     "shared.footer.terms": "Terms of Use",
-    "shared.footer.email": "Email"
+    "shared.footer.email": "Email",
+    "shared.project.overview": "Project Overview",
+    "shared.project.business_context": "Business Context",
+    "shared.project.objectives": "Objectives",
+    "shared.project.technologies": "Technologies"
   },
   "pt-BR": {
     "shared.nav.home": "Início",
@@ -153,6 +157,10 @@
     "shared.footer.legal": "Informações legais",
     "shared.footer.privacy": "Política de Privacidade",
     "shared.footer.terms": "Termos de Uso",
-    "shared.footer.email": "E-mail"
+    "shared.footer.email": "E-mail",
+    "shared.project.overview": "Visão geral do projeto",
+    "shared.project.business_context": "Contexto de negócio",
+    "shared.project.objectives": "Objetivos",
+    "shared.project.technologies": "Tecnologias"
   }
 }

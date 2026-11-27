@@ -1,0 +1,25 @@
+{# Responsibility: Report introduction composition only. Editorial primitives, links,
+   badges and localization are shared; no report analytics or page-specific styles. #}
+{% import 'components/web/localization.html' as t %}
+{% import 'components/web/editorial.html' as e %}
+{% import 'components/web/navigation.html' as n %}
+{% import 'components/web/interactive.html' as i %}
+{% macro hero_projects(project, id='project-intro') -%}
+<section class="ui-project-hero" id="{{ id }}" data-ui-section aria-labelledby="{{ id }}-title">
+<div class="ui-project-hero__meta" data-motion="fade" data-scroll-trigger="once">
+{{ e.eyebrow(project.category) }}{{ i.badges(project.licenses|default([],true)) }}
+</div>
+<div class="ui-project-hero__title" data-motion="reveal-up" data-scroll-trigger="once">{{ e.project_title(project.title,1,id+'-title') }}{{ e.project_subtitle(project.subtitle|default(none)) }}</div>
+<div class="ui-project-hero__details{% if not project.business_context and not project.objectives %} ui-project-hero__details--single{% endif %}">
+<div class="ui-project-hero__overview" data-motion="reveal-up" data-scroll-trigger="once">
+{{ e.minor_heading(message('shared.project.overview')) }}{{ e.project_description(project.description) }}
+{% if project.notebook_href or project.documentation_href %}<div class="ui-project-hero__links">{% if project.notebook_href %}{{ n.diagonal(message('shared.project.notebook'),project.notebook_href,true,true) }}{% endif %}{% if project.documentation_href %}{{ n.diagonal(message('shared.project.documentation'),project.documentation_href,true,true) }}{% endif %}</div>{% endif %}
+</div>
+{% if project.business_context or project.objectives %}<div class="ui-project-hero__context" data-motion="reveal-up" data-scroll-trigger="once">
+{% if project.business_context %}<div class="ui-project-hero__group">{{ e.minor_heading(message('shared.project.business_context')) }}{{ e.project_description(project.business_context) }}</div>{% endif %}
+{% if project.objectives %}<div class="ui-project-hero__group">{{ e.minor_heading(message('shared.project.objectives')) }}<ul class="ui-project-description ui-project-hero__objectives">{% for objective in project.objectives %}<li{{ t.binding(objective) }}>{{ t.value(objective) }}</li>{% endfor %}</ul></div>{% endif %}
+</div>{% endif %}
+</div>
+{% if project.technologies %}<div class="ui-project-hero__technologies" data-motion="fade" data-scroll-trigger="once">{{ e.minor_heading(message('shared.project.technologies')) }}{{ i.badges(project.technologies) }}</div>{% endif %}
+</section>
+{%- endmacro %}

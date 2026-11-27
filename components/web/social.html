@@ -2,8 +2,9 @@
 {% import 'components/web/localization.html' as t %}
 {% import 'components/web/buttons.html' as b %}
 {% import 'components/web/animated_icons.html' as art %}
+{% import 'components/web/editorial.html' as e %}
 {% macro follow_connect(brand,navigation,context='footer') -%}
 <div class="ui-social ui-social--{{ 'contact' if context == 'contact' else 'footer' }}">
-<h2 class="ui-social__title"{{ t.binding(message('shared.footer.follow')) }}>{{ t.value(message('shared.footer.follow')) }}</h2>
+{% if context == 'contact' %}<h2 class="ui-social__title"{{ t.binding(message('shared.footer.follow')) }}>{{ t.value(message('shared.footer.follow')) }}</h2>{% else %}{{ e.minor_heading(message('shared.footer.follow')) }}{% endif %}
 <nav class="ui-social__links" aria-label="{{ t.value(message('shared.footer.follow')) }}"{{ t.binding(message('shared.footer.follow'),'aria-label') }}>{% for item in navigation.social %}{% set label = message('shared.footer.email') if item.brand_key == 'email' else item.label %}<a class="ui-action ui-social__link" href="{{ 'mailto:' if item.brand_key == 'email' else '' }}{{ brand[item.brand_key] }}" aria-label="{{ t.value(label) }}"{{ t.binding(label,'aria-label') }}><span class="ui-action__body">{{ b.fill() }}{{ art.icon(item.animation,item.fallback,'contact' if context == 'contact' else 'social') }}</span></a>{% endfor %}</nav></div>
 {%- endmacro %}
