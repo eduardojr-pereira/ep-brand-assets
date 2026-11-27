@@ -8,7 +8,6 @@
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const fine = matchMedia('(hover:hover) and (pointer:fine)');
     const all = (root, selector) => [...root.querySelectorAll(selector)];
-    const normalize = value => String(value).normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().trim();
     function catalog(root) {
         const groups = all(root, '[data-ui-filter]');
         const input = root.querySelector('[data-ui-search]');
@@ -17,12 +16,10 @@
         const empty = root.querySelector('[data-ui-empty]');
         function update() {
             const values = Object.fromEntries(groups.map(g => [g.dataset.uiFilter, g.dataset.uiValue || 'all']));
-            const query = normalize(input.value).split(/\s+/).filter(Boolean);
             let total = 0;
             all(root,'[data-ui-project]').forEach(card => {
-                const text = normalize(card.dataset.search);
                 card.hidden = !( (values.collection === 'all' || values.collection === card.dataset.collection) &&
-                    (values.area === 'all' || card.dataset.areas.split(/\s+/).includes(values.area)) && query.every(t=>text.includes(t)) );
+                    (values.area === 'all' || card.dataset.areas.split(/\s+/).includes(values.area)) && UI.disclosure.matches(card.dataset.search,input.value) );
                 if (!card.hidden) total++;
             });
             UI.i18n.bind(count,'text','shared.catalog.count',{count:total});

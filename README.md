@@ -149,7 +149,9 @@ ep-brand-assets/
 │       ├── editorial.html
 │       ├── hero_projects.html
 │       ├── badges.html
-│       └── analytical.html
+│       ├── analytical.html
+│       ├── disclosure.html
+│       └── report_sections.html
 ├── config/
 │   ├── badges.json
 │   ├── brand.json
@@ -167,7 +169,9 @@ ep-brand-assets/
 │   ├── buttons.js
 │   ├── interactive.js
 │   ├── header.js
-│   └── animated-icons.js
+│   ├── animated-icons.js
+│   ├── disclosure.js
+│   └── artifact-explorer.js
 ├── styles/
 │   ├── foundations.css
 │   ├── motion.css
@@ -180,14 +184,16 @@ ep-brand-assets/
 │   ├── social.css
 │   ├── editorial.css
 │   ├── badges.css
-│   └── analytical.css
+│   ├── analytical.css
+│   └── report-sections.css
 ├── tests/
 │   ├── support.py
 │   └── test_*.py
 ├── tools/
 │   ├── presentation.py
 │   ├── badge_catalog.py
-│   └── render_badges.py
+│   ├── render_badges.py
+│   └── artifact_preview.py
 ├── LICENSE-BRAND.md
 ├── LICENSE-CODE.txt
 ├── LICENSE-CONTENT.md

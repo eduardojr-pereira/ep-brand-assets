@@ -11,7 +11,8 @@
     "styles/header.css",
     "styles/animated-icons.css",
     "styles/social.css",
-    "styles/footer.css"
+    "styles/footer.css",
+    "styles/report-sections.css"
   ],
   "head_scripts": [
     "scripts/theme.js",
@@ -22,9 +23,11 @@
     "scripts/assets.js",
     "scripts/navigation.js",
     "scripts/buttons.js",
+    "scripts/disclosure.js",
     "scripts/interactive.js",
     "scripts/header.js",
-    "scripts/animated-icons.js"
+    "scripts/animated-icons.js",
+    "scripts/artifact-explorer.js"
   ],
   "lottie": {
     "version": "5.12.2",

@@ -1,0 +1,12 @@
+{# Responsibility: Reusable native disclosure rows and state-driven search-to-close artwork.
+   Consumer supplies localized labels and panel content; no locale state. #}
+{% import 'components/web/localization.html' as t %}
+{% macro toggle_art() -%}
+<span class="ui-toggle-art" data-ui-toggle-art aria-hidden="true"><svg class="ui-toggle-art__fallback" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="6"/><path d="m14.5 14.5 5 5"/></svg><svg class="ui-toggle-art__close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m5 5 14 14M19 5 5 19"/></svg><span data-ui-toggle-player></span></span>
+{%- endmacro %}
+{% macro indexed_item(number,label,opened=false) -%}
+<details class="ui-indexed-item"{% if opened %} open{% endif %}><summary><span class="ui-indexed-item__number" aria-hidden="true">{{ '%02d'|format(number) }}</span><span class="ui-indexed-item__label"{{ t.binding(label) }}>{{ t.value(label) }}</span><svg class="ui-indexed-item__sign" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h16"/><path class="ui-indexed-item__vertical" d="M12 4v16"/></svg></summary><div class="ui-indexed-item__body">{{ caller() }}</div></details>
+{%- endmacro %}
+{% macro search_control(id) -%}
+<div class="ui-file-search" data-ui-search-control hidden><button type="button" class="ui-file-search__toggle" data-ui-search-toggle aria-expanded="false" aria-controls="{{ id }}-field" aria-label="{{ t.value(message('shared.artifacts.search')) }}"{{ t.binding(message('shared.artifacts.search'),'aria-label') }}>{{ toggle_art() }}</button><div id="{{ id }}-field" data-ui-search-field hidden><label class="ui-file-search__label" for="{{ id }}-query"{{ t.binding(message('shared.artifacts.search')) }}>{{ t.value(message('shared.artifacts.search')) }}</label><input type="search" id="{{ id }}-query" data-ui-artifact-query autocomplete="off" placeholder="{{ t.value(message('shared.artifacts.placeholder')) }}"{{ t.binding(message('shared.artifacts.placeholder'),'placeholder') }}></div></div>
+{%- endmacro %}

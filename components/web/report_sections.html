@@ -1,0 +1,29 @@
+{# Responsibility: Optional report conclusion, authorized artifact previews and static references.
+   Project supplies translated content, resolved URLs and safe bounded preview data. #}
+{% import 'components/web/localization.html' as t %}
+{% import 'components/web/editorial.html' as e %}
+{% import 'components/web/analytical.html' as a %}
+{% import 'components/web/disclosure.html' as d %}
+{% import 'components/web/navigation.html' as n %}
+{% import 'components/web/badges.html' as b %}
+{% macro artifact_explorer(id,files) -%}
+{% if files %}<div class="ui-artifact-explorer" data-ui-artifact-explorer>
+{{ d.search_control(id) }}
+<div class="ui-artifact-layout"><div class="ui-artifact-list"><ul>{% for file in files %}<li data-ui-artifact-item data-search="{{ search_text([file.name,file.format,file.label|default(none)]) }}"><a class="ui-artifact-link" href="#{{ id }}-file-{{ loop.index }}" data-ui-artifact-select><span>{{ file.name }}</span><span class="ui-artifact-format">{{ file.format }}</span></a></li>{% endfor %}</ul><p data-ui-artifact-empty hidden{{ t.binding(message('shared.artifacts.empty')) }}>{{ t.value(message('shared.artifacts.empty')) }}</p></div>
+<div class="ui-artifact-previews">{% for file in files %}<section id="{{ id }}-file-{{ loop.index }}" class="ui-artifact-preview" data-ui-artifact-preview aria-labelledby="{{ id }}-name-{{ loop.index }}"><h4 id="{{ id }}-name-{{ loop.index }}" class="ui-artifact-name">{{ file.name }}</h4>{% if file.label %}<p{{ t.binding(file.label) }}>{{ t.value(file.label) }}</p>{% endif %}
+{% if file.kind == 'image' %}<img class="ui-artifact-image" src="{{ file.href }}" alt="{{ file.name }}" loading="lazy" decoding="async" data-ui-artifact-image><p data-ui-image-error hidden{{ t.binding(message('shared.artifacts.unavailable')) }}>{{ t.value(message('shared.artifacts.unavailable')) }}</p>
+{% elif file.kind == 'text' %}<pre class="ui-artifact-text" tabindex="0" aria-label="{{ file.name }}">{{ file.text }}</pre>
+{% elif file.kind == 'csv' %}{{ a.data_table(message('shared.artifacts.preview'),file.columns,file.rows) }}
+{% else %}<p{{ t.binding(message('shared.artifacts.unavailable')) }}>{{ t.value(message('shared.artifacts.unavailable')) }}</p>{% endif %}
+{% if file.truncated %}<p class="ui-artifact-note"{{ t.binding(message('shared.artifacts.truncated')) }}>{{ t.value(message('shared.artifacts.truncated')) }}</p>{% endif %}
+<a class="ui-link ui-underline" href="{{ file.href }}" download><span{{ t.binding(message('shared.artifacts.download')) }}>{{ t.value(message('shared.artifacts.download')) }}</span></a>
+</section>{% endfor %}</div></div></div>{% endif %}
+{%- endmacro %}
+{% macro conclusion(id,items,files=none) -%}
+{% set visible = items|selectattr('body')|list %}{% if visible or files %}<section id="{{ id }}" data-ui-section aria-labelledby="{{ id }}-title">{{ e.section_heading(message('shared.conclusion.title'),id=id+'-title') }}<div class="ui-indexed-list">{% for item in visible %}{% call d.indexed_item(loop.index,item.label) %}{% call a.prose() %}{% for paragraph in item.body %}<p{{ t.binding(paragraph) }}>{{ t.value(paragraph) }}</p>{% endfor %}{% endcall %}{% endcall %}{% endfor %}{% if files %}{% call d.indexed_item(visible|length+1,message('shared.conclusion.outputs')) %}{{ artifact_explorer(id+'-outputs',files) }}{% endcall %}{% endif %}</div></section>{% endif %}
+{%- endmacro %}
+{% macro references(id,sources=none,topics=none,methods=none) -%}
+{% if sources or topics or methods %}<section id="{{ id }}" data-ui-section aria-labelledby="{{ id }}-title">{{ e.section_heading(message('shared.references.title'),id=id+'-title') }}{% call a.grid(2 if sources and (topics or methods) else 1) %}
+{% if sources %}{% call a.surface() %}{{ e.minor_heading(message('shared.references.data_source'),level=3) }}{% for source in sources %}<div class="ui-reference-source">{{ n.text_link(source.label,source.href,false) }}{% if source.description %}{{ e.project_description(source.description) }}{% endif %}{{ b.badges(source.licenses|default([],true)) }}{% if source.overview %}<h4 class="ui-reference-subtitle"{{ t.binding(message('shared.references.dataset_overview')) }}>{{ t.value(message('shared.references.dataset_overview')) }}</h4>{{ a.metrics(source.overview) }}{% endif %}</div>{% endfor %}{% endcall %}{% endif %}
+{% if topics or methods %}{% call a.surface() %}{{ e.minor_heading(message('shared.references.technical'),level=3) }}{% if topics %}<h4 class="ui-reference-subtitle"{{ t.binding(message('shared.references.topics')) }}>{{ t.value(message('shared.references.topics')) }}</h4><ul class="ui-reference-topics">{% for topic in topics %}<li>{{ n.text_link(topic.label,topic.href,false) }}</li>{% endfor %}</ul>{% endif %}{% if methods %}<h4 class="ui-reference-subtitle"{{ t.binding(message('shared.references.methods')) }}>{{ t.value(message('shared.references.methods')) }}</h4>{{ b.method_badges(methods) }}{% endif %}{% endcall %}{% endif %}{% endcall %}</section>{% endif %}
+{%- endmacro %}
