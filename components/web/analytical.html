@@ -1,0 +1,31 @@
+{# Responsibility: Optional analytical composition primitives, semantic figures, metrics and tables.
+   Consumer owns evidence, numbers, translations and interactive application content. #}
+{% import 'components/web/localization.html' as t %}
+{% import 'components/web/editorial.html' as e %}
+{% macro surface() -%}
+<div class="ui-surface">{{ caller() }}</div>
+{%- endmacro %}
+{% macro grid(columns=2) -%}
+<div class="ui-grid{% if columns == 3 %} ui-grid--three{% elif columns == 2 %} ui-grid--two{% endif %}">{{ caller() }}</div>
+{%- endmacro %}
+{% macro metrics(items, compact=false) -%}
+{% if items %}<div class="ui-metrics{% if compact %} ui-metrics--compact{% endif %}">{% for metric in items %}<div class="ui-metric"><strong{{ t.binding(metric.value) }}>{{ t.value(metric.value) }}</strong><span{{ t.binding(metric.label) }}>{{ t.value(metric.label) }}</span></div>{% endfor %}</div>{% endif %}
+{%- endmacro %}
+{% macro divider() -%}<hr class="ui-divider">{%- endmacro %}
+{% macro prose() -%}<div class="ui-prose">{{ caller() }}</div>{%- endmacro %}
+{% macro callout(title=none) -%}
+<aside class="ui-callout">{% if title %}{{ e.minor_heading(title) }}{% endif %}{{ caller() }}</aside>
+{%- endmacro %}
+{% macro figure(caption=none) -%}
+<figure class="ui-figure">{{ caller() }}{% if caption %}<figcaption{{ t.binding(caption) }}>{{ t.value(caption) }}</figcaption>{% endif %}</figure>
+{%- endmacro %}
+{% macro image_figure(image, caption=none) -%}
+{% call figure(caption) %}<img src="{{ image.src }}" alt="{{ t.value(image.alt) }}"{{ t.binding(image.alt,'alt') }}{% if image.light and image.dark %} data-light-src="{{ image.light }}" data-dark-src="{{ image.dark }}"{% endif %}{% if image.en_src and image.pt_br_src %} data-en-src="{{ image.en_src }}" data-pt-br-src="{{ image.pt_br_src }}"{% endif %} loading="lazy" decoding="async">{% endcall %}
+{%- endmacro %}
+{% macro data_table(caption, columns, rows) -%}
+{% if columns %}<div class="ui-table-scroll" role="region" tabindex="0" aria-label="{{ t.value(caption) }}"{{ t.binding(caption,'aria-label') }}><table class="ui-table">
+<caption{{ t.binding(caption) }}>{{ t.value(caption) }}</caption>
+<thead><tr>{% for column in columns %}<th scope="col"{% if column.numeric %} class="ui-table__numeric"{% endif %}{{ t.binding(column.label) }}>{{ t.value(column.label) }}</th>{% endfor %}</tr></thead>
+<tbody>{% for row in rows %}<tr>{% for column in columns %}{% set value = row[loop.index0] %}{% if column.row_header %}<th scope="row"{% if column.numeric %} class="ui-table__numeric"{% endif %}{{ t.binding(value) }}>{{ t.value(value) }}</th>{% else %}<td{% if column.numeric %} class="ui-table__numeric"{% endif %}{{ t.binding(value) }}>{{ t.value(value) }}</td>{% endif %}{% endfor %}</tr>{% endfor %}</tbody>
+</table></div>{% endif %}
+{%- endmacro %}
