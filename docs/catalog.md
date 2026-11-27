@@ -8,7 +8,7 @@ Each registered project has `project.json` (schema v1): bilingual `name`, `descr
 
 `tools/catalog.py` validates the two schemas, registered paths, JSON uniqueness, locale parity, canonical technology IDs and file references. Generic JSON, field, bilingual value and local-file validation are supplied by [validation.py](validation.md); project schemas and registry policy stay in the catalog. It returns ordered validated records to the [builder](builder.md). Unknown fields, duplicates, traversal and symlinks are rejected. It does not choose public routes, copy assets, render pages or execute analytical code. The structural builder and routing module already validate declared page routes and report section navigation. Real report composition and explicit publishable artifact lists remain project migration tasks; do not invent paths to absent reports.
 
-Build dependencies are declared separately in root `requirements.txt`; browser tests still require their documented dependencies and Chromium. Version-pinned consumption and the explicit page plan are documented in [the builder contract](builder.md), not in the registry. Consumer-specific content and deployment remain pending.
+Build dependencies are pinned in root `requirements.txt`; `requirements-test.txt` includes those pins and the additional browser-test packages. Chromium remains a separate system dependency. Version-pinned consumption and the explicit page plan are documented in [the builder contract](builder.md), not in the registry. Consumer-specific content and deployment remain pending.
 
 ## Validation
 

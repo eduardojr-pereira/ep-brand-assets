@@ -74,6 +74,33 @@ def load_page(page, body, theme='dark', *, css='', scripts=True, local=None, lot
     assert not _BROWSER_ERRORS.get(page.context.browser), _BROWSER_ERRORS.get(page.context.browser)
 
 
+def validate_test_environment():
+    """Verify exact declared Python package versions before full regression."""
+    from importlib.metadata import version, PackageNotFoundError
+    import re
+    pins = {}
+    for filename in ('requirements.txt', 'requirements-test.txt'):
+        for raw in (ROOT / filename).read_text(encoding='utf-8').splitlines():
+            line = raw.strip()
+            if not line or line.startswith('#') or (filename == 'requirements-test.txt' and line == '-r requirements.txt'):
+                continue
+            match = re.fullmatch(r'([A-Za-z0-9_-]+)==([A-Za-z0-9.]+)', line)
+            if not match:
+                raise RuntimeError(f'Unsupported test dependency declaration: {line}')
+            name, expected = match.groups()
+            key = name.lower().replace('_', '-')
+            if key in pins:
+                raise RuntimeError(f'Duplicate dependency: {name}')
+            pins[key] = expected
+            try:
+                actual = version(name)
+            except PackageNotFoundError as error:
+                raise RuntimeError(f'Missing test dependency: {name}=={expected}') from error
+            if actual != expected:
+                raise RuntimeError(f'Test dependency mismatch: {name}: {actual} != {expected}')
+    print(f'PASS: {len(pins)} pinned build/test packages', flush=True)
+
+
 def validate_contract():
     """Reject stale references, duplicate manifest entries and parallel implementations."""
     import re
@@ -168,6 +195,7 @@ def validate_contract():
 if __name__ == '__main__':
     import subprocess
     import sys
+    validate_test_environment()
     validate_contract()
     for path in sorted((ROOT / 'tests').glob('test_*.py')):
         print(f'=== {path.name} ===', flush=True)

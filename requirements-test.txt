@@ -1,0 +1,9 @@
+# Full regression only; includes the minimal build environment.
+-r requirements.txt
+# Direct browser and Plotly runtime test dependencies.
+playwright==1.65.2
+plotly==7.1.0
+# Transitive dependencies observed in the audited environment.
+greenlet==3.5.6
+narwhals==2.28.0
+packaging==26.3

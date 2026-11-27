@@ -29,12 +29,14 @@ git clone --no-checkout https://github.com/eduardojr-pereira/ep-brand-assets.git
 git -C "$checkout" checkout --detach "$EP_REF"
 test "$(git -C "$checkout" rev-parse HEAD)" = "$EP_REF"
 test -z "$(git -C "$checkout" status --porcelain)"
-python -m pip install -r "$checkout/requirements.txt"
-python -B "$checkout/tools/builder.py" --source "$SOURCE" --plan "$PLAN" --output "$OUTPUT"
+python3 -m venv "$HOME/Downloads/ep-brand-build-env"
+"$HOME/Downloads/ep-brand-build-env/bin/python" -m pip install -r "$checkout/requirements.txt"
+"$HOME/Downloads/ep-brand-build-env/bin/python" -m pip check
+"$HOME/Downloads/ep-brand-build-env/bin/python" -B "$checkout/tools/builder.py" --source "$SOURCE" --plan "$PLAN" --output "$OUTPUT"
 ```
 
 Do not consume mutable branches at build time. Do not create a permanent library copy inside the consumer. A production workflow and its fixed SHA will be established only in the publication stage. Local technical test output is not publication or visual acceptance.
 
 ## Validation
 
-From EP Brand, run `python -B tests/test_routing.py`, `python -B tests/test_resources.py` and `python -B tests/test_builder.py`. Tests use temporary fixtures under Downloads and actual canonical resources when run in the repository. The existing architecture checks enforce `Responsibility:` and `Boundaries:`. Full browser regression, integrated build review and release approval are distinct steps.
+From EP Brand, run `python -B tests/test_routing.py`, `python -B tests/test_resources.py` and `python -B tests/test_builder.py`. Tests use temporary fixtures under Downloads and actual canonical resources when run in the repository. The existing architecture checks enforce `Responsibility:` and `Boundaries:`. Full browser regression uses the separate `requirements-test.txt` environment; integrated build review and release approval are distinct steps. The Python package pins do not fix the OS, browser binary or wheel hashes.

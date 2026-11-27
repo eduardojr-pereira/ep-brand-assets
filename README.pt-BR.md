@@ -213,6 +213,7 @@ ep-brand-assets/
 │   ├── artifact_preview.py
 │   └── plotly_presentation.py
 ├── requirements.txt
+├── requirements-test.txt
 ├── LICENSE-BRAND.md
 ├── LICENSE-CODE.txt
 ├── LICENSE-CONTENT.md
@@ -223,7 +224,7 @@ ep-brand-assets/
 - `assets/` — Recursos de identidade visual e fontes.
 - `components/` — Rodapés Markdown e macros Jinja canônicas.
 - `config/` — Dados institucionais, catálogos e ordem de dependências.
-- Registro e metadados individuais: consulte o [contrato do catálogo](./docs/catalog.md). As dependências Python de build estão fixadas em [`requirements.txt`](./requirements.txt); dependências analíticas e de testes de navegador permanecem separadas.
+- Registro e metadados individuais: consulte o [contrato do catálogo](./docs/catalog.md). As dependências Python de build estão fixadas em [`requirements.txt`](./requirements.txt); as dependências de testes de navegador estão fixadas separadamente em [`requirements-test.txt`](./requirements-test.txt); as dependências analíticas pertencem aos projetos.
 - `docs/` — Documentação técnica e atribuições.
 - `scripts/` e `styles/` — Comportamento e apresentação compartilhados.
 - `tests/` — Testes de componentes com infraestrutura comum.
@@ -248,13 +249,16 @@ Os templates de `components/web/` são macros Jinja com escape HTML. O módulo [
 
 ## Testes e Validação
 
-Com Python, Jinja2, Playwright, Plotly e um navegador compatível com Chromium instalados, execute a partir da raiz:
+Use um ambiente isolado fora do repositório (referência de validação: Python 3.14.4). Instale as versões fixadas de build/testes; um navegador compatível com Chromium é uma dependência de sistema separada. A partir da raiz:
 
 ```bash
-python3 tests/support.py
+python3 -m venv "$HOME/Downloads/ep-brand-test-env"
+"$HOME/Downloads/ep-brand-test-env/bin/python" -m pip install -r requirements-test.txt
+"$HOME/Downloads/ep-brand-test-env/bin/python" -m pip check
+"$HOME/Downloads/ep-brand-test-env/bin/python" -B tests/support.py
 ```
 
-`UI_TEST_BROWSER` permite informar o executável do navegador. A suíte utiliza o manifesto de dependências, os componentes canônicos e as fontes reais do repositório. Os testes de componentes não substituem o aceite visual e funcional integrado no GitHub Pages. A suíte exige o player Lottie real, fixado em `config/ui.json`, e testa os serviços globais. Formulário real, integração dos consumidores e publicação permanecem pendentes.
+`UI_TEST_BROWSER` permite informar o executável do navegador. Registre sua versão efetiva para reprodutibilidade; o binário do navegador não é fixado pelo pip. A suíte completa confere as versões instaladas nos dois manifestos. A suíte utiliza o manifesto de dependências, os componentes canônicos e as fontes reais do repositório. Os testes de componentes não substituem o aceite visual e funcional integrado no GitHub Pages. A suíte exige o player Lottie real, fixado em `config/ui.json`, e testa os serviços globais. Formulário real, integração dos consumidores e publicação permanecem pendentes.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 

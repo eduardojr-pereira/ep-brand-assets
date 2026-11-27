@@ -213,6 +213,7 @@ ep-brand-assets/
 │   ├── artifact_preview.py
 │   └── plotly_presentation.py
 ├── requirements.txt
+├── requirements-test.txt
 ├── LICENSE-BRAND.md
 ├── LICENSE-CODE.txt
 ├── LICENSE-CONTENT.md
@@ -223,7 +224,7 @@ ep-brand-assets/
 - `assets/` — Visual identity resources and fonts.
 - `components/` — Markdown footers and canonical Jinja macros.
 - `config/` — Institutional data, catalogues and dependency order.
-- Project registry and per-project metadata: see [catalog contract](./docs/catalog.md). Build-time Python dependencies are pinned in [`requirements.txt`](./requirements.txt); analytical and browser-test dependencies remain separate.
+- Project registry and per-project metadata: see [catalog contract](./docs/catalog.md). Build-time Python dependencies are pinned in [`requirements.txt`](./requirements.txt); browser-test dependencies are pinned separately in [`requirements-test.txt`](./requirements-test.txt); analytical dependencies remain project-owned.
 - `docs/` — Technical documentation and attribution.
 - `scripts/` and `styles/` — Shared behavior and presentation.
 - `tests/` — Component tests with shared infrastructure.
@@ -248,13 +249,16 @@ The templates in `components/web/` are HTML-autoescaped Jinja macros. [`tools/pr
 
 ## Testing and Validation
 
-With Python, Jinja2, Playwright, Plotly and a Chromium-compatible browser installed, run from the repository root:
+Use an isolated environment outside the repository (reference validation: Python 3.14.4). Install the exact build/test pins; a Chromium-compatible browser is a separate system dependency. From the repository root:
 
 ```bash
-python3 tests/support.py
+python3 -m venv "$HOME/Downloads/ep-brand-test-env"
+"$HOME/Downloads/ep-brand-test-env/bin/python" -m pip install -r requirements-test.txt
+"$HOME/Downloads/ep-brand-test-env/bin/python" -m pip check
+"$HOME/Downloads/ep-brand-test-env/bin/python" -B tests/support.py
 ```
 
-`UI_TEST_BROWSER` can specify the browser executable. The suite uses the dependency manifest, canonical components and the actual repository fonts. Component tests do not replace integrated visual and functional acceptance on GitHub Pages. The suite requires the real Lottie player pinned in `config/ui.json` and tests the global presentation services. Real contact transport, consumer integration and publication remain pending.
+`UI_TEST_BROWSER` can specify the browser executable. Record its actual version for reproducibility; the browser binary is not pinned by pip. The full suite checks installed package versions against both manifests. The suite uses the dependency manifest, canonical components and the actual repository fonts. Component tests do not replace integrated visual and functional acceptance on GitHub Pages. The suite requires the real Lottie player pinned in `config/ui.json` and tests the global presentation services. Real contact transport, consumer integration and publication remain pending.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
