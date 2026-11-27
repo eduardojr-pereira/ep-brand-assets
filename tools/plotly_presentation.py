@@ -1,11 +1,11 @@
 """Responsibility: Validate chart presentation bindings, resolve analytical palettes from the canonical catalog and serialize inert chart specifications.
 Boundaries: No chart calculation, runtime distribution or page building.
 """
-import json
 import re
 from pathlib import Path
 from markupsafe import Markup
 from presentation import ROOT, dictionaries, static_message, inert_json
+from validation import read_json
 
 LAYOUT_TEXT = re.compile(r'(?:title\.text|legend\.title\.text|[xy]axis\d*\.(?:title\.text|ticktext|ticksuffix|tickprefix)|(?:coloraxis\d*\.colorbar|scene\d*\.[xyz]axis)\.(?:title\.text|ticktext)|annotations\[\d+\]\.text|updatemenus\[\d+\]\.buttons\[\d+\]\.label|sliders\[\d+\]\.(?:steps\[\d+\]\.label|currentvalue\.prefix|currentvalue\.suffix)|[xy]axis\d*\.rangeselector\.buttons\[\d+\]\.label)')
 TRACE_TEXT = re.compile(r'(?:name|text|hovertext|hovertemplate|texttemplate|(?:marker\.)?colorbar\.title\.text|(?:marker\.)?colorbar\.ticktext|legendgrouptitle\.text)')
@@ -63,7 +63,7 @@ def chart_payload(ident, figure, *, translations=None, colors=(), palette=None, 
             if not TRACE_TEXT.fullmatch(path): raise ValueError(f'Unsupported trace translation: {path}')
             key_check(value,path,figure['data'][index],trace=True)
     root=Path(root)
-    catalog=json.loads((root/'config/colormaps.json').read_text())['palettes']
+    catalog=read_json(root / 'config/colormaps.json')['palettes']
     def categorical(name):
         v=catalog[name]
         if v['kind']!='categorical': raise ValueError('Expected categorical palette')

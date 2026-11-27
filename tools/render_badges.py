@@ -10,13 +10,10 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 from xml.sax.saxutils import escape, quoteattr
 from badge_catalog import ROOT, ACTIVE, load_catalog, active_entry
+from validation import require
 
 NS = 'http://www.w3.org/2000/svg'
 XLINK = 'http://www.w3.org/1999/xlink'
-
-def require(ok, message):
-    if not ok:
-        raise ValueError(message)
 
 def inside(root, name):
     p = (root/name).resolve()

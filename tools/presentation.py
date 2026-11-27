@@ -7,10 +7,10 @@ from pathlib import Path
 from html.parser import HTMLParser
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup, escape
+from validation import LOCALES, read_json
 
 ROOT = Path(__file__).resolve().parents[1]
-DEPENDENCIES = json.loads((ROOT / 'config/ui.json').read_text())
-LOCALES = ('en', 'pt-BR')
+DEPENDENCIES = read_json(ROOT / 'config/ui.json')
 
 
 MESSAGE_ARGS = re.compile(r'(?<!%)\{(\w+)\}')
@@ -28,7 +28,7 @@ def inert_json(data):
     return json.dumps(data,ensure_ascii=False,allow_nan=False,separators=(',',':')).replace('<','\\u003c').replace('>','\\u003e').replace('&','\\u0026')
 
 def dictionaries(local=None):
-    shared = json.loads((ROOT / 'config/translations.json').read_text())
+    shared = read_json(ROOT / 'config/translations.json')
     local = local if local is not None else {locale: {} for locale in LOCALES}
     for source, prefix in [(shared, 'shared.'), (local, 'content.')]:
         if set(source) != set(LOCALES) or set(source['en']) != set(source['pt-BR']):
@@ -96,7 +96,7 @@ def page_config(asset_base, local=None):
 def head_resources(resource_base, local=None, scripts=True):
     """Resolve canonical resources at one base; the builder owns that base."""
     base = resource_base.rstrip('/') + '/'
-    asset_root = json.loads((ROOT / 'config/brand.json').read_text())['asset_root']
+    asset_root = read_json(ROOT / 'config/brand.json')['asset_root']
     tags = [page_config(base + asset_root + '/', local)] if scripts else []
     if scripts:
         tags.extend(Markup('<script src="{}"></script>').format(escape(base + name)) for name in DEPENDENCIES['head_scripts'])

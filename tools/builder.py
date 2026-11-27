@@ -6,7 +6,8 @@ import re
 import shutil
 import tempfile
 from pathlib import Path
-from catalog import fields, localized, load_projects, read_json, require
+from catalog import load_projects
+from validation import fields, localized, read_json, require
 from presentation import ROOT, environment, head_resources, validate_bindings
 from routing import page_path, relative_href, resource_base, validate_links, validate_page_routes
 from resources import resource_paths, copy_resources, shell_images

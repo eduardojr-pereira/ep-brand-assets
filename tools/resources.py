@@ -4,9 +4,10 @@ Boundaries: No route policy, UI state, template rendering, repository checkout, 
 from pathlib import Path
 import posixpath
 import re
-from catalog import local_file, read_json
+from validation import local_file, read_json
 from routing import path_name
-from presentation import ROOT
+
+ROOT = Path(__file__).resolve().parents[1]
 
 _SHELL_IMAGES = {"logo_src": "logos/logo_initials.png", "favicon_src": "logos/favicon.png"}
 

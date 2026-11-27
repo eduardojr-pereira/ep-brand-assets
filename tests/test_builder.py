@@ -10,7 +10,7 @@ from tempfile import TemporaryDirectory
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
 from builder import build, render
 from presentation import ROOT
-from catalog import read_json
+from validation import read_json
 
 
 def bilingual(en, pt=None):

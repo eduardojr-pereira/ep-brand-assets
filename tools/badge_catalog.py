@@ -1,15 +1,15 @@
 """Responsibility: Manage canonical badge metadata, active IDs and technology ordering.
 Boundaries: No SVG generation, page building, language/theme preference or publication.
 """
-import json
 import re
 from pathlib import Path
+from validation import read_json
 
 ROOT = Path(__file__).resolve().parents[1]
 ACTIVE = frozenset({'technologies', 'licenses', 'status'})
 
 def load_catalog(root=ROOT):
-    data = json.loads((Path(root)/'config/badges.json').read_text(encoding='utf-8'))
+    data = read_json(Path(root) / 'config/badges.json')
     ids, paths = set(), set()
     for e in data['entries']:
         ident, category = e['id'], e['category']

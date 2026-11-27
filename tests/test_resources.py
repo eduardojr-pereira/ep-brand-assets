@@ -61,7 +61,7 @@ class ResourceTests(unittest.TestCase):
                     self.assertFalse((out / 'shared/LICENSE-BRAND.md').exists())
 
     def test_shell_images_are_canonical_resources(self):
-        from catalog import read_json
+        from validation import read_json
         asset = read_json(ROOT / 'config/brand.json')['asset_root']
         images = shell_images(asset)
         self.assertEqual(set(images), {'logo_src', 'favicon_src'})

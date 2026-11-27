@@ -78,6 +78,7 @@ Os componentes são mantidos no EP Brand e reutilizados quando pertinentes. O [b
 | Ordem de dependências | [`config/ui.json`](./config/ui.json) |
 | Traduções compartilhadas | [`config/translations.json`](./config/translations.json) |
 | Preparação da apresentação | [`tools/presentation.py`](./tools/presentation.py) |
+| Validação compartilhada de build | [`tools/validation.py`](./docs/validation.md) |
 | Adaptador Plotly | [Integração e validação](./docs/plotly.md) |
 | Expansão e busca | [Contrato compartilhado](./docs/disclosure.md) |
 | Testes de regressão | [`tests/`](./tests/) |
@@ -203,6 +204,7 @@ ep-brand-assets/
 ├── tools/
 │   ├── builder.py
 │   ├── catalog.py
+│   ├── validation.py
 │   ├── routing.py
 │   ├── resources.py
 │   ├── presentation.py

@@ -4,6 +4,8 @@
 
 `tools/builder.py` is the single orchestrator: it consumes the validated registry from [catalog.py](../tools/catalog.py), an explicit page plan, and the canonical [presentation services](presentation.md). `tools/routing.py` resolves relative routes and validates generated document IDs and local destinations. `tools/resources.py` owns the runtime allowlist, CSS asset dependencies and the single copy of canonical resources. Templates under `templates/` extend `base.html`; `landing.html` and `report.html` consume existing shell macros. The base template supports plain documents and a minimal bilingual section composition. This is technical infrastructure, not the approved final Landing Page or project reports.
 
+The builder and resource service consume [validation.py](validation.md) directly for shared validation; the resource service does not depend on the project catalog or presentation engine. Domain schema and URL policies remain with their owners.
+
 ## Input and output
 
 The `--source` directory contains the [catalog contract](catalog.md). `--plan` is an explicitly supplied UTF-8 JSON file. It is not inferred from the source tree. Schema v1:

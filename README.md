@@ -78,6 +78,7 @@ Components are maintained in EP Brand and reused where relevant. The canonical [
 | Dependency order | [`config/ui.json`](./config/ui.json) |
 | Shared translations | [`config/translations.json`](./config/translations.json) |
 | Presentation preparation | [`tools/presentation.py`](./tools/presentation.py) |
+| Shared build-time validation | [`tools/validation.py`](./docs/validation.md) |
 | Plotly adapter | [Integration and validation](./docs/plotly.md) |
 | Disclosure and search | [Shared control contract](./docs/disclosure.md) |
 | Regression tests | [`tests/`](./tests/) |
@@ -203,6 +204,7 @@ ep-brand-assets/
 ├── tools/
 │   ├── builder.py
 │   ├── catalog.py
+│   ├── validation.py
 │   ├── routing.py
 │   ├── resources.py
 │   ├── presentation.py
