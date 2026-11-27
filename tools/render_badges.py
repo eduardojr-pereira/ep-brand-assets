@@ -121,7 +121,7 @@ def verify(root=ROOT, ids=None):
         paths={str(p.relative_to(root)) for p in (root/'assets/badges').rglob('*.svg')}
         expected={e['path'] for e in entries}
         if paths!=expected: errors.append(f'Catalog/path mismatch: {sorted(paths^expected)}')
-        for category in ('status','topics','methods'):
+        for category in ('status',):
             group={e['id'] for e in entries if e['category']==category}
             for ident in group:
                 if ident.endswith('_en'): other=ident[:-3]+'_pt_br'
@@ -134,7 +134,7 @@ def verify(root=ROOT, ids=None):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--id',action='append',dest='ids',help='Canonical graphical badge ID (repeatable)')
-    p.add_argument('--all',action='store_true',help='All active graphical badges; for checks without IDs all entries are verified')
+    p.add_argument('--all',action='store_true',help='All graphical badges; for checks without IDs all entries are verified')
     p.add_argument('--write',action='store_true',help='Explicitly generate selected active SVGs')
     p.add_argument('--check',action='store_true',help='Read-only validation (default)')
     a=p.parse_args()

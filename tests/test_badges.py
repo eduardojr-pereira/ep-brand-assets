@@ -15,15 +15,15 @@ LOCAL={'en':{'content.method':'Time-series CV'},'pt-BR':{'content.method':'Valid
 def catalog_checks():
     entries=CAT['entries']; counts=Counter(e['category'] for e in entries)
     assert counts['technologies']>=48 and counts['licenses']>=3 and counts['status']>=6,counts
-    assert {e['category'] for e in entries if e.get('legacy_only')} <= {'topics','methods'}
+    assert set(counts)=={'technologies','licenses','status'}
+    assert all('legacy_only' not in e for e in entries)
     assert technology_ids(['surprise','python','pyspark','apache_spark','python'])==['python','pyspark','apache_spark','surprise']
-    for e in entries:
-        if e.get('legacy_only'):
-            try: active_entry(e['id'])
-            except ValueError: pass
-            else: raise AssertionError(e['id'])
+    for ident in ('time_series_cv_en','data_analytics_en'):
+        try: active_entry(ident)
+        except ValueError: pass
+        else: raise AssertionError(ident)
     assert contrast('#ffffff','#000000')==21
-    print(f'PASS: catalog IDs, compatibility-only entries, distinct Spark identities and stable technology order ({dict(counts)})',flush=True)
+    print(f'PASS: catalog IDs, retired graphical categories rejected, distinct Spark identities and stable technology order ({dict(counts)})',flush=True)
     print(f'PASS: {verify()} real SVGs, canonical geometry, embedded PNGs, source hashes, contrast and localized pairs',flush=True)
 
 FIXTURE='''{% import 'components/web/badges.html' as b %}

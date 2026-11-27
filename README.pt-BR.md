@@ -54,7 +54,7 @@ A biblioteca de animações inclui os seguintes ativos Lottie para o novo layout
 
 ### Biblioteca de Badges
 
-A biblioteca centralizada preserva 81 SVGs: 57 ativos (48 tecnologias, 3 licenças, 6 status) e 24 ativos de compatibilidade de Topics/Methods, mantidos até a migração dos consumidores. Novos relatórios usam links textuais de Topics e tags informativas de Methods. O gerador canônico é `tools/render_badges.py`. Consulte a [documentação da biblioteca](./docs/badges.md).
+A biblioteca centralizada contém 57 badges SVG: 48 de tecnologias, 3 de licenças e 6 de status. Novos relatórios usam links textuais de Topics e tags informativas de Methods. O gerador canônico é `tools/render_badges.py`. Consulte a [documentação da biblioteca](./docs/badges.md).
 
 > [!NOTE]
 > A biblioteca de recursos está versionada; a integração na nova arquitetura ainda está em andamento. A validação integrada dos consumidores e a publicação coordenada permanecem pendentes.

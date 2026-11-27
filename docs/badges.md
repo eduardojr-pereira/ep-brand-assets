@@ -4,7 +4,7 @@
 
 This library supports educational documentation, technology identification and noncommercial portfolio projects.
 
-81 preserved SVGs: 57 active (48 technologies, 3 licenses, 6 localized statuses) and 24 compatibility-only assets (22 localized topics, 2 localized methods). Compatibility-only entries are not used in new report composition and are retained until all existing consumers have migrated and their references are verified. The 44 prepared PNG icons live in `assets/icons/technologies/`; original source files are preserved in its `originals/` subdirectory for provenance and future regeneration. They are not additional badge libraries.
+57 SVGs: 48 technologies, 3 licenses and 6 localized statuses. Topics use text links and Methods use informational HTML/CSS tags; neither category requires SVG assets. The 44 prepared PNG icons live in `assets/icons/technologies/`; original source files are preserved in its `originals/` subdirectory for provenance and future regeneration. They are not additional badge libraries.
 
 ## Visual specification
 
@@ -111,34 +111,10 @@ Source attribution does not constitute a grant of additional rights.
 
 ## Website integration
 
-The current library preserves 81 SVGs (57 active and 24 compatibility-only). The following inventory records the preserved paths, not a requirement to render every category.
+The current library contains 57 SVGs. The following inventory records the canonical graphical paths.
 
 | Category | Badge | Path |
 |---|---|---|
-| methods | Time-series CV | `assets/badges/methods/time_series_cv_en.svg` |
-| methods | Validação cruzada temporal | `assets/badges/methods/time_series_cv_pt_br.svg` |
-| topics | Supplementary Resources | `assets/badges/topics/supplementary_resources_en.svg` |
-| topics | Recursos Complementares | `assets/badges/topics/supplementary_resources_pt_br.svg` |
-| topics | Python Programming | `assets/badges/topics/python_programming_en.svg` |
-| topics | Programação em Python | `assets/badges/topics/python_programming_pt_br.svg` |
-| topics | Data Analysis & Visualization | `assets/badges/topics/data_analytics_en.svg` |
-| topics | Análise e Visualização de Dados | `assets/badges/topics/data_analytics_pt_br.svg` |
-| topics | Statistics | `assets/badges/topics/statistics_en.svg` |
-| topics | Estatística | `assets/badges/topics/statistics_pt_br.svg` |
-| topics | Relational & NoSQL Databases | `assets/badges/topics/relational_nosql_databases_en.svg` |
-| topics | Bancos de Dados Relacionais e NoSQL | `assets/badges/topics/relational_nosql_databases_pt_br.svg` |
-| topics | Machine Learning | `assets/badges/topics/machine_learning_en.svg` |
-| topics | Aprendizado de Máquina | `assets/badges/topics/machine_learning_pt_br.svg` |
-| topics | Natural Language Processing | `assets/badges/topics/natural_language_processing_en.svg` |
-| topics | Processamento de Linguagem Natural | `assets/badges/topics/natural_language_processing_pt_br.svg` |
-| topics | Deep Learning | `assets/badges/topics/deep_learning_en.svg` |
-| topics | Aprendizado Profundo | `assets/badges/topics/deep_learning_pt_br.svg` |
-| topics | Image Analysis & Classification | `assets/badges/topics/image_analysis_classification_en.svg` |
-| topics | Análise e Classificação de Imagens | `assets/badges/topics/image_analysis_classification_pt_br.svg` |
-| topics | Recommender Systems | `assets/badges/topics/recommender_systems_en.svg` |
-| topics | Sistemas de Recomendação | `assets/badges/topics/recommender_systems_pt_br.svg` |
-| topics | Big Data & Distributed Processing | `assets/badges/topics/big_data_distributed_processing_en.svg` |
-| topics | Big Data e Processamento Distribuído | `assets/badges/topics/big_data_distributed_processing_pt_br.svg` |
 
 The shared `badges(items)` and `method_badges(items)` macros in `components/web/badges.html` consume canonical paths and localized labels. The shared asset service applies explicit image variants. The future builder resolves catalog paths and standalone embedding where required.
 
@@ -155,11 +131,11 @@ Revisão visual local: imagens diretas (incluindo PyTorch), ícones PyPI genéri
 | Technologies | Yes | Graphical badges; report Hero | 48 |
 | Licenses | Yes | Graphical links; code/content in Hero, data in Data Source | 3 |
 | Status | Yes | Graphical badges only for evidenced status | 6 |
-| Topics | No | Text links to Knowledge Base, without arrows | 22 compatibility-only |
-| Methods | No | Informational text tags via canonical HTML/CSS | 2 compatibility-only |
-| Total | | 57 active | 81 |
+| Topics | No | Text links to Knowledge Base, without arrows | 0 |
+| Methods | No | Informational text tags via canonical HTML/CSS | 0 |
+| Total | | | 57 |
 
-The retained Topics/Methods SVGs and catalog metadata are marked `legacy_only`; `active_entry()` refuses them for new graphical badge selection. They are not candidates for new generation. Retain the existing assets until consumer migration and reference validation permit removal. No SVG is deleted or rewritten by 7C. The eleven KB areas (00–10) remain the source of Topic links; the stable `data_analytics` ID/path remains intact in the compatibility inventory. Old embedded graphics and historical releases cannot be proven absent using textual reference searches alone. Review actual published consumers in the migration/publication phase before authorizing removal.
+The eleven Knowledge Base areas (00–10) remain the source of Topic links. The retired 22 Topic and 2 Method SVGs were removed from the checkpoint catalog and asset tree after the local textual reference audit and explicit approval. Historical Git revisions are preserved; actual published consumers still require verification before release.
 
 ### Approved graphical style
 
@@ -183,7 +159,7 @@ python tools/render_badges.py --write --all
 python tests/test_badges.py
 ```
 
-The default and `--check` are read-only. Without IDs, checks cover every preserved SVG including compatibility assets. `--write` requires `--id` or `--all`, prevalidates the selected active entries, then writes only those generated SVG paths. It never writes original/prepared artwork or changes the manifest; it does not generate legacy-only categories. `--all` explicitly selects the active catalog. No automatic regeneration during a website build. Rendering uses prepared PNG bytes and preserves the approved SVG structure; a mismatch is reported instead of silently overwriting existing artwork. Verification checks metadata, source hashes, embedded PNGs, geometry, contrast, locale pairs and catalog/path parity; visual fit, trademark rights and publication are separate checks. Use the exact generated path, do not maintain copied source assets in consumers.
+The default and `--check` are read-only. Without IDs, checks cover every graphical badge in the catalog. `--write` requires `--id` or `--all`, prevalidates the selected active entries, then writes only those generated SVG paths. It never writes original/prepared artwork or changes the manifest; Topics and Methods are not graphical categories. `--all` explicitly selects the active catalog. No automatic regeneration during a website build. Rendering uses prepared PNG bytes and preserves the approved SVG structure; a mismatch is reported instead of silently overwriting existing artwork. Verification checks metadata, source hashes, embedded PNGs, geometry, contrast, locale pairs and catalog/path parity; visual fit, trademark rights and publication are separate checks. Use the exact generated path, do not maintain copied source assets in consumers.
 
 ### Adding or changing an active badge
 
@@ -191,4 +167,4 @@ The default and `--check` are read-only. Without IDs, checks cover every preserv
 2. Enter the approved format, dimensions and colors in `config/badges.json` (same schema as comparable active entry). For text-only technology, explicit approval, `mode: text`, `icon: null`, `approved_text_only: true`; for direct image, `mode: image_direct`. Preserve source files and stable IDs. Do not invent aliases or change an existing ID. Verify font fit and image geometry.
 3. Generate that ID with `--write --id`, verify the catalog with `--check` and run `tests/test_badges.py`; review the diff, theme and locale behavior and affected consumer paths. Update provenance/rights documentation when adding or changing artwork. Only regenerate all by deliberate choice. Publish only authorized changes and verify public asset references. No new Topic/Method SVG is needed.
 
-Report usage: the Hero presents linked original code/content licenses and Technologies. Data Source presents the actual linked dataset license when known. Technical References presents text Topic links and Methods tags (no tabs, automatic rotation, technology duplication or repeated Reproducibility section); implementation is 7E. Full reproducibility instructions remain in the linked project documentation. Historical SVGs remain intact until migration and removal are separately validated.
+Report usage: the Hero presents linked original code/content licenses and Technologies. Data Source presents the actual linked dataset license when known. Technical References presents text Topic links and Methods tags (no tabs, automatic rotation, technology duplication or repeated Reproducibility section); implementation is 7E. Full reproducibility instructions remain in the linked project documentation. Verify published consumers during integrated release validation.

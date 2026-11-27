@@ -7,7 +7,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ACTIVE = frozenset({'technologies', 'licenses', 'status'})
-COMPATIBILITY = frozenset({'topics', 'methods'})
 
 def load_catalog(root=ROOT):
     data = json.loads((Path(root)/'config/badges.json').read_text(encoding='utf-8'))
@@ -16,10 +15,10 @@ def load_catalog(root=ROOT):
         ident, category = e['id'], e['category']
         if not re.fullmatch(r'[a-z0-9_]+', ident) or ident in ids:
             raise ValueError(f'Invalid or duplicate badge ID: {ident}')
-        if category not in ACTIVE | COMPATIBILITY or e['path'] != f'assets/badges/{category}/{ident}.svg' or e['path'] in paths:
+        if category not in ACTIVE or e['path'] != f'assets/badges/{category}/{ident}.svg' or e['path'] in paths:
             raise ValueError(f'Invalid or duplicate badge path: {ident}')
-        if bool(e.get('legacy_only')) != (category in COMPATIBILITY):
-            raise ValueError(f'Incorrect compatibility state: {ident}')
+        if 'legacy_only' in e:
+            raise ValueError(f'Obsolete compatibility metadata: {ident}')
         ids.add(ident); paths.add(e['path'])
     return data
 

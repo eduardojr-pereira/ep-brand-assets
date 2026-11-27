@@ -54,7 +54,7 @@ The animation library includes the following Lottie assets for the new editorial
 
 ### Badge Library
 
-The centralized library preserves 81 SVGs: 57 active (48 technologies, 3 licenses, 6 statuses) and 24 compatibility-only Topics/Methods assets awaiting consumer migration. New reports use Topic text links and informational Method tags. The canonical generator is `tools/render_badges.py`. See the [badge library documentation](./docs/badges.md).
+The centralized library contains 57 SVGs: 48 technologies, 3 licenses and 6 statuses. New reports use Topic text links and informational Method tags. The canonical generator is `tools/render_badges.py`. See the [badge library documentation](./docs/badges.md).
 
 > [!NOTE]
 > The asset library is versioned; integration into the new architecture is still in progress. Integrated consumer validation and coordinated publication remain pending.
