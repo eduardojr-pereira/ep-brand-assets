@@ -49,6 +49,19 @@ def resource_base(page):
     return relative_href(page, 'shared') + '/'
 
 
+# Deliberately unsupported URL mechanisms require a future explicit contract.
+_UNSUPPORTED_URL_ATTRIBUTES = frozenset({
+    'action', 'formaction', 'srcset', 'imagesrcset', 'ping', 'srcdoc',
+    'background', 'manifest', 'longdesc', 'usemap', 'profile', 'archive',
+    'codebase', 'classid', 'lowsrc', 'dynsrc', 'attributionsrc',
+})
+_URL_ATTRIBUTES = frozenset({
+    'href', 'src', 'poster', 'cite', 'xlink:href', 'data-light-src',
+    'data-dark-src', 'data-en-src', 'data-pt-br-src',
+})
+_UNSUPPORTED_TAGS = frozenset({'base', 'iframe', 'frame', 'object', 'embed', 'applet'})
+
+
 class Document(HTMLParser):
     def __init__(self, html):
         super().__init__(convert_charrefs=True)
@@ -58,13 +71,21 @@ class Document(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         values = dict(attrs)
-        ident = values.get('id')
-        if ident is not None:
+        if len(values) != len(attrs):
+            raise ValueError(f'Duplicate HTML attribute: {tag}')
+        if tag in _UNSUPPORTED_TAGS:
+            raise ValueError(f'Unsupported HTML destination mechanism: {tag}')
+        if tag == 'meta' and (values.get('http-equiv') or '').strip().lower() == 'refresh':
+            raise ValueError('Unsupported meta refresh')
+        if 'id' in values:
+            ident = values['id']
             if not ident or ident in self.ids:
                 raise ValueError(f'Empty or duplicate HTML id: {ident}')
             self.ids.add(ident)
         for key, val in attrs:
-            if key in {'href', 'src', 'data-light-src', 'data-dark-src', 'data-en-src', 'data-pt-br-src'}:
+            if key in _UNSUPPORTED_URL_ATTRIBUTES:
+                raise ValueError(f'Unsupported URL attribute: {key}')
+            if key in _URL_ATTRIBUTES:
                 self.links.append((tag, key, val))
 
     handle_startendtag = handle_starttag
@@ -75,8 +96,10 @@ def validate_links(pages, files):
     files = set(files) | set(pages)
     for page, doc in documents.items():
         for tag, key, href in doc.links:
-            if not href or href != href.strip() or any(ord(c) < 32 for c in href) or '\\' in href:
+            if not href or href != href.strip() or any(ord(c) < 32 or ord(c) == 127 for c in href) or '\\' in href:
                 raise ValueError(f'Invalid URL in {page}: {href!r}')
+            if key == 'xlink:href' and not href.startswith('#'):
+                raise ValueError(f'Only same-document SVG xlink references are supported: {href}')
             url = urlsplit(href)
             if url.scheme:
                 if key == 'href' and tag == 'a' and ((url.scheme == 'https' and url.hostname and not url.username and not url.password) or (url.scheme == 'mailto' and url.path and not url.netloc)):

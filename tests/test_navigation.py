@@ -4,7 +4,7 @@ Boundaries: No production navigation implementation or visual preview.
 
 from playwright.sync_api import sync_playwright
 
-from support import ROOT, ENV, load_page, launch_browser, new_page, close_browser
+from support import ENV, load_page, launch_browser, new_page, close_browser
 FIXTURE = '''{% import 'components/web/navigation.html' as n %}
 <nav data-ui-scroll-nav style="position:sticky;top:0;z-index:3;display:flex;gap:20px;background:var(--ui-color-bg)">{{ n.nav_link('Home','#home',true) }}{{ n.nav_link('Projects','#projects') }}{{ n.nav_link('Contact','#contact') }}</nav>
 <div id="diagonal">{{ n.diagonal('View Project','#projects') }}</div>

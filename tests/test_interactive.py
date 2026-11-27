@@ -3,7 +3,7 @@ Boundaries: No production implementation or visual preview.
 """
 from playwright.sync_api import sync_playwright
 
-from support import ROOT, ENV, load_page, launch_browser, new_page, close_browser
+from support import ENV, load_page, launch_browser, new_page, close_browser
 PIXEL = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"%3E%3Crect width="200" height="100" fill="gray"/%3E%3C/svg%3E'
 PROJECTS = [dict(title='Bike Sharing', description='Demanda histórica', collection='selected', collection_label='Selected', areas=['analytics','ml'], topics=['Analytics','Machine Learning'], badges=[dict(src=PIXEL,label='Pandas')], search='regression', links=[dict(label=ENV.globals['message']('shared.project.notebook'),href='#notebook',primary=False),dict(label=ENV.globals['message']('shared.project.view'),href='#bike',primary=True)], subtitle='Demand insights', href='#bike',frames=[dict(src=PIXEL,alt='Figure one',caption='Figure one'),dict(src=PIXEL,alt='Figure two',caption='Figure two')],metrics=[dict(value='100',label='Example metric'),dict(value='200',label='Another metric')]),dict(title='Hangman', description='Jogo da Forca', collection='learning', collection_label='Learning', areas=['python'], topics=['Python'], badges=[], search='game', links=[dict(label=ENV.globals['message']('shared.project.view'),href='#hangman',primary=True)],href='#hangman',frames=[],metrics=[])]
 FIXTURE = '''{% import 'components/web/interactive.html' as i %}<section id="catalog">{{ i.catalog('catalog', projects, areas) }}</section><section id="selected">{{ i.selected_projects(projects) }}</section><section id="marquee">{{ i.marquee('example@example.org','#contact') }}</section><section id="contact">Contact</section>'''

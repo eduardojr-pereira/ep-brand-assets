@@ -3,7 +3,7 @@ Boundaries: No production preference or asset service implementation.
 """
 from copy import deepcopy
 from playwright.sync_api import sync_playwright
-from support import ROOT, ENV, load_page, launch_browser, dictionaries, environment, head_resources, DEPENDENCIES, new_page, close_browser, validate_bindings
+from support import load_page, launch_browser, dictionaries, environment, head_resources, new_page, close_browser, validate_bindings
 from test_interactive import PROJECTS, FIXTURE as INTERACTIVE
 
 LOCAL = {
@@ -170,6 +170,7 @@ def asset_recovery(page):
     page.evaluate(mount)
     page.wait_for_function("document.querySelector('#host').hasAttribute('data-ui-lottie-ready')")
     assert counts['runtime']==2
+    assert page.evaluate("UI.assets.get(document.querySelector('#host')).renderer.renderConfig.runExpressions === false")
     mount="UI.assets.mount(document.querySelector('#host'),{id:'home',variant:'theme'})"
     with page.expect_console_message(predicate=lambda message: 'UI animation unavailable: home' in message.text):
         page.evaluate(mount)
@@ -177,6 +178,7 @@ def asset_recovery(page):
     page.evaluate(mount)
     page.wait_for_function("document.querySelector('#host').hasAttribute('data-ui-lottie-ready')")
     assert counts=={'runtime':2,'source':2}
+    assert page.evaluate("UI.assets.get(document.querySelector('#host')).renderer.renderConfig.runExpressions === false")
     page.evaluate("UI.assets.unmount(document.querySelector('#host'))")
     assert page.locator('#host svg').count()==0
     print('PASS: retry after real runtime/source failures, static fallback and disposal',flush=True)

@@ -46,6 +46,32 @@ class RoutingTests(unittest.TestCase):
     def test_external_links_are_not_fetched(self):
         validate_links({'index.html': '<a href="https://example.com">x</a><a href="mailto:test@example.com">y</a>'}, set())
 
+    def test_local_poster_cite_and_svg_fragment(self):
+        html = '<video poster="media/poster.png"></video><q cite="source.html">x</q><svg><path id="ring"/><use xlink:href="#ring"/></svg>'
+        validate_links({'index.html': html, 'source.html': '<p>Source</p>'}, {'media/poster.png'})
+
+    def test_invalid_additional_destinations(self):
+        for html in ('<video poster="missing.png">', '<q cite="https://example.com">',
+                     '<svg><use xlink:href="#missing"/></svg>', '<svg><use xlink:href="other.svg#ring"/></svg>',
+                     '<img src="bad\x7f.png">'):
+            with self.subTest(html=html), self.assertRaises(ValueError):
+                validate_links({'index.html': html}, set())
+
+    def test_unsupported_destination_mechanisms(self):
+        for html in ('<base href="https://example.com/">', '<iframe src="index.html">',
+                     '<object data="index.html">', '<embed src="index.html">',
+                     '<meta http-equiv=" ReFrEsH " content="0;url=https://example.com">',
+                     '<img srcset="a.png 1x, b.png 2x">', '<link imagesrcset="a.png 1x">',
+                     '<a href="#a" ping="https://example.com">x</a>', '<form action="index.html">',
+                     '<button formaction="index.html">', '<div srcdoc="x">'):
+            with self.subTest(html=html), self.assertRaises(ValueError):
+                validate_links({'index.html': html}, set())
+
+    def test_duplicate_attributes_and_empty_id(self):
+        for html in ('<a href="index.html" HREF="missing.html">x</a>', '<div id>', '<div id="">'):
+            with self.subTest(html=html), self.assertRaises(ValueError):
+                validate_links({'index.html': html}, set())
+
     def test_duplicate_id(self):
         with self.assertRaises(ValueError):
             validate_links({'index.html': '<b id="a"></b><i id="a"></i>'}, set())

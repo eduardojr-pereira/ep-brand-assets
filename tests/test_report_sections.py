@@ -32,6 +32,18 @@ def preview_checks():
             except ValueError: pass
             else: raise AssertionError(name)
         assert prepare_artifact(root,'summary.json',allowed)['href']=='summary.json'
+        # Even explicitly authorized existing files need portable published names.
+        for name in ('with space.csv','caf\u00e9.csv','literal%20.csv','hash#.csv','double..csv'):
+            (root/name).write_text('name,value\nx,1',encoding='utf-8')
+            try: prepare_artifact(root,name,{name})
+            except ValueError: pass
+            else: raise AssertionError(name)
+        (root/'nested').mkdir()
+        (root/'nested/data-01.csv').write_text('name,value\nx,1',encoding='utf-8')
+        assert prepare_artifact(root,'nested/data-01.csv',{'nested/data-01.csv'})['href']=='nested/data-01.csv'
+        from routing import relative_href, validate_links
+        href=relative_href('report/index.html','nested/data-01.csv')
+        validate_links({'report/index.html':f'<a href="{href}" download>File</a>'},{'nested/data-01.csv'})
     print('PASS: explicit allowlist, safe paths, inert formats and bounded previews',flush=True)
 
 

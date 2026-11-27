@@ -3,7 +3,7 @@ Boundaries: No production behavior or visual preview.
 """
 from playwright.sync_api import sync_playwright
 
-from support import ROOT, ENV, load_page, launch_browser, new_page, close_browser
+from support import ENV, load_page, launch_browser, new_page, close_browser
 FIXTURE = '''{% import 'components/web/buttons.html' as b %}
 <div class="row" id="learn">{{ b.radial_link(message('shared.action.learn'),'#contact') }}</div>
 <div class="row" id="arrows">{{ b.carousel_arrow('Previous project','previous',true) }}{{ b.carousel_arrow('Next project') }}</div>

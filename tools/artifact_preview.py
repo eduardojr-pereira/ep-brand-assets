@@ -4,7 +4,8 @@ Boundaries: No discovery, file copying, external fetching, HTML execution or pag
 import csv
 import io
 from pathlib import Path
-from urllib.parse import quote
+from routing import path_name
+from validation import local_file
 
 MAX_BYTES=64*1024
 MAX_ROWS=20
@@ -20,16 +21,12 @@ def prepare_artifact(root, relative, allowed, label=None):
     Text/CSV are inert source data, not markup. No automatic discovery or preview of arbitrary files.
     """
     root=Path(root).resolve()
-    if not isinstance(relative,str) or relative not in allowed or '\\' in relative or any(ord(c)<32 for c in relative):
+    if not isinstance(relative,str) or relative not in allowed:
         raise ValueError('Artifact not authorized')
-    parts=relative.split('/')
-    if any(p in {'','.','..'} for p in parts):
-        raise ValueError('Invalid relative artifact path')
-    path=root.joinpath(*parts)
-    if not path.resolve().is_relative_to(root) or any(p.is_symlink() for p in [path,*path.parents] if p!=root and p.is_relative_to(root)) or not path.is_file():
-        raise ValueError('Artifact must be a regular file within the publication root')
+    # Published names follow the same portable contract as generated routes.
+    path=local_file(root,path_name(relative))
     suffix=path.suffix.lower()
-    item={'name':path.name,'format':suffix[1:].upper() or '—','href':quote(relative,safe='/'),'label':label,'kind':'fallback','truncated':False}
+    item={'name':path.name,'format':suffix[1:].upper() or '—','href':relative,'label':label,'kind':'fallback','truncated':False}
     if suffix in IMAGES:
         item['kind']='image' # SVG is rendered only in an img element, never inline/object/iframe.
     elif suffix in {'.txt','.json','.csv'}:

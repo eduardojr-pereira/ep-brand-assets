@@ -62,7 +62,7 @@
                 if (!/^#[0-9a-f]{6}$/i.test(raw)) throw new Error('Invalid animation color token');
                 recolor(data, [1,3,5].map(i => parseInt(raw.slice(i,i+2),16)/255).concat(1));
             }
-            const animation = api.loadAnimation({container: host, renderer:'svg', loop:false, autoplay:false, animationData:data});
+            const animation = api.loadAnimation({container: host, renderer:'svg', loop:false, autoplay:false, rendererSettings:{runExpressions:false}, animationData:data});
             entry.player = animation;
             const loaded = () => {
                 if (entry.player !== animation || generation !== entry.generation || !host.isConnected) return;
