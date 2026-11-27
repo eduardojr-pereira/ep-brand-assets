@@ -97,7 +97,12 @@
                     } else closeDisclosure(group, true);
                 }
             } else if (target.matches('a') && target.closest(dropdown)) {
-                closeDisclosure(target.closest(dropdown));
+                let menu = target.closest(dropdown);
+                while (menu) {
+                    const parent = menu.parentElement?.closest(dropdown);
+                    closeDisclosure(menu, !parent);
+                    menu = parent;
+                }
             }
         });
         document.addEventListener('keydown', event => {

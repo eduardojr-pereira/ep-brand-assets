@@ -90,7 +90,7 @@ Os componentes são mantidos no EP Brand e reutilizados quando pertinentes. O bu
 
 A paleta e a tipografia estão centralizadas em [Foundations](./styles/foundations.css). Os temas claro e escuro são definidos por tokens CSS. A biblioteca de movimento, incluindo tokens e animações genéricas, está em [Motion](./styles/motion.css). A ordem de carregamento é definida em [config/ui.json](./config/ui.json).
 
-O [controlador de tema](./scripts/theme.js) resolve e preserva uma preferência única. O [i18n](./scripts/i18n.js) traduz texto, atributos acessíveis, SVG e mensagens dinâmicas por meio de [chaves compartilhadas](./config/translations.json) e traduções locais validadas. O [carregador de ativos](./scripts/assets.js) resolve caminhos, variantes e animações a partir da mesma versão da biblioteca. Os estados dos componentes não são reinicializados pela tradução. Consulte o [contrato técnico](./docs/presentation.md). Header, Footer, builder e adaptadores Plotly ainda não integram a nova arquitetura.
+O [controlador de tema](./scripts/theme.js) resolve e preserva uma preferência única. O [i18n](./scripts/i18n.js) traduz texto, atributos acessíveis, SVG e mensagens dinâmicas por meio de [chaves compartilhadas](./config/translations.json) e traduções locais validadas. O [carregador de ativos](./scripts/assets.js) resolve caminhos, variantes e animações a partir da mesma versão da biblioteca. Os estados dos componentes não são reinicializados pela tradução. Consulte o [contrato técnico](./docs/presentation.md). O [Header e Footer canônicos](./docs/shell.md) consomem os mesmos serviços e componentes compartilhados. Builder e adaptadores Plotly permanecem pendentes.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
@@ -141,11 +141,14 @@ ep-brand-assets/
 │       ├── navigation.html
 │       ├── buttons.html
 │       ├── interactive.html
-│       └── localization.html
+│       ├── localization.html
+│       ├── header.html
+│       └── footer.html
 ├── config/
 │   ├── badges.json
 │   ├── brand.json
 │   ├── colormaps.json
+│   ├── navigation.json
 │   ├── translations.json
 │   └── ui.json
 ├── docs/
@@ -156,13 +159,17 @@ ep-brand-assets/
 │   ├── scroll-trigger.js
 │   ├── navigation.js
 │   ├── buttons.js
-│   └── interactive.js
+│   ├── interactive.js
+│   ├── header.js
+│   └── footer.js
 ├── styles/
 │   ├── foundations.css
 │   ├── motion.css
 │   ├── links.css
 │   ├── buttons.css
-│   └── interactive.css
+│   ├── interactive.css
+│   ├── header.css
+│   └── footer.css
 ├── tests/
 │   ├── support.py
 │   └── test_*.py

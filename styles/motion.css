@@ -16,6 +16,7 @@
     --ui-duration-reveal: 650ms;
     --ui-duration-hero-line: 1650ms;
     --ui-duration-hero-fade: 1350ms;
+    --ui-duration-header-entry: 1350ms;
     --ui-delay-hero-first: 50ms;
     --ui-delay-hero-second: 190ms;
     --ui-delay-hero-third: 330ms;
@@ -55,6 +56,7 @@
         --ui-duration-slide-entry: 0ms;
         --ui-duration-hero-line: 0ms;
         --ui-duration-hero-fade: 0ms;
+        --ui-duration-header-entry: 0ms;
         --ui-delay-hero-first: 0ms;
         --ui-delay-hero-second: 0ms;
         --ui-delay-hero-third: 0ms;

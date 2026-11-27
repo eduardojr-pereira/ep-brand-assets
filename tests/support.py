@@ -107,6 +107,21 @@ def validate_contract():
         source = (ROOT / 'components/web' / (name + '.html')).read_text()
         assert not re.search(r'data-(?:singular|plural|play|pause)=',source),name
     assert all((ROOT/'assets'/path).is_file() for spec in DEPENDENCIES['lottie']['animations'].values() for path in ([spec['file']] if 'file' in spec else spec['variants'].values()))
+    # Header and Footer are consumers, not preference or animation loaders.
+    for name in ('header','footer'):
+        source = (ROOT/'scripts'/f'{name}.js').read_text()
+        assert not re.search(r'\b(?:fetch|loadAnimation|document\.documentElement\.lang)\b',source),name
+        css = (ROOT/'styles'/f'{name}.css').read_text()
+        assert '@keyframes' not in css and not re.search(r'--ui-color-[\w-]+\s*:',css),name
+    brand = json.loads((ROOT/'config/brand.json').read_text())
+    nav = json.loads((ROOT/'config/navigation.json').read_text())
+    labels = dictionaries()['en']
+    assert len({item['id'] for item in nav['sections']}) == len(nav['sections'])
+    for item in nav['sections']+nav['github']+nav['repositories']+nav['social']:
+        if 'brand_key' in item: assert item['brand_key'] in brand,item
+        if 'animation' in item: assert item['animation'] in DEPENDENCIES['lottie']['animations'],item
+        if item['label'].startswith('shared.'): assert item['label'] in labels,item
+        if 'description' in item: assert item['description'] in labels,item
     import hashlib
     lottie = DEPENDENCIES['lottie']
     for path, source in [(lottie['runtime'],'build/player/lottie.min.js'),(lottie['license'],'LICENSE.md')]:

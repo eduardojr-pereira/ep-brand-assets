@@ -1,0 +1,25 @@
+{# Responsibility: Shared header structure for the landing page and report navigation.
+   The caller supplies destinations and report sections; preferences and links remain canonical. #}
+{% import 'components/web/localization.html' as t %}
+{% import 'components/web/navigation.html' as n %}
+{% macro header(brand, navigation, sections, home_href, back_href=none) -%}
+<header class="ui-header" data-ui-header id="top">
+<div class="ui-header__entry" data-motion="fade" data-scroll-trigger="load">
+<a class="ui-header__logo" href="{{ home_href }}" aria-label="{{ t.value(message('shared.header.home')) }}"{{ t.binding(message('shared.header.home'),'aria-label') }}>EP.</a>
+<nav class="ui-header__nav" data-ui-scroll-nav aria-label="{{ t.value(message('shared.nav.region')) }}"{{ t.binding(message('shared.nav.region'),'aria-label') }}>
+<div class="ui-header__desktop"><div class="ui-header__links">{% for item in sections %}{{ n.nav_link(message(item.label),item.href,loop.first,menu_arrow=true) }}{% endfor %}
+{% call n.disclosure('GitHub',align_end=true,chevron=true) %}{% for item in navigation.github %}{{ n.menu_link(message(item.label),brand[item.brand_key]) }}{% endfor %}{% endcall %}
+</div></div>
+<div class="ui-header__compact" hidden>{% call n.disclosure(message('shared.nav.sections')) %}{% endcall %}</div>
+{% if back_href %}<div class="ui-header__back">{{ n.return_link(message('shared.nav.back'),back_href) }}</div>{% endif %}
+</nav>
+<div class="ui-header__controls" hidden>
+<button type="button" class="ui-link" data-ui-language-control aria-label="{{ t.value(message('shared.header.language')) }}"{{ t.binding(message('shared.header.language'),'aria-label') }}><span{{ t.binding(message('shared.header.language_code')) }}>{{ t.value(message('shared.header.language_code')) }}</span></button>
+<button type="button" class="ui-link" data-ui-theme-control aria-label="{{ t.value(message('shared.header.theme')) }}"{{ t.binding(message('shared.header.theme'),'aria-label') }}>
+<svg class="ui-header__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2"/></svg><svg class="ui-header__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 15A9 9 0 0 1 9 4a9 9 0 1 0 11 11Z"/></svg>
+</button></div></div>
+</header>
+{%- endmacro %}
+{% macro landing_header(brand,navigation) -%}
+{% set sections = [] %}{% for item in navigation.sections %}{% set _ = sections.append({'label':item.label,'href':'#'+item.id}) %}{% endfor %}{{ header(brand,navigation,sections,'#home') }}
+{%- endmacro %}

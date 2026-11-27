@@ -50,6 +50,7 @@
     --ui-space-12: 3rem;
     --ui-space-16: 4rem;
     --ui-space-24: 6rem;
+    --ui-page-gutter: clamp(20px, 3.6vw, 74px);
 }
 
 /* Theme tokens */

@@ -166,3 +166,7 @@
 .ui-area-check [data-ui-check-player] { visibility: hidden; }
 .ui-area-check [data-ui-check-player][data-ui-lottie-ready] { visibility: visible; }
 [aria-pressed="false"] .ui-area-check [data-ui-check-player] { opacity: .65; filter: grayscale(1); }
+
+/* Optional canonical disclosure chevron; Sections retains its text-only trigger. */
+.ui-dropdown__chevron { transition:transform var(--ui-duration-color) var(--ui-ease-smooth); }
+.ui-dropdown[open] > summary .ui-dropdown__chevron { transform:rotate(180deg); }

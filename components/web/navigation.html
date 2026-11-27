@@ -14,8 +14,8 @@
 {% macro text_link(label, href, muted=true) -%}
 <a class="ui-link ui-underline{% if muted %} ui-link--muted{% endif %}" href="{{ href }}"{{ t.binding(label) }}>{{ t.value(label) }}</a>
 {%- endmacro %}
-{% macro nav_link(label, href, current=false, muted=true) -%}
-<a href="{{ href }}" class="ui-link ui-underline ui-nav-link{% if muted %} ui-link--muted{% endif %}"{% if current %} aria-current="location"{% endif %}>{{ weight(label) }}</a>
+{% macro nav_link(label, href, current=false, muted=true, menu_arrow=false) -%}
+<a href="{{ href }}" class="ui-link ui-underline ui-nav-link{% if muted %} ui-link--muted{% endif %}"{% if current %} aria-current="location"{% endif %}>{% if menu_arrow %}<span class="ui-link__move">{{ weight(label) }}</span>{{ arrow() }}{% else %}{{ weight(label) }}{% endif %}</a>
 {%- endmacro %}
 {% macro filter_button(label, value, selected=false) -%}
 <button type="button" class="ui-link ui-underline ui-nav-link" data-ui-filter-value="{{ value }}" aria-pressed="{{ 'true' if selected else 'false' }}">{{ weight(label) }}</button>
@@ -26,9 +26,9 @@
 {% macro return_link(label, href, vertical=false) -%}
 <a href="{{ href }}" class="ui-link ui-underline ui-link--muted ui-return ui-return--{{ 'vertical ui-underline--always' if vertical else 'horizontal' }}"><span class="ui-return__clip"><span class="ui-return__current" data-ui-label{{ t.binding(label) }}>{{ t.value(label) }}</span><span class="ui-return__next" data-ui-label aria-hidden="true"{{ t.binding(label) }}>{{ t.value(label) }}</span></span></a>
 {%- endmacro %}
-{% macro disclosure(label, filter_name='', align_end=false, default_value='all') -%}
+{% macro disclosure(label, filter_name='', align_end=false, default_value='all', chevron=false) -%}
 <details class="ui-dropdown{% if align_end %} ui-dropdown--end{% endif %}" data-ui-dropdown{% if filter_name %} data-ui-filter="{{ filter_name }}" data-ui-default="{{ default_value }}"{% endif %}>
-<summary class="ui-link ui-underline ui-nav-link">{{ weight(label) }}{% if filter_name %}<svg class="ui-dropdown__icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>{% endif %}</summary>
+<summary class="ui-link ui-underline ui-nav-link">{{ weight(label) }}{% if filter_name %}<svg class="ui-dropdown__icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>{% elif chevron %}<svg class="ui-dropdown__icon ui-dropdown__chevron" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>{% endif %}</summary>
 <div class="ui-dropdown__panel">{{ caller() }}</div>
 </details>
 {%- endmacro %}

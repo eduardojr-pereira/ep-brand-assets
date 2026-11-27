@@ -39,3 +39,5 @@ Images can declare light/dark or EN/PT-BR source pairs; `UI.assets` selects the 
 ## Validation
 
 Run `python3 tests/support.py` with Jinja2, Playwright, a Chromium-compatible browser, canonical fonts and the pinned runtime. Tests use the same manifest/head helper and an intercepted same-origin fixture serving actual local files; no external network is needed after installation. The checkbox test requires the real player, not a mock; tests validate translation parity, first-render guard, language changes, dynamic states, reload persistence, theme preference and fallback. Integrated Landing Page, Header/Footer optical scales, real contact transport, project content/Plotly and Pages publication require subsequent lots.
+
+Header and Footer consume the existing locale, theme and asset services without local dictionaries, preference storage or loaders. `config/navigation.json` supplies semantic destination and animation references; `config/brand.json` supplies institutional URLs. The shared preparation helper remains independent of page composition. See [Header and Footer](shell.md).

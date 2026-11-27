@@ -1,0 +1,91 @@
+{
+  "sections": [
+    {
+      "id": "home",
+      "label": "shared.nav.home",
+      "description": "shared.footer.home_description",
+      "animation": "home"
+    },
+    {
+      "id": "selected-works",
+      "label": "shared.action.selected",
+      "description": "shared.footer.selected_description",
+      "animation": "award"
+    },
+    {
+      "id": "all-projects",
+      "label": "shared.nav.all_projects",
+      "description": "shared.footer.projects_description",
+      "animation": "projects"
+    },
+    {
+      "id": "about",
+      "label": "shared.nav.about",
+      "description": "shared.footer.about_description",
+      "animation": "about"
+    },
+    {
+      "id": "contact",
+      "label": "shared.nav.contact",
+      "description": "shared.footer.contact_description",
+      "animation": "gmail"
+    }
+  ],
+  "github": [
+    {
+      "brand_key": "github",
+      "label": "shared.nav.profile"
+    },
+    {
+      "brand_key": "portfolio",
+      "label": "shared.nav.portfolio"
+    },
+    {
+      "brand_key": "knowledge_base",
+      "label": "shared.nav.knowledge"
+    }
+  ],
+  "repositories": [
+    {
+      "brand_key": "portfolio",
+      "label": "shared.footer.portfolio_repository",
+      "description": "shared.footer.portfolio_description"
+    },
+    {
+      "brand_key": "knowledge_base",
+      "label": "shared.nav.knowledge",
+      "description": "shared.footer.knowledge_description"
+    },
+    {
+      "brand_key": "brand_assets",
+      "label": "shared.footer.brand_repository",
+      "description": "shared.footer.brand_description"
+    }
+  ],
+  "social": [
+    {
+      "brand_key": "linkedin",
+      "label": "LinkedIn",
+      "animation": "linkedin",
+      "fallback": "in"
+    },
+    {
+      "brand_key": "github",
+      "label": "GitHub",
+      "animation": "github",
+      "fallback": "GH"
+    },
+    {
+      "brand_key": "discord",
+      "label": "Discord",
+      "animation": "discord",
+      "fallback": "DC"
+    },
+    {
+      "brand_key": "email",
+      "label": "Email",
+      "animation": "gmail",
+      "fallback": "@"
+    }
+  ]
+}

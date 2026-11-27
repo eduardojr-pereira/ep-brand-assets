@@ -4,7 +4,9 @@
     "styles/motion.css",
     "styles/links.css",
     "styles/buttons.css",
-    "styles/interactive.css"
+    "styles/interactive.css",
+    "styles/header.css",
+    "styles/footer.css"
   ],
   "head_scripts": [
     "scripts/theme.js",
@@ -15,7 +17,9 @@
     "scripts/assets.js",
     "scripts/navigation.js",
     "scripts/buttons.js",
-    "scripts/interactive.js"
+    "scripts/interactive.js",
+    "scripts/header.js",
+    "scripts/footer.js"
   ],
   "lottie": {
     "version": "5.12.2",
