@@ -1,0 +1,48 @@
+{# Canonical presentation contracts. All content, assets and labels are supplied by the consumer. #}
+{% import 'components/web/navigation.html' as n %}
+{% import 'components/web/buttons.html' as b %}
+{% macro badges(items) -%}
+{% if items %}<div class="ep-badges">{% for item in items %}<img src="{{ item.src }}" alt="{{ item.label }}" loading="lazy" decoding="async">{% endfor %}</div>{% endif %}
+{%- endmacro %}
+{% macro project_card(project, labels) -%}
+<article class="ep-project-card" data-ep-project data-collection="{{ project.collection }}" data-areas="{{ project.areas|join(' ') }}" data-search="{{ project.search|default('') }}">
+<div class="ep-project-card__head"><span class="ep-project-card__eyebrow">{{ project.collection_label }}</span></div>
+<h3>{{ project.title }}</h3><p>{{ project.description }}</p>
+{% if project.topics %}<div class="ep-project-card__topics">{{ project.topics|join(' · ') }}</div>{% endif %}
+{{ badges(project.badges) }}
+<div class="ep-project-card__links">{% for item in project.links %}{% if item.primary %}<span class="ep-project-card__primary">{{ n.diagonal(item.label,item.href) }}</span>{% else %}<a class="ep-link ep-underline ep-link--muted" href="{{ item.href }}">{{ item.label }}</a>{% endif %}{% endfor %}</div>
+</article>
+{%- endmacro %}
+{% macro catalog(id, projects, areas, labels) -%}
+<div class="ep-catalog" data-ep-catalog>
+<div class="ep-catalog__controls">
+<div class="ep-catalog__collections" data-ep-filter="collection" role="group" aria-label="{{ labels.collection }}">{{ n.filter_button(labels.all,'all',true) }}{{ n.filter_button(labels.selected,'selected') }}{{ n.filter_button(labels.learning,'learning') }}</div>
+<div class="ep-catalog__area">{% call n.disclosure(labels.all_areas,'area') %}{{ n.area_option(labels.all_areas,'all',true) }}{% for area in areas %}{{ n.area_option(area.label,area.value) }}{% endfor %}{% endcall %}</div>
+<div class="ep-catalog__search"><label class="ep-interactive-sr" for="{{ id }}-search">{{ labels.search }}</label><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="{{ id }}-search" data-ep-search type="search" autocomplete="off" placeholder="{{ labels.placeholder }}"><button type="button" class="ep-link" data-ep-clear-search aria-label="{{ labels.clear_search }}" hidden>×</button></div>
+<div class="ep-catalog__info"><button class="ep-link ep-underline ep-underline--always ep-link--accent" type="button" data-ep-reset hidden>{{ labels.clear }}</button><span role="status" data-ep-count data-singular="{{ labels.singular }}" data-plural="{{ labels.plural }}"></span></div>
+</div>
+<div class="ep-catalog__grid">{% for project in projects %}{{ project_card(project,labels) }}{% endfor %}</div>
+<div class="ep-catalog__empty" data-ep-empty hidden>{{ labels.empty }}<div><button class="ep-link ep-underline ep-underline--always ep-link--accent" type="button" data-ep-reset>{{ labels.clear }}</button></div></div>
+</div>
+{%- endmacro %}
+{% macro evidence(frames, labels) -%}
+{% if frames %}<figure class="ep-evidence" data-ep-evidence>
+<div class="ep-evidence__head"><span>{{ labels.results }}</span>{% if frames|length > 1 %}<button class="ep-link ep-evidence__toggle" type="button" data-ep-evidence-toggle data-play="{{ labels.play }}" data-pause="{{ labels.pause }}" aria-label="{{ labels.pause }}">Ⅱ</button>{% endif %}</div>
+<div class="ep-evidence__window">{% for frame in frames %}<img data-ep-frame src="{{ frame.src }}" alt="{{ frame.alt }}"{% if frame.light %} data-light-src="{{ frame.light }}"{% endif %}{% if frame.dark %} data-dark-src="{{ frame.dark }}"{% endif %}{% if not loop.first %} hidden{% endif %} decoding="async">{% endfor %}</div>
+<figcaption class="ep-evidence__caption"><span>{% for frame in frames %}<span data-ep-caption{% if not loop.first %} hidden{% endif %}>{{ frame.caption }}</span>{% endfor %}</span>{% if frames|length > 1 %}<span class="ep-evidence__dots" role="group" aria-label="{{ labels.results }}">{% for frame in frames %}<button type="button" data-ep-frame-index="{{ loop.index0 }}" aria-label="{{ frame.caption }}" aria-current="{{ 'true' if loop.first else 'false' }}"></button>{% endfor %}</span>{% endif %}</figcaption>
+</figure>{% endif %}
+{%- endmacro %}
+{% macro selected_projects(projects, labels) -%}
+{% if projects %}<div class="ep-selected" data-ep-carousel>
+<div class="ep-selected__track" data-ep-carousel-track tabindex="0" role="region" aria-label="{{ labels.selected }}">{% for project in projects %}<article class="ep-feature" data-ep-slide>
+<div class="ep-feature__copy"><span class="ep-feature__index">{{ '%02d'|format(loop.index) }}</span><h2>{{ project.title }}</h2>{% if project.subtitle %}<p class="ep-feature__subtitle">{{ project.subtitle }}</p>{% endif %}<p class="ep-feature__description">{{ project.description }}</p>{{ badges(project.badges) }}<div class="ep-feature__link">{{ n.diagonal(labels.view,project.href,true,true) }}</div></div>
+<div class="ep-feature__evidence">{{ evidence(project.frames,labels) }}{% if project.metrics %}<div class="ep-feature__metrics">{% for metric in project.metrics %}<div><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></div>{% endfor %}</div>{% endif %}</div>
+</article>{% endfor %}</div>
+<div class="ep-selected__footer"><span data-ep-carousel-count aria-live="polite">01 / {{ '%02d'|format(projects|length) }}</span><div class="ep-selected__progress" aria-hidden="true"><span></span></div><div class="ep-selected__arrows">{{ b.carousel_arrow(labels.previous,'previous',true) }}{{ b.carousel_arrow(labels.next,'next',projects|length == 1) }}</div></div>
+</div>{% endif %}
+{%- endmacro %}
+{% macro marquee(label, heading, email, href, pause, play) -%}
+<div class="ep-marquee" data-ep-marquee><a class="ep-marquee__link" href="{{ href }}" aria-label="{{ label }}" data-ep-lens>
+<div class="ep-marquee__lanes" aria-hidden="true">{% for word in [heading,email] %}<div class="ep-marquee__lane{% if loop.last %} ep-marquee__lane--email{% endif %}"><div class="ep-marquee__track"><span class="ep-marquee__unit"><span>{{ word }}</span>{{ n.arrow() }}</span></div></div>{% endfor %}</div>
+</a><div class="ep-marquee__control"><button class="ep-link" type="button" data-ep-marquee-toggle data-play="{{ play }}" data-pause="{{ pause }}" aria-label="{{ pause }}">Ⅱ</button></div></div>
+{%- endmacro %}
