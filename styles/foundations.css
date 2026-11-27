@@ -1,0 +1,119 @@
+/* EP Design System: canonical foundations */
+
+@font-face {
+    font-family: Manrope;
+    src: url("../assets/fonts/manrope/Manrope.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: Inter;
+    src: url("../assets/fonts/inter/Inter.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+}
+
+/* Typography and spacing */
+
+:root {
+    --ep-font-heading: Manrope, sans-serif;
+    --ep-font-body: Inter, sans-serif;
+
+    --ep-weight-regular: 400;
+    --ep-weight-medium: 500;
+    --ep-weight-semibold: 600;
+    --ep-weight-bold: 700;
+    --ep-weight-extrabold: 800;
+
+    --ep-text-xs: 0.75rem;
+    --ep-text-sm: 0.875rem;
+    --ep-text-base: 1rem;
+    --ep-text-lg: 1.125rem;
+    --ep-text-xl: 1.25rem;
+    --ep-text-2xl: 1.5rem;
+    --ep-text-3xl: 2rem;
+    --ep-text-4xl: 3rem;
+
+    --ep-space-1: 0.25rem;
+    --ep-space-2: 0.5rem;
+    --ep-space-3: 0.75rem;
+    --ep-space-4: 1rem;
+    --ep-space-5: 1.25rem;
+    --ep-space-6: 1.5rem;
+    --ep-space-8: 2rem;
+    --ep-space-12: 3rem;
+    --ep-space-16: 4rem;
+    --ep-space-24: 6rem;
+}
+
+/* Theme tokens */
+
+:root,
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --ep-color-bg: #242424;
+    --ep-color-surface: #333230;
+    --ep-color-border: #4C4945;
+    --ep-color-text: #F4F0E9;
+    --ep-color-muted: #C5BEB5;
+    --ep-color-accent: #C98D62;
+    --ep-color-focus: #E3AB82;
+    --ep-color-on-accent: #242424;
+    --ep-color-success: #8BD5AB;
+    --ep-color-danger: #D86E5E;
+    --ep-color-link-hover: #FFFFFF;
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+
+    --ep-color-bg: #F4F0E9;
+    --ep-color-surface: #FFFFFF;
+    --ep-color-border: #D9D1C7;
+    --ep-color-text: #242424;
+    --ep-color-muted: #5B554E;
+    --ep-color-accent: #9D603B;
+    --ep-color-focus: #9D603B;
+    --ep-color-on-accent: #FFFFFF;
+    --ep-color-success: #256B48;
+    --ep-color-danger: #D86E5E;
+    --ep-color-link-hover: #242424;
+}
+
+/* Base document */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: var(--ep-font-body);
+    background: var(--ep-color-bg);
+    color: var(--ep-color-text);
+}
+
+body {
+    margin: 0;
+    font-family: var(--ep-font-body);
+    font-size: var(--ep-text-base);
+    font-weight: var(--ep-weight-regular);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--ep-font-heading);
+}
+
+button, input, select, textarea {
+    font: inherit;
+}
+
+:focus-visible {
+    outline: 2px solid var(--ep-color-focus);
+    outline-offset: 4px;
+}
