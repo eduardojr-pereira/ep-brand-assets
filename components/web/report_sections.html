@@ -8,7 +8,7 @@
 {% import 'components/web/badges.html' as b %}
 {% macro artifact_explorer(id,files) -%}
 {% if files %}<div class="ui-artifact-explorer" data-ui-artifact-explorer>
-{{ d.search_control(id) }}
+{{ d.search_control(id,message('shared.artifacts.search'),message('shared.artifacts.close_search'),message('shared.artifacts.placeholder')) }}
 <div class="ui-artifact-layout"><div class="ui-artifact-list"><ul>{% for file in files %}<li data-ui-artifact-item data-search="{{ search_text([file.name,file.format,file.label|default(none)]) }}"><a class="ui-artifact-link" href="#{{ id }}-file-{{ loop.index }}" data-ui-artifact-select><span>{{ file.name }}</span><span class="ui-artifact-format">{{ file.format }}</span></a></li>{% endfor %}</ul><p data-ui-artifact-empty hidden{{ t.binding(message('shared.artifacts.empty')) }}>{{ t.value(message('shared.artifacts.empty')) }}</p></div>
 <div class="ui-artifact-previews">{% for file in files %}<section id="{{ id }}-file-{{ loop.index }}" class="ui-artifact-preview" data-ui-artifact-preview aria-labelledby="{{ id }}-name-{{ loop.index }}"><h4 id="{{ id }}-name-{{ loop.index }}" class="ui-artifact-name">{{ file.name }}</h4>{% if file.label %}<p{{ t.binding(file.label) }}>{{ t.value(file.label) }}</p>{% endif %}
 {% if file.kind == 'image' %}<img class="ui-artifact-image" src="{{ file.href }}" alt="{{ file.name }}" loading="lazy" decoding="async" data-ui-artifact-image><p data-ui-image-error hidden{{ t.binding(message('shared.artifacts.unavailable')) }}>{{ t.value(message('shared.artifacts.unavailable')) }}</p>

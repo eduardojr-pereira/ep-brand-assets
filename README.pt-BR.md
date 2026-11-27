@@ -79,6 +79,7 @@ Os componentes são mantidos no EP Brand e reutilizados quando pertinentes. O bu
 | Traduções compartilhadas | [`config/translations.json`](./config/translations.json) |
 | Preparação da apresentação | [`tools/presentation.py`](./tools/presentation.py) |
 | Adaptador Plotly | [Integração e validação](./docs/plotly.md) |
+| Expansão e busca | [Contrato compartilhado](./docs/disclosure.md) |
 | Testes de regressão | [`tests/`](./tests/) |
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
@@ -91,7 +92,7 @@ Os componentes são mantidos no EP Brand e reutilizados quando pertinentes. O bu
 
 A paleta e a tipografia estão centralizadas em [Foundations](./styles/foundations.css). Os temas claro e escuro são definidos por tokens CSS. A biblioteca de movimento, incluindo tokens e animações genéricas, está em [Motion](./styles/motion.css). A ordem de carregamento é definida em [config/ui.json](./config/ui.json).
 
-O [controlador de tema](./scripts/theme.js) resolve e preserva uma preferência única. O [i18n](./scripts/i18n.js) traduz texto, atributos acessíveis, SVG e mensagens dinâmicas por meio de [chaves compartilhadas](./config/translations.json) e traduções locais validadas. O [carregador de ativos](./scripts/assets.js) resolve caminhos, variantes e animações a partir da mesma versão da biblioteca. Os estados dos componentes não são reinicializados pela tradução. Consulte o [contrato técnico](./docs/presentation.md). O [Header e Footer canônicos](./docs/shell.md) consomem os mesmos serviços e componentes compartilhados. Builder e adaptadores Plotly permanecem pendentes.
+O [controlador de tema](./scripts/theme.js) resolve e preserva uma preferência única. O [i18n](./scripts/i18n.js) traduz texto, atributos acessíveis, SVG e mensagens dinâmicas por meio de [chaves compartilhadas](./config/translations.json) e traduções locais validadas. O [carregador de ativos](./scripts/assets.js) resolve caminhos, variantes e animações a partir da mesma versão da biblioteca. Os estados dos componentes não são reinicializados pela tradução. Consulte o [contrato técnico](./docs/presentation.md). O [Header e Footer canônicos](./docs/shell.md) consomem os mesmos serviços e componentes compartilhados. O [adaptador Plotly](./docs/plotly.md) está implementado; o builder e a integração dos consumidores reais permanecem pendentes.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
@@ -117,7 +118,7 @@ O Sistema Cromático Analítico EP separa a codificação visual dos dados da id
 > - **Fonte canônica:** A prévia das paletas é gerada diretamente de [config/colormaps.json](./config/colormaps.json), a configuração cromática canônica.
 > - **Origem e atribuição:** As escalas contínuas utilizam Scientific Colour Maps 9.0.0 de Fabio Crameri. EP LipariS Adapted é uma adaptação própria, não uma escala oficial. Consulte a [metodologia e atribuição](./docs/colormaps.md) e a [licença MIT](./docs/LICENSE-SCIENTIFIC-COLOUR-MAPS.txt).
 > - **Acessibilidade:** As paletas categóricas exigem sinais visuais complementares, como marcadores, estilos de linha, padrões ou rótulos. O contraste cromático isolado não garante acessibilidade.
-> - **Integração técnica:** O futuro adaptador Plotly utilizará a configuração cromática centralizada. Nenhum renderizador Plotly está ativo nesta reconstrução.
+> - **Integração técnica:** O [adaptador Plotly](./docs/plotly.md) utiliza a configuração cromática centralizada. Os gráficos reais dos projetos ainda precisam ser integrados.
 
 <p align="right"><sub><a href="#readme-top">↑ Voltar ao topo</a></sub></p>
 
@@ -153,7 +154,8 @@ ep-brand-assets/
 │       ├── analytical.html
 │       ├── disclosure.html
 │       ├── report_sections.html
-│       └── plotly.html
+│       ├── plotly.html
+│       └── assets.html
 ├── config/
 │   ├── badges.json
 │   ├── brand.json
@@ -188,6 +190,7 @@ ep-brand-assets/
 │   ├── editorial.css
 │   ├── badges.css
 │   ├── analytical.css
+│   ├── disclosure.css
 │   ├── report-sections.css
 │   └── plotly.css
 ├── tests/

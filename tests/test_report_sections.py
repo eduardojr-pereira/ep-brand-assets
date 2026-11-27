@@ -69,7 +69,7 @@ def browser_checks(html):
             page=new_page(browser,locale='pt-BR',viewport={'width':1280,'height':900},reduced_motion='reduce');load_page(page,html,local=LOCAL,lottie=True,css='main{margin:20px;min-width:0}')
             state_check(page,'pt-BR')
             rows=page.locator('.ui-indexed-item');rows.nth(0).locator('summary').click();rows.nth(2).locator('summary').click()
-            toggle=page.locator('[data-ui-search-toggle]');toggle.click();query=page.locator('[data-ui-artifact-query]');query.fill('avaliacao json')
+            toggle=page.locator('[data-ui-search-toggle]');toggle.click();query=page.locator('[data-ui-search-query]');query.fill('avaliacao json')
             assert page.locator('[data-ui-artifact-item]:visible').count()==1
             page.locator('[data-ui-artifact-select]:visible').click()
             assert page.locator('[data-ui-artifact-preview]:visible h4').inner_text()=='summary.json'
@@ -112,5 +112,28 @@ def browser_checks(html):
             print('PASS: native disclosure and all authorized download links without JavaScript',flush=True);page.close()
         finally: close_browser(browser)
 
+def shared_search_checks():
+    local={'en':{'content.search':'Search notes','content.close':'Close notes search','content.placeholder':'Note title'},'pt-BR':{'content.search':'Buscar notas','content.close':'Fechar busca de notas','content.placeholder':'Título da nota'}}
+    image={'src':'/assets/icons/flag_us.svg','en_src':'/assets/icons/flag_us.svg','pt_br_src':'/assets/icons/flag_br.svg','label':'Example','alt':'Example','caption':'Example'}
+    html=environment(local).from_string("{% import 'components/web/disclosure.html' as d %}{% import 'components/web/analytical.html' as a %}{% import 'components/web/interactive.html' as i %}{% import 'components/web/badges.html' as b %}{{ d.search_control('notes',message('content.search'),message('content.close'),message('content.placeholder')) }}{{ a.image_figure(image) }}{{ i.evidence([image]) }}{{ b.badges([image]) }}").render(image=image)
+    with sync_playwright() as pw:
+        browser=launch_browser(pw)
+        try:
+            page=new_page(browser,locale='pt-BR',reduced_motion='reduce');load_page(page,html,local=local,lottie=True)
+            page.evaluate("window.queries=[];document.addEventListener('ui:searchchange',e=>queries.push(e.detail.query))")
+            toggle=page.locator('[data-ui-search-toggle]');query=page.locator('[data-ui-search-query]')
+            assert toggle.get_attribute('aria-label')=='Buscar notas'
+            toggle.click();assert query.evaluate('e=>e===document.activeElement')
+            query.fill('ação');assert page.evaluate('queries.at(-1)')=='ação'
+            assert page.evaluate("UI.disclosure.matches('Acao em notas','ação')")
+            assert page.locator('img').count()==3 and page.locator('img').evaluate_all("els=>els.every(e=>e.getAttribute('src')==='/assets/icons/flag_br.svg')")
+            page.evaluate("UI.i18n.set('en')");assert query.input_value()=='ação' and toggle.get_attribute('aria-label')=='Close notes search' and query.get_attribute('placeholder')=='Note title'
+            assert page.locator('img').evaluate_all("els=>els.every(e=>e.getAttribute('src')==='/assets/icons/flag_us.svg')")
+            query.press('Escape');assert not query.is_visible() and query.input_value()=='' and page.evaluate('queries.at(-1)')=='' and toggle.evaluate('e=>e===document.activeElement')
+            assert not page.locator('[data-ui-artifact-explorer]').count()
+            page.close()
+        finally: close_browser(browser)
+    print('PASS: independent reusable search control, bilingual labels, focus, query event and shared image variants',flush=True)
+
 if __name__=='__main__':
-    preview_checks();browser_checks(markup())
+    preview_checks();browser_checks(markup());shared_search_checks()

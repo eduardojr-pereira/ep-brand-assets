@@ -1,11 +1,8 @@
 """Responsibility: Focused catalog, SVG regeneration and canonical badge markup tests."""
 from collections import Counter
-from pathlib import Path
-from tempfile import TemporaryDirectory
-from html.parser import HTMLParser
-from support import ROOT, environment, load_page, launch_browser, new_page, close_browser
+from support import environment, load_page, launch_browser, new_page, close_browser
 from badge_catalog import load_catalog, technology_ids, active_entry
-from render_badges import verify, render, signature, contrast
+from render_badges import verify, contrast
 from presentation import validate_bindings
 from playwright.sync_api import sync_playwright
 

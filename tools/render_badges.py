@@ -4,10 +4,8 @@ Checks by default. Explicit writes only; no network, source preparation, build o
 import argparse
 import base64
 import hashlib
-import math
 import re
 import struct
-from collections import Counter
 from pathlib import Path
 from xml.etree import ElementTree as ET
 from xml.sax.saxutils import escape, quoteattr

@@ -1,4 +1,4 @@
-/* Responsibility: Resolve canonical asset URLs, load/cache animation sources and player,
+/* Responsibility: Resolve canonical asset URLs, load/cache canonical JSON sources and animation player,
  * mount/dispose Lottie instances, apply themed asset variants. No selection or locale state. */
 (() => {
     'use strict';
@@ -107,5 +107,5 @@
     // Consumers explicitly unmount removed components; cleanup detached hosts on DOM removal.
     new MutationObserver(() => { for (const host of mounts.keys()) if (!host.isConnected) unmount(host); }).observe(document.documentElement,{childList:true,subtree:true});
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', images, {once:true}); else images();
-    window.UI.assets = Object.freeze({url,mount,unmount,get});
+    window.UI.assets = Object.freeze({url,json:source,mount,unmount,get});
 })();

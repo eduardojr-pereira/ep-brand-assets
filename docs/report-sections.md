@@ -6,7 +6,7 @@ Load resources from `config/ui.json` in canonical order; use `tools/presentation
 
 `report_sections.conclusion(id, items, files)` renders the shared section heading and an indexed native disclosure list. Supply nonempty `{label,body}` items; `body` is a list of localized paragraph references. Standard shared labels include `shared.conclusion.results`, `.findings`, `.limitations`, `.next_steps`. Omit missing sections. Outputs is appended only when authorized files exist. Multiple native details may remain open independently; language/theme changes never reconstruct the list. `disclosure.indexed_item(number,label,opened=false)` also supports arbitrary trusted Jinja caller content.
 
-`disclosure.toggle_art()` supplies static fallback and player host. `UI.disclosure.toggleArt(art,active,animate=true,colorToken='--ui-color-accent')` mounts `search_to_x` through `UI.assets`, responds to explicit state, uses the supplied canonical color token (accent by default), and uses reduced-motion settling. About rails can consume this same artwork/state API with their own contextual layout and panel selection (integration is later). `UI.disclosure.matches(text,query)` uses the same accent/case-insensitive, all-words matching for the catalogue and artifact search; use the existing `search_text` function to precompute bilingual metadata.
+Reusable indexed rows, Search-to-X and search controls are documented in [disclosure](disclosure.md). The report composes these primitives; it does not own their state, event handling or styles.
 
 ## Artifact Explorer
 

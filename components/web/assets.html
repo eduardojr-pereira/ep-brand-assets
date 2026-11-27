@@ -1,0 +1,5 @@
+{# Responsibility: Declarative image variants consumed by the single asset service.
+   Does not resolve theme, locale, URLs or file provenance. #}
+{% macro image_variants(image) -%}
+{% if image.light %} data-light-src="{{ image.light }}"{% endif %}{% if image.dark %} data-dark-src="{{ image.dark }}"{% endif %}{% if image.en_src and image.pt_br_src %} data-en-src="{{ image.en_src }}" data-pt-br-src="{{ image.pt_br_src }}"{% endif %}
+{%- endmacro %}

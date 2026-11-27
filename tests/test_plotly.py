@@ -2,7 +2,7 @@
 from copy import deepcopy
 import json
 from playwright.sync_api import sync_playwright
-from support import ROOT, environment, load_page, launch_browser, new_page, close_browser
+from support import environment, load_page, launch_browser, new_page, close_browser
 from plotly_presentation import chart_payload
 from plotly.offline import get_plotlyjs
 
@@ -17,8 +17,8 @@ def payload(ident, **kwargs):
     return chart_payload(ident,deepcopy(FIGURE),translations=TRANSLATIONS,colors=COLORS,palette='ep-muted-pastel',local=LOCAL,**kwargs)
 
 def validate_payload():
-    raw=str(payload('demand')); assert '</script>' not in raw[:-9]; assert '%{text}' in LOCAL['en']['content.hover']
-    for bad in [{'layout':{'yaxis.range':'content.title'}},{'traces':[{'index':0,'fields':{'x':'content.a'}}]},{'layout':{'title.text':'content.missing'}}]:
+    raw=str(payload('demand')); assert '</script>' not in raw[:-9]; assert 'localeModule' not in raw; assert '%{text}' in LOCAL['en']['content.hover']
+    for bad in [{'layout':{'yaxis.range':'content.title'}},{'traces':[{'index':0,'fields':{'x':'content.a'}}]},{'layout':{'title.text':'content.missing'}},{'layout':{'title.text':['content.a','content.b']}},{'layout':{'xaxis.ticktext':['content.a']}},{'layout':{'xaxis.ticktext':'content.a'}},{'traces':[{'index':0,'fields':{'name':['content.a','content.b']}}]},{'traces':[{'index':0,'fields':{'text':['content.a']}}]}]:
         try: chart_payload('demand',FIGURE,translations=bad,local=LOCAL)
         except ValueError: pass
         else: raise AssertionError('Unsafe binding accepted')
@@ -36,9 +36,11 @@ def fixture(page, scripts=True):
 
 def load_runtime(page):
     # Actual installed Plotly.js, not a fake. Load after DOMContentLoaded to exercise late runtime.
+    page.evaluate("()=>{window.localeRequests=0; const originalFetch=window.fetch;window.fetch=(url,...args)=>{if(String(url).endsWith('/vendor/plotly/pt-BR.json'))window.localeRequests++;return originalFetch(url,...args)}}")
     page.add_script_tag(content=get_plotlyjs())
     page.evaluate('UI.plotly.refresh()')
     page.wait_for_function("document.querySelectorAll('[data-ui-plotly-ready]').length===2")
+    assert page.evaluate('window.localeRequests')==1
 
 
 def check_locale(page, locale, theme):
@@ -69,6 +71,10 @@ def main_browser(browser):
         page.evaluate("([l,t])=>{UI.i18n.set(l);UI.theme.set(t);return UI.plotly.refresh()}",[locale,theme]);check_locale(page,locale,theme)
         assert page.evaluate("()=>{const g=document.getElementById('demand');return g===originalGraph && JSON.stringify(g.data.map(t=>[t.x,t.y,t.customdata,t.visible,t.selectedpoints]))===originalData && JSON.stringify([g.layout.xaxis.range,g.layout.yaxis.range,g.layout.updatemenus[0].active])===originalRange}")
     print('PASS: PT-BR cold startup, live locale/theme, native modebar, category labels, hover tokens, preserved zoom/data/visibility/selection/menu',flush=True)
+    # Failure after native locale switched: reverting to last committed locale must reconcile.
+    page.evaluate("""async()=>{const old=Plotly.relayout;Plotly.relayout=(g,...args)=>{if(g.id==='demand'){return Promise.reject(new Error('partial locale failure'));}return old(g,...args)};try{UI.i18n.set('pt-BR');await UI.plotly.refresh();if(document.getElementById('demand')._context.locale!=='pt-BR'||document.getElementById('demand').layout.title.text!=='Hourly demand')throw Error('partial failure not reproduced');}finally{Plotly.relayout=old;}UI.i18n.set('en');await UI.plotly.refresh();}""")
+    check_locale(page,'en','dark')
+    assert page.evaluate("()=>{const g=document.getElementById('demand');return g===originalGraph && JSON.stringify(g.data.map(t=>[t.x,t.y,t.customdata,t.visible,t.selectedpoints]))===originalData && JSON.stringify([g.layout.xaxis.range,g.layout.yaxis.range,g.layout.updatemenus[0].active])===originalRange}")
     # Inject rapid consecutive changes and one rejected update; other figures still settle.
     page.evaluate("()=>{const old=Plotly.relayout;window.failure=0;Plotly.relayout=(g,...args)=>{if(g.id==='demand'&&!failure++){return Promise.reject(new Error('fixture failure'));}return old(g,...args)}; UI.i18n.set('pt-BR');UI.theme.set('light');UI.i18n.set('en');UI.theme.set('dark');UI.i18n.set('pt-BR');return UI.plotly.refresh()}")
     assert page.evaluate("document.getElementById('second').layout.title.text")=='Demanda horária'

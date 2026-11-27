@@ -79,6 +79,7 @@ Components are maintained in EP Brand and reused where relevant. The canonical b
 | Shared translations | [`config/translations.json`](./config/translations.json) |
 | Presentation preparation | [`tools/presentation.py`](./tools/presentation.py) |
 | Plotly adapter | [Integration and validation](./docs/plotly.md) |
+| Disclosure and search | [Shared control contract](./docs/disclosure.md) |
 | Regression tests | [`tests/`](./tests/) |
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
@@ -91,7 +92,7 @@ Components are maintained in EP Brand and reused where relevant. The canonical b
 
 The palette and typography are centralized in [Foundations](./styles/foundations.css). Light and dark themes are defined by CSS tokens. Shared motion tokens and generic animations live in [Motion](./styles/motion.css). Loading order is declared in [config/ui.json](./config/ui.json).
 
-The [theme controller](./scripts/theme.js) resolves and persists a single preference. [Internationalization](./scripts/i18n.js) binds text, accessible attributes, SVG labels and dynamic messages using [shared keys](./config/translations.json) and validated local translations. The [asset loader](./scripts/assets.js) resolves paths, variants and animations from the same library version. Translation does not reset component state. See the [technical contract](./docs/presentation.md). The [canonical Header and Footer](./docs/shell.md) consume these same services and shared components. The builder and Plotly adapters remain pending.
+The [theme controller](./scripts/theme.js) resolves and persists a single preference. [Internationalization](./scripts/i18n.js) binds text, accessible attributes, SVG labels and dynamic messages using [shared keys](./config/translations.json) and validated local translations. The [asset loader](./scripts/assets.js) resolves paths, variants and animations from the same library version. Translation does not reset component state. See the [technical contract](./docs/presentation.md). The [canonical Header and Footer](./docs/shell.md) consume these same services and shared components. The [Plotly adapter](./docs/plotly.md) is implemented; the builder and real consumer integration remain pending.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
@@ -117,7 +118,7 @@ The EP Analytical Colour System separates visual encoding of data from instituti
 > - **Source of Truth:** The palette preview is generated directly from [config/colormaps.json](./config/colormaps.json), the canonical colour configuration.
 > - **Origin and Attribution:** Continuous scales use Scientific Colour Maps 9.0.0 by Fabio Crameri. EP LipariS Adapted is a custom adaptation, not an official scale. See the [methodology and attribution](./docs/colormaps.md) and [MIT license](./docs/LICENSE-SCIENTIFIC-COLOUR-MAPS.txt).
 > - **Accessibility:** Categorical palettes require complementary visual cues, such as markers, line styles, patterns or labels. Colour contrast alone does not guarantee accessibility.
-> - **Technical Integration:** The future Plotly adapter will consume the canonical colour configuration. No Plotly renderer is active in this reconstruction.
+> - **Technical Integration:** The [Plotly adapter](./docs/plotly.md) consumes the canonical colour configuration. Real project charts still require integration.
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
 
@@ -153,7 +154,8 @@ ep-brand-assets/
 │       ├── analytical.html
 │       ├── disclosure.html
 │       ├── report_sections.html
-│       └── plotly.html
+│       ├── plotly.html
+│       └── assets.html
 ├── config/
 │   ├── badges.json
 │   ├── brand.json
@@ -188,6 +190,7 @@ ep-brand-assets/
 │   ├── editorial.css
 │   ├── badges.css
 │   ├── analytical.css
+│   ├── disclosure.css
 │   ├── report-sections.css
 │   └── plotly.css
 ├── tests/

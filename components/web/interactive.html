@@ -2,6 +2,7 @@
    Consumer supplies project content and asset paths; shared labels use the global dictionary. #}
 
 {% import 'components/web/localization.html' as t %}
+{% import 'components/web/assets.html' as assets %}
 {% import 'components/web/navigation.html' as n %}
 {% import 'components/web/buttons.html' as b %}
 {% import 'components/web/editorial.html' as e %}
@@ -34,7 +35,7 @@
 {% macro evidence(frames) -%}
 {% if frames %}<figure class="ui-evidence" data-ui-evidence>
 <div class="ui-evidence__head"><span{{ t.binding(message("shared.project.results")) }}>{{ t.value(message("shared.project.results")) }}</span>{% if frames|length > 1 %}<button class="ui-link ui-evidence__toggle" type="button" data-ui-evidence-toggle aria-label="{{ t.value(message("shared.project.pause")) }}"{{ t.binding(message("shared.project.pause"),"aria-label") }}>Ⅱ</button>{% endif %}</div>
-<div class="ui-evidence__window">{% for frame in frames %}<img data-ui-frame src="{{ frame.src }}" alt="{{ t.value(frame.alt) }}"{{ t.binding(frame.alt,"alt") }}{% if frame.light %} data-light-src="{{ frame.light }}"{% endif %}{% if frame.dark %} data-dark-src="{{ frame.dark }}"{% endif %}{% if not loop.first %} hidden{% endif %} decoding="async">{% endfor %}</div>
+<div class="ui-evidence__window">{% for frame in frames %}<img data-ui-frame src="{{ frame.src }}" alt="{{ t.value(frame.alt) }}"{{ t.binding(frame.alt,"alt") }}{{ assets.image_variants(frame) }}{% if not loop.first %} hidden{% endif %} decoding="async">{% endfor %}</div>
 <figcaption class="ui-evidence__caption"><span>{% for frame in frames %}<span data-ui-caption{% if not loop.first %} hidden{% endif %}{{ t.binding(frame.caption) }}>{{ t.value(frame.caption) }}</span>{% endfor %}</span>{% if frames|length > 1 %}<span class="ui-evidence__dots" role="group" aria-label="{{ t.value(message("shared.project.results")) }}"{{ t.binding(message("shared.project.results"),"aria-label") }}>{% for frame in frames %}<button type="button" data-ui-frame-index="{{ loop.index0 }}" aria-label="{{ t.value(frame.caption) }}"{{ t.binding(frame.caption,"aria-label") }} aria-current="{{ 'true' if loop.first else 'false' }}"></button>{% endfor %}</span>{% endif %}</figcaption>
 </figure>{% endif %}
 {%- endmacro %}

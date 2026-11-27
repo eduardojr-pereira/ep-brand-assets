@@ -14,6 +14,20 @@ DEPENDENCIES = json.loads((ROOT / 'config/ui.json').read_text())
 LOCALES = ('en', 'pt-BR')
 
 
+MESSAGE_ARGS = re.compile(r'(?<!%)\{(\w+)\}')
+
+
+def static_message(messages, key):
+    """Resolve a message valid in both locales and requiring no runtime arguments."""
+    if not isinstance(key,str) or any(not isinstance(messages[lang].get(key),str) or MESSAGE_ARGS.search(messages[lang][key]) for lang in LOCALES):
+        raise ValueError(f'Static binding requires a complete message: {key}')
+    return messages['en'][key]
+
+
+def inert_json(data):
+    """Encode inert script data; never permit literal HTML terminators or NaN."""
+    return json.dumps(data,ensure_ascii=False,allow_nan=False,separators=(',',':')).replace('<','\\u003c').replace('>','\\u003e').replace('&','\\u0026')
+
 def dictionaries(local=None):
     shared = json.loads((ROOT / 'config/translations.json').read_text())
     local = local if local is not None else {locale: {} for locale in LOCALES}
@@ -25,7 +39,7 @@ def dictionaries(local=None):
                 raise ValueError(f'Invalid translation key: {key}')
             def fields(value):
                 if isinstance(value, str):
-                    return set(re.findall(r'(?<!%)\{(\w+)\}', value))
+                    return set(MESSAGE_ARGS.findall(value))
                 if isinstance(value, dict) and set(value) == {'one', 'other'} and all(isinstance(v,str) for v in value.values()):
                     if fields(value['one']) != fields(value['other']):
                         raise ValueError(f'Plural arguments differ: {key}')
@@ -41,10 +55,7 @@ def environment(local=None):
     data = dictionaries(local)
     env = Environment(loader=FileSystemLoader(ROOT), autoescape=select_autoescape(['html'], default_for_string=True))
     def message(key):
-        value = data['en'][key]
-        if not isinstance(value, str):
-            raise ValueError(f'Dynamic plural requires runtime arguments: {key}')
-        return {'key': key, 'text': value}
+        return {'key': key, 'text': static_message(data,key)}
     def search_text(refs):
         parts = []
         for ref in refs:
@@ -69,9 +80,7 @@ def validate_bindings(html, local=None):
                 target = name.removeprefix('data-i18n-')
                 if target not in targets or not key or key not in messages['en']:
                     raise ValueError(f'Invalid translation binding: {name}={key}')
-                value = messages['en'][key]
-                if not isinstance(value, str) or re.search(r'(?<!%)\{\w+\}', value):
-                    raise ValueError(f'Static binding requires a complete message: {key}')
+                static_message(messages,key)
         handle_startendtag = handle_starttag
     validator = Validator()
     validator.feed(str(html))
@@ -80,8 +89,8 @@ def validate_bindings(html, local=None):
 
 def page_config(asset_base, local=None):
     """Embed one configuration before synchronous head scripts. Escape script terminators."""
-    data = {'translations': dictionaries(local), 'assetBase': asset_base, 'lottie': DEPENDENCIES['lottie']}
-    payload = json.dumps(data, ensure_ascii=False).replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026')
+    data = {'translations': dictionaries(local), 'assetBase': asset_base, 'lottie': DEPENDENCIES['lottie'], 'plotly': DEPENDENCIES['plotly']}
+    payload = inert_json(data)
     return Markup('<script type="application/json" id="ui-config">' + payload + '</script>')
 
 

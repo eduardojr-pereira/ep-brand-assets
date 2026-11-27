@@ -79,12 +79,12 @@ def validate_contract():
     import re
     dependencies = sum((DEPENDENCIES[key] for key in ('styles', 'head_scripts', 'defer_scripts')), [])
     assert len(dependencies) == len(set(dependencies)), 'Duplicate dependencies'
-    actual = {str(p.relative_to(ROOT)) for folder, suffix in [('styles', '.css'), ('scripts', '.js')] for p in (ROOT / folder).glob('*' + suffix)}
+    actual = {str(p.relative_to(ROOT)) for folder, suffix in [('styles', '.css'), ('scripts', '.js')] for p in (ROOT / folder).rglob('*' + suffix)}
     assert set(dependencies) == actual, 'Manifest and implementation files differ'
     assert not (ROOT / 'styles' / ('motion-' + 'tokens.css')).exists(), 'Obsolete motion file'
-    for name in dependencies + [str(p.relative_to(ROOT)) for p in (ROOT / 'components/web').glob('*.html')]:
+    for name in dependencies + [str(p.relative_to(ROOT)) for p in (ROOT / 'components/web').rglob('*.html')]:
         source = (ROOT / name).read_text()
-        assert 'Responsibility:' in source, name
+        assert re.match(r'\s*(?:/\*|\{#)[\s*]*Responsibility:',source), name
         assert not re.search(r'\b(?:ep[-:]|EP(?:Motion|Navigation|Actions)|dataset\.ep[A-Z])', source), name
         if name.endswith('.html'):
             assert not re.search(r'<(?:style|script)\b|\sstyle=', source, re.I), name
@@ -105,7 +105,7 @@ def validate_contract():
         if path.name != 'motion.css':
             assert 'data-ui-smooth-scroll' not in path.read_text(),path.name
     for path in [*(ROOT/'tests').glob('*.py'),*(ROOT/'tools').glob('*.py')]:
-        assert 'Responsibility:' in path.read_text(), path.name
+        assert path.read_text().lstrip().startswith('\"\"\"Responsibility:'), path.name
     for name in ('navigation','buttons','interactive'):
         source = (ROOT / 'components/web' / (name + '.html')).read_text()
         assert not re.search(r'data-(?:singular|plural|play|pause)=',source),name
@@ -133,6 +133,20 @@ def validate_contract():
     for path, source in [(lottie['runtime'],'build/player/lottie.min.js'),(lottie['license'],'LICENSE.md')]:
         data=(ROOT/'assets'/path).read_bytes()
         assert hashlib.sha1(f'blob {len(data)}\0'.encode()+data).hexdigest()==lottie['source_files'][source],path
+    assert (ROOT/'assets'/DEPENDENCIES['plotly']['locale']).is_file(), 'Missing canonical Plotly locale'
+    assert json.loads((ROOT/'assets'/DEPENDENCIES['plotly']['locale']).read_text())['name']=='pt-BR'
+    for path in (ROOT/'components/web').rglob('*.html'):
+        text=path.read_text()
+        if path.name!='assets.html': assert not re.search(r'data-(?:light|dark|en|pt-br)-src=',text),path.name
+        if path.name!='report_sections.html': assert 'data-ui-artifact-query' not in text,path.name
+    for folder,ext in [('scripts','js'),('components/web','html'),('styles','css')]:
+        path=ROOT/folder/f'disclosure.{ext}'
+        assert not re.search(r'shared\.artifacts\.|data-ui-artifact-|ui-file-search',path.read_text()),path.name
+    css=(ROOT/'styles/report-sections.css').read_text()
+    assert not re.search(r'\.ui-(?:indexed-|toggle-art|search-control|file-search)',css),'Disclosure styling belongs to disclosure.css'
+    assert 'localeModule' not in (ROOT/'tools/plotly_presentation.py').read_text()
+    assert 'localeModule' not in (ROOT/'scripts/plotly.js').read_text()
+    assert DEPENDENCIES['defer_scripts'].index('scripts/assets.js') < DEPENDENCIES['defer_scripts'].index('scripts/plotly.js')
     print('PASS: canonical dependencies, responsibility headers, neutral names and token ownership', flush=True)
 
 

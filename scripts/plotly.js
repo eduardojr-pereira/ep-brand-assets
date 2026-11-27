@@ -4,7 +4,7 @@
     'use strict';
     window.UI ??= {};
     const graphs = new WeakMap();
-    const registered = new WeakSet();
+    const registered = new WeakMap();
     const specifications = new WeakMap();
     const report = (node, error) => console.error('UI Plotly:', node.id || '(unknown chart)', error);
     const copy = value => JSON.parse(JSON.stringify(value));
@@ -66,10 +66,19 @@
         for (const item of spec.colors||[]) fields(item.trace)[item.path]=item.values[theme];
         return {patch,traces};
     }
+    function registerLocale(runtime) {
+        if (!registered.has(runtime)) {
+            const path=JSON.parse(document.getElementById('ui-config').textContent).plotly.locale;
+            const registration=UI.assets.json(path).then(module=>runtime.register(copy(module)))
+                .catch(error=>{registered.delete(runtime);throw error;});
+            registered.set(runtime,registration);
+        }
+        return registered.get(runtime);
+    }
     async function apply(node,state) {
         const runtime=window.Plotly;
         if (!runtime?.newPlot || !runtime?.relayout || !runtime?.restyle || !runtime?.react) return;
-        if (!registered.has(runtime)) { runtime.register(state.spec.localeModule); registered.add(runtime); }
+        await registerLocale(runtime);
         const theme=UI.theme.current(), locale=UI.i18n.current();
         if (state.ready && state.theme===theme && state.locale===locale) return;
         const spec=state.spec, config={...spec.config,responsive:true,locale};
@@ -103,13 +112,13 @@
             while (state.dirty && node.isConnected) {
                 state.dirty=false;
                 try { await apply(node,state); }
-                catch (error) { report(node,error); }
+                catch (error) { state.theme=null;state.locale=null;report(node,error); }
             }
         })().finally(()=>{state.pending=null;if(state.dirty&&node.isConnected) schedule(node,state);});
         return state.pending;
     }
     function refresh() {
-        if (!window.Plotly || !UI.theme || !UI.i18n) return Promise.resolve([]);
+        if (!window.Plotly || !UI.theme || !UI.i18n || !UI.assets) return Promise.resolve([]);
         const tasks=[];
         for (const element of document.querySelectorAll('script[type="application/json"][data-ui-plotly-spec]')) {
             try {
