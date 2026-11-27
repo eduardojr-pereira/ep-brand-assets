@@ -1,0 +1,8 @@
+{# Responsibility: Accessible Plotly graph mount and static fallback. No graph data or runtime loading. #}
+{% import 'components/web/localization.html' as t %}
+{% macro chart(id, label, fallback=none) -%}
+<div class="ui-plotly" data-ui-plotly-container>
+<div id="{{ id }}" class="ui-plotly__graph" data-ui-plotly role="region" aria-label="{{ t.value(label) }}"{{ t.binding(label,'aria-label') }}></div>
+{% if fallback %}<div class="ui-plotly__fallback" data-ui-plotly-fallback{{ t.binding(fallback) }}>{{ t.value(fallback) }}</div>{% endif %}
+</div>
+{%- endmacro %}

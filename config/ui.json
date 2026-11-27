@@ -12,7 +12,8 @@
     "styles/animated-icons.css",
     "styles/social.css",
     "styles/footer.css",
-    "styles/report-sections.css"
+    "styles/report-sections.css",
+    "styles/plotly.css"
   ],
   "head_scripts": [
     "scripts/theme.js",
@@ -27,7 +28,8 @@
     "scripts/interactive.js",
     "scripts/header.js",
     "scripts/animated-icons.js",
-    "scripts/artifact-explorer.js"
+    "scripts/artifact-explorer.js",
+    "scripts/plotly.js"
   ],
   "lottie": {
     "version": "5.12.2",

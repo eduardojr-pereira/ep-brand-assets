@@ -25,7 +25,7 @@ def dictionaries(local=None):
                 raise ValueError(f'Invalid translation key: {key}')
             def fields(value):
                 if isinstance(value, str):
-                    return set(re.findall(r'\{(\w+)\}', value))
+                    return set(re.findall(r'(?<!%)\{(\w+)\}', value))
                 if isinstance(value, dict) and set(value) == {'one', 'other'} and all(isinstance(v,str) for v in value.values()):
                     if fields(value['one']) != fields(value['other']):
                         raise ValueError(f'Plural arguments differ: {key}')
@@ -70,7 +70,7 @@ def validate_bindings(html, local=None):
                 if target not in targets or not key or key not in messages['en']:
                     raise ValueError(f'Invalid translation binding: {name}={key}')
                 value = messages['en'][key]
-                if not isinstance(value, str) or re.search(r'\{\w+\}', value):
+                if not isinstance(value, str) or re.search(r'(?<!%)\{\w+\}', value):
                     raise ValueError(f'Static binding requires a complete message: {key}')
         handle_startendtag = handle_starttag
     validator = Validator()

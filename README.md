@@ -78,6 +78,7 @@ Components are maintained in EP Brand and reused where relevant. The canonical b
 | Dependency order | [`config/ui.json`](./config/ui.json) |
 | Shared translations | [`config/translations.json`](./config/translations.json) |
 | Presentation preparation | [`tools/presentation.py`](./tools/presentation.py) |
+| Plotly adapter | [Integration and validation](./docs/plotly.md) |
 | Regression tests | [`tests/`](./tests/) |
 
 <p align="right"><sub><a href="#readme-top">↑ Back to top</a></sub></p>
@@ -151,7 +152,8 @@ ep-brand-assets/
 │       ├── badges.html
 │       ├── analytical.html
 │       ├── disclosure.html
-│       └── report_sections.html
+│       ├── report_sections.html
+│       └── plotly.html
 ├── config/
 │   ├── badges.json
 │   ├── brand.json
@@ -171,7 +173,8 @@ ep-brand-assets/
 │   ├── header.js
 │   ├── animated-icons.js
 │   ├── disclosure.js
-│   └── artifact-explorer.js
+│   ├── artifact-explorer.js
+│   └── plotly.js
 ├── styles/
 │   ├── foundations.css
 │   ├── motion.css
@@ -185,7 +188,8 @@ ep-brand-assets/
 │   ├── editorial.css
 │   ├── badges.css
 │   ├── analytical.css
-│   └── report-sections.css
+│   ├── report-sections.css
+│   └── plotly.css
 ├── tests/
 │   ├── support.py
 │   └── test_*.py
@@ -193,7 +197,8 @@ ep-brand-assets/
 │   ├── presentation.py
 │   ├── badge_catalog.py
 │   ├── render_badges.py
-│   └── artifact_preview.py
+│   ├── artifact_preview.py
+│   └── plotly_presentation.py
 ├── LICENSE-BRAND.md
 ├── LICENSE-CODE.txt
 ├── LICENSE-CONTENT.md
@@ -228,7 +233,7 @@ The templates in `components/web/` are HTML-autoescaped Jinja macros. [`tools/pr
 
 ## Testing and Validation
 
-With Python, Jinja2, Playwright and a Chromium-compatible browser installed, run from the repository root:
+With Python, Jinja2, Playwright, Plotly and a Chromium-compatible browser installed, run from the repository root:
 
 ```bash
 python3 tests/support.py

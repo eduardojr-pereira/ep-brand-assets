@@ -24,7 +24,7 @@
         let value = data[language]?.[key];
         if (value === undefined) throw new Error(`Unknown translation key: ${key}`);
         if (typeof value === 'object') value = value[args.count === 0 ? 'other' : new Intl.PluralRules(language).select(args.count)] || value.other;
-        return value.replace(/\{(\w+)\}/g, (_, name) => {
+        return value.replace(/(?<!%)\{(\w+)\}/g, (_, name) => {
             if (!(name in args)) throw new Error(`Missing translation argument: ${key}.${name}`);
             return typeof args[name] === 'number' ? new Intl.NumberFormat(language).format(args[name]) : String(args[name]);
         });

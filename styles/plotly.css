@@ -1,0 +1,7 @@
+/* Responsibility: Contain Plotly figures without overriding data colors or interactive state.
+ * Headings, captions and surfaces remain owned by the editorial and analytical primitives. */
+.ui-plotly,.ui-plotly__graph { min-width:0; width:100%; max-width:100%; }
+.ui-plotly__graph .plot-container { max-width:100%; }
+.ui-plotly__graph:not([data-ui-plotly-ready]) { min-height:0; }
+.ui-plotly__fallback { color:var(--ui-color-muted); font-size:var(--ui-text-sm); overflow-wrap:anywhere; }
+.ui-plotly__fallback[hidden] { display:none; }
