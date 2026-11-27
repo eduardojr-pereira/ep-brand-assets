@@ -7,10 +7,10 @@ from presentation import validate_bindings
 BRAND=json.loads((ROOT/'config/brand.json').read_text())
 NAV=json.loads((ROOT/'config/navigation.json').read_text())
 LOCAL={'en':{'content.overview':'Overview','content.results':'Results'},'pt-BR':{'content.overview':'Visão geral','content.results':'Resultados'}}
-FIXTURE='''{% import 'components/web/header.html' as h %}{% import 'components/web/footer.html' as f %}
-{% if report %}{{ h.header(brand,navigation,[{'label':'content.overview','href':'#overview'},{'label':'content.results','href':'#results'}],'/portfolio/index.html#home','/portfolio/index.html#all-projects') }}{% else %}{{ h.landing_header(brand,navigation) }}{% endif %}
-<main>{% for section in (['overview','results'] if report else navigation.sections|map(attribute='id')|list) %}<section id="{{ section }}" data-ui-section><h2>{{ section }}</h2></section>{% endfor %}</main>
-{{ f.footer(brand,navigation,'/portfolio/index.html' if report else '', '/assets/logos/logo_initials.png','/privacy/','/terms/') }}'''
+FIXTURE='''{% import 'components/web/header.html' as h %}{% import 'components/web/footer.html' as f %}{% import 'components/web/social.html' as social %}
+{% if report %}{{ h.report_header(brand,navigation,[{'label':'content.overview','href':'#overview'},{'label':'content.results','href':'#results'}],'/portfolio/index.html') }}{% else %}{{ h.landing_header(brand,navigation) }}{% endif %}
+<main>{% for section in (['overview','results'] if report else navigation.sections|map(attribute='id')|list) %}<section id="{{ section }}" data-ui-section><h2>{{ section }}</h2></section>{% endfor %}{% if not report %}{{ social.follow_connect(brand,navigation,'contact') }}{% endif %}</main>
+{{ f.footer(brand,navigation,'/portfolio/index.html' if report else '', '/assets/logos/logo_initials.png','/privacy/','/terms/',report=report) }}'''
 
 def fixture(page, theme='dark', *,report=False,scripts=True,lottie=False):
     body=environment(LOCAL).from_string(FIXTURE).render(brand=BRAND,navigation=NAV,report=report)
@@ -37,7 +37,10 @@ def desktop(page,theme):
     header.get_by_role('button',name='Alterar tema').click()
     assert page.locator('html').get_attribute('data-theme')==('light' if theme=='dark' else 'dark')
     assert footer.locator('.ui-footer__groups .ui-editorial-link').count()==8
-    assert footer.locator('.ui-footer__icons a').count()==4
+    assert footer.locator('.ui-social').count()==0
+    assert footer.locator('.ui-return--vertical').count()==0
+    assert page.locator('main .ui-social--contact a').count()==4
+    assert header.locator('.ui-header__logo').get_attribute('href')==footer.locator('.ui-footer__brand').get_attribute('href')=='#home'
     # Confirm actual shared motion and row geometry rather than independent effects.
     row=footer.locator('.ui-footer__groups .ui-editorial-link').first
     title=row.locator('.ui-editorial-link__title');desc=row.locator('.ui-editorial-link__description')
@@ -72,27 +75,42 @@ def compact(page,report=False):
     page.wait_for_function("document.querySelector('[data-ui-header]').hasAttribute('data-ui-compact')")
     header.get_by_role('button',name='Switch language').click()
     page.wait_for_function("document.querySelector('.ui-header__compact summary').textContent.includes('Seções')")
-    assert footer.locator('.ui-footer__social').evaluate('e=>getComputedStyle(e).flexDirection')=='column'
+    assert page.locator('.ui-social').count()==1
+    if report:
+        social=footer.locator('.ui-social')
+        assert social.locator('a').count()==4
+        assert social.locator('..').locator('nav').first.locator('.ui-editorial-link').count()==3
+        assert footer.locator('.ui-footer__legal a').last.get_attribute('href')=='#top'
+        assert header.locator('.ui-header__logo').get_attribute('href')==footer.locator('.ui-footer__brand').get_attribute('href')=='/portfolio/index.html#home'
+    else:
+        assert footer.locator('.ui-social').count()==0
+        assert footer.locator('.ui-return--vertical').count()==0
+    assert page.locator('.ui-social').evaluate('e=>getComputedStyle(e).flexDirection')=='column'
+    assert page.locator('.ui-social a').evaluate_all('es=>es.map(e=>e.getAttribute("href"))')==[BRAND['linkedin'],BRAND['github'],'mailto:'+BRAND['email'],BRAND['discord']]
     assert page.evaluate("document.documentElement.scrollWidth<=innerWidth+1")
     print(f'PASS: {"report" if report else "landing"} compact layout, nested menus, single navigation tree, translation and mobile footer',flush=True)
 
 def animations(page):
     header,footer=fixture(page,lottie=True)
-    art=footer.locator('.ui-footer__groups [data-ui-footer-animation="home"]')
+    art=footer.locator('.ui-footer__groups [data-ui-icon-animation="home"]')
     art.scroll_into_view_if_needed()
-    rest=art.locator('[data-ui-footer-rest]');hover=art.locator('[data-ui-footer-hover]')
+    rest=art.locator('[data-ui-icon-rest]');hover=art.locator('[data-ui-icon-hover]')
     rest.locator('svg').wait_for(state='attached',timeout=15000);hover.locator('svg').wait_for(state='attached',timeout=15000)
-    page.wait_for_function("[...document.querySelectorAll('.ui-footer__groups [data-ui-footer-animation=home] :is([data-ui-footer-rest],[data-ui-footer-hover])')].every(e=>e.hasAttribute('data-ui-lottie-ready'))")
+    page.wait_for_function("[...document.querySelectorAll('.ui-footer__groups [data-ui-icon-animation=home] :is([data-ui-icon-rest],[data-ui-icon-hover])')].every(e=>e.hasAttribute('data-ui-lottie-ready'))")
     for id,scale in [('home','1.36'),('award','1'),('projects','.95'),('about','1.8'),('gmail','.8')]:
-        value=footer.locator(f'.ui-footer__groups [data-ui-footer-animation="{id}"]').evaluate('e=>getComputedStyle(e).getPropertyValue("--ui-footer-optical-scale").trim()')
+        value=footer.locator(f'.ui-footer__groups [data-ui-icon-animation="{id}"]').evaluate('e=>getComputedStyle(e).getPropertyValue("--ui-icon-optical-scale").trim()')
         assert float(value)==float(scale),(id,value)
     art.locator('..').locator('..').hover()
-    page.wait_for_function("document.querySelector('.ui-footer__groups [data-ui-footer-animation=home]').hasAttribute('data-ui-playing')")
+    page.wait_for_function("document.querySelector('.ui-footer__groups [data-ui-icon-animation=home]').hasAttribute('data-ui-playing')")
     page.emulate_media(reduced_motion='reduce')
-    page.wait_for_function("UI.assets.get(document.querySelector('.ui-footer__groups [data-ui-footer-animation=home] [data-ui-footer-hover]'))?.isPaused===true")
+    page.wait_for_function("UI.assets.get(document.querySelector('.ui-footer__groups [data-ui-icon-animation=home] [data-ui-icon-hover]'))?.isPaused===true")
     page.evaluate("UI.theme.set('light')")
-    page.wait_for_function("document.querySelector('.ui-footer__groups [data-ui-footer-animation=home] [data-ui-footer-rest]').hasAttribute('data-ui-lottie-ready')")
+    page.wait_for_function("document.querySelector('.ui-footer__groups [data-ui-icon-animation=home] [data-ui-icon-rest]').hasAttribute('data-ui-lottie-ready')")
     assert rest.locator('svg').count()==1
+    social=page.locator('.ui-social--contact [data-ui-icon-animation=linkedin]')
+    social.scroll_into_view_if_needed()
+    social.locator('[data-ui-icon-rest] svg').wait_for(state='attached',timeout=15000)
+    assert social.locator('[data-ui-icon-rest]').get_attribute('data-ui-lottie-ready') is not None
     assert page.evaluate("document.querySelectorAll('script[src$=\"lottie.min.js\"]').length") == 1
     print('PASS: real footer Lotties, optical scales, global theme reload, reduced motion and single runtime',flush=True)
 
@@ -101,7 +119,7 @@ def fallback(page):
     assert header.get_by_role('link',name='Home',exact=True).is_visible()
     assert not header.locator('[data-ui-language-control]').is_visible()
     assert footer.get_by_role('link',name='Privacy Policy').is_visible()
-    assert footer.locator('.ui-footer__fallback').first.is_visible()
+    assert footer.locator('.ui-icon-art__fallback').first.is_visible()
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
     print('PASS: readable native links and static footer without JavaScript',flush=True)
 

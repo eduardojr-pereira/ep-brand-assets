@@ -21,5 +21,8 @@
 </header>
 {%- endmacro %}
 {% macro landing_header(brand,navigation) -%}
-{% set sections = [] %}{% for item in navigation.sections %}{% set _ = sections.append({'label':item.label,'href':'#'+item.id}) %}{% endfor %}{{ header(brand,navigation,sections,'#home') }}
+{% set sections = [] %}{% for item in navigation.sections %}{% set _ = sections.append({'label':item.label,'href':'#'+item.id}) %}{% endfor %}{{ header(brand,navigation,sections,n.landing_href(navigation,'home')) }}
+{%- endmacro %}
+{% macro report_header(brand,navigation,sections,landing_url=none) -%}
+{% set base = brand.website if landing_url is none else landing_url %}{{ header(brand,navigation,sections,n.landing_href(navigation,'home',base),n.landing_href(navigation,'portfolio',base)) }}
 {%- endmacro %}

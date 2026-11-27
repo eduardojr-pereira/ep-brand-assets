@@ -1,0 +1,12 @@
+/* Responsibility: Shared social action geometry and contextual contrast. Reuses the canonical radial fill. */
+.ui-social { display:flex; flex-direction:column; align-items:flex-start; gap:var(--ui-space-3); min-width:0; }
+.ui-social__title { margin:0; font-family:var(--ui-font-body); font-size:var(--ui-text-sm); font-weight:var(--ui-weight-semibold); line-height:1.4; }
+.ui-social__links { display:flex; flex-wrap:wrap; align-items:center; gap:var(--ui-space-3); }
+.ui-social__link.ui-action { width:44px; aspect-ratio:1; border:0; }
+.ui-social__link .ui-icon-art { width:30px; flex:none; color:inherit; }
+.ui-social--contact { color:white; }
+.ui-social--contact .ui-social__link.ui-action { color:white; }
+.ui-social--contact .ui-social__link .ui-action__fill { background:white; }
+.ui-social--contact .ui-social__link:is(:hover,:focus-visible) { color:black; }
+.ui-social__link:is(:hover,:focus-visible) .ui-icon-art :is([data-ui-icon-rest],[data-ui-icon-hover]) { filter:brightness(0); }
+:root[data-theme="light"] .ui-social--footer .ui-social__link:is(:hover,:focus-visible) .ui-icon-art :is([data-ui-icon-rest],[data-ui-icon-hover]) { filter:brightness(0) invert(1); }

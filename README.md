@@ -143,7 +143,9 @@ ep-brand-assets/
 │       ├── interactive.html
 │       ├── localization.html
 │       ├── header.html
-│       └── footer.html
+│       ├── footer.html
+│       ├── animated_icons.html
+│       └── social.html
 ├── config/
 │   ├── badges.json
 │   ├── brand.json
@@ -161,7 +163,7 @@ ep-brand-assets/
 │   ├── buttons.js
 │   ├── interactive.js
 │   ├── header.js
-│   └── footer.js
+│   └── animated-icons.js
 ├── styles/
 │   ├── foundations.css
 │   ├── motion.css
@@ -169,7 +171,9 @@ ep-brand-assets/
 │   ├── buttons.css
 │   ├── interactive.css
 │   ├── header.css
-│   └── footer.css
+│   ├── footer.css
+│   ├── animated-icons.css
+│   └── social.css
 ├── tests/
 │   ├── support.py
 │   └── test_*.py

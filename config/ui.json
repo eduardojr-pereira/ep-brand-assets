@@ -6,6 +6,8 @@
     "styles/buttons.css",
     "styles/interactive.css",
     "styles/header.css",
+    "styles/animated-icons.css",
+    "styles/social.css",
     "styles/footer.css"
   ],
   "head_scripts": [
@@ -19,7 +21,7 @@
     "scripts/buttons.js",
     "scripts/interactive.js",
     "scripts/header.js",
-    "scripts/footer.js"
+    "scripts/animated-icons.js"
   ],
   "lottie": {
     "version": "5.12.2",

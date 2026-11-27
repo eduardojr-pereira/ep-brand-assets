@@ -4,7 +4,8 @@
       "id": "home",
       "label": "shared.nav.home",
       "description": "shared.footer.home_description",
-      "animation": "home"
+      "animation": "home",
+      "role": "home"
     },
     {
       "id": "selected-works",
@@ -16,13 +17,15 @@
       "id": "all-projects",
       "label": "shared.nav.all_projects",
       "description": "shared.footer.projects_description",
-      "animation": "projects"
+      "animation": "projects",
+      "role": "portfolio"
     },
     {
       "id": "about",
       "label": "shared.nav.about",
       "description": "shared.footer.about_description",
-      "animation": "about"
+      "animation": "about",
+      "role": "about"
     },
     {
       "id": "contact",
@@ -76,16 +79,16 @@
       "fallback": "GH"
     },
     {
-      "brand_key": "discord",
-      "label": "Discord",
-      "animation": "discord",
-      "fallback": "DC"
-    },
-    {
       "brand_key": "email",
       "label": "Email",
       "animation": "gmail",
       "fallback": "@"
+    },
+    {
+      "brand_key": "discord",
+      "label": "Discord",
+      "animation": "discord",
+      "fallback": "DC"
     }
   ]
 }

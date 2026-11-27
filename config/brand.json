@@ -1,7 +1,7 @@
 {
   "name": "Eduardo Junior Pereira",
   "tagline": "Economics · Data Science · Analytics",
-  "website": "https://eduardo-pereira.webflow.io/",
+  "website": "https://eduardojr-pereira.github.io/data-science-portfolio/",
   "email": "eduardojr.pereira@gmail.com",
   "linkedin": "https://www.linkedin.com/in/eduardo-jr-pereira/",
   "github": "https://github.com/eduardojr-pereira",
@@ -9,5 +9,6 @@
   "knowledge_base": "https://github.com/eduardojr-pereira/data-science-knowledge-base",
   "asset_root": "assets",
   "discord": "https://discord.com/users/533043855122235393",
-  "brand_assets": "https://github.com/eduardojr-pereira/ep-brand-assets"
+  "brand_assets": "https://github.com/eduardojr-pereira/ep-brand-assets",
+  "legacy_website": "https://eduardo-pereira.webflow.io/"
 }

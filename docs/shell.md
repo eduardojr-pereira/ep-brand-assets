@@ -2,28 +2,37 @@
 
 ## Ownership
 
-- `components/web/header.html` and `components/web/footer.html`: structure and composition only; consume `navigation.html`, `buttons.html` and `localization.html`. Shared navigation destinations and semantic labels are in `config/navigation.json`; institutional URLs are in `config/brand.json`; translations are in `config/translations.json`.
-- `styles/header.css` and `styles/footer.css`: component layout, responsive placement, optical icon geometry and surface presentation. Consume the shared foundations, [motion](motion.md), [links and navigation](navigation.md), and [buttons](buttons.md).
-- `scripts/header.js`: move a single navigation tree between desktop and compact disclosure, measure sticky height and forward preference commands. Navigation behavior follows [navigation.md](navigation.md); global preferences and translation bindings follow [presentation.md](presentation.md).
-- `scripts/footer.js`: hover/focus playback intent and frame positioning for footer artwork. Reduced motion shows the final frame. Asset loading, lifecycle, variants and fallback follow [presentation.md](presentation.md).
+- `components/web/header.html` and `components/web/footer.html`: contextual composition; consume the canonical navigation, buttons, localization and social components. `config/brand.json` owns institutional URLs; `config/navigation.json` owns landing section IDs, semantic roles, order, social destinations and labels. Translations are in `config/translations.json`.
+- `styles/header.css` and `styles/footer.css`: shell layout, responsive placement and editorial optical icon geometry; consume the shared foundations, [motion](motion.md), [navigation](navigation.md) and [buttons](buttons.md).
+- `scripts/header.js`: moves one navigation tree between desktop and compact disclosure, measures sticky height and forwards preference commands. Global preferences follow [presentation.md](presentation.md).
+- `components/web/animated_icons.html`, `styles/animated-icons.css`, `scripts/animated-icons.js`: shared link artwork, fallback, hover/focus playback intent and final-frame reduced motion. Asset loading and variants are owned by UI.assets (see [presentation.md](presentation.md)).
+- `components/web/social.html` and `styles/social.css`: Follow & Connect content, shared radial fill, icon geometry and contextual contrast. The parent controls placement; no separate player or preference state.
 
 ## Usage
 
-The builder will load `brand.json` and `navigation.json` from the same immutable EP Brand version and pass them to the templates, along with project-specific section references. Example (Jinja):
+Load brand and navigation from the same immutable EP Brand version. The canonical landing destination is `brand.website`; `legacy_website` is historical only. Section roles home/about/portfolio resolve to IDs in `navigation.sections` through `navigation.landing_href`. Do not hardcode fragments or repeat URLs. The builder must verify actual target sections before publication.
 
 ```jinja
 {% import 'components/web/header.html' as h %}
 {% import 'components/web/footer.html' as f %}
+{% import 'components/web/social.html' as s %}
 {{ h.landing_header(brand,navigation) }}
-{{ f.footer(brand,navigation,landing_url,logo_src,privacy_href,terms_href,year=2026) }}
+{# Place Follow & Connect at the end of the Contact section. #}
+{{ s.follow_connect(brand,navigation,'contact') }}
+{{ f.footer(brand,navigation,'',logo_src,privacy_href,terms_href) }}
 ```
 
-For reports, call `h.header(brand,navigation,sections,home_href,back_href)`. Each section has `label` (a shared or content translation key) and `href` (a local hash); sections on the page have matching IDs and `data-ui-section`. The header measures `--ui-sticky-offset`. `back_href` is the single link back to the portfolio's all-projects section. `landing_url` is empty on the landing page and the resolved portfolio URL/path in reports; it must not contain a fragment. `logo_src` must resolve the canonical `assets/logos/logo_initials.png` from the same version, and `privacy_href`/`terms_href` must point to the real published destinations. No placeholder legal content, transport or page-builder logic is introduced here. The builder must validate required destinations before publication.
+Report composition:
 
-Desktop header: Home, Selected Projects, All Projects, About Me, Contact and GitHub (click disclosure). Report sections are supplied by the consumer. The compact trigger is text-only, and the exact same links are moved into the native disclosure when width is insufficient or at 670px and below. A nested GitHub menu reuses canonical disclosure behavior. The report return link stays visible. No JavaScript leaves native links available. The header entrance uses the shared motion primitive and never replays just for translation.
+```jinja
+{{ h.report_header(brand,navigation,sections) }}
+{{ f.footer(brand,navigation,none,logo_src,privacy_href,terms_href,report=true) }}
+```
 
-Footer: 12-column layout, institutional bio and radial Learn More, editorial navigation and repositories, social links, legal links and persistent-underlined Back to Top. Titles and descriptions remain in one aligned content block. The approved optical scales for navigation Lotties are Home 136%, Award 100%, All Projects 95%, About Me 180%, Contact 80%. Footer artwork uses theme-rest and copper-hover variants. Social labels and icons stack at narrow widths; all legal text shares the copyright font size. The logo, copy, destinations and artwork must be verified in the integrated page. The legacy Markdown footers are independent and unchanged.
+`sections` contains project-local translation keys and local hash hrefs, matching `data-ui-section` IDs. For local fixtures a resolved landing URL without fragment can be supplied to both report macros; `none` selects `brand.website`. The footer logo and Header EP. resolve to the same home role as Navigation/Home. Back to Portfolio is present once in every report Header and points to the portfolio role. Back to Top targets the current `#top`, after Terms of Use, in report Footers only. Landing Footer has neither social links nor Back to Top. Report Footer places Follow & Connect below Repositories; mobile stacks its label and icons. The shared social control uses the approved monochrome radial fill, fixed white/black over the Contact artwork and theme-aware contrast in reports. Social order is LinkedIn, GitHub, Email, Discord. Social animations loop during hover/focus; editorial animations play once. Reduced motion and inactive tabs stop at the final frame.
+
+Desktop Landing navigation preserves Home, Selected Projects, All Projects, About Me, Contact and GitHub click disclosure. Report sections are contextual. At insufficient width (including 670px and below), the same tree moves into the compact disclosure; native links remain without JS. The header measures `--ui-sticky-offset`; entry uses shared motion and does not replay for translation. The 12-column Footer retains institutional bio, Learn More, Navigation and Repositories, editorial title/description geometry and legal typography. Editorial optical scales: Home 136%, Award 100%, All Projects 95%, About Me 180%, Contact 80%. Editorial icons use theme-rest/copper-hover. `logo_src` resolves the canonical logo; legal URLs must be real destinations supplied by the builder, not placeholders. No document migration or legal content is generated here.
 
 ## Validation
 
-`python3 tests/support.py` runs previous suites and `test_shell.py`: light/dark desktop, language/theme controls, active scroll section, nested disclosure/Escape, compact Landing and report layouts, resize and unique link tree, footer editorial geometry, legal destinations, real Lottie SVG and optical scales, one runtime, reduced motion, and no-JS links. Browser fixtures are not production pages. Visual acceptance is reserved for the actual GitHub Pages deployment.
+Run `python3 tests/support.py` with canonical assets and the supported browser. Shell fixtures cover contextual destinations, social placement/order, desktop and compact navigation, themes/locales, native fallback and real shared Lottie playback. Local tests are technical checks only. Final visual acceptance requires integrated GitHub Pages publication.

@@ -63,9 +63,12 @@ def load_page(page, body, theme='dark', *, css='', scripts=True, local=None, lot
             route.fulfill(status=404,body='Not found'); return
         route.fulfill(status=200,content_type=mimetypes.guess_type(file.name)[0] or 'application/octet-stream',body=file.read_bytes())
     page.route(ORIGIN+'/**',serve)
-    page.goto(ORIGIN+'/fixture',wait_until='domcontentloaded')
+    # Without deferred scripts, DOMContentLoaded can precede CSS registration.
+    # Wait for the actual stylesheet resources before requesting the canonical faces.
+    page.goto(ORIGIN+'/fixture',wait_until='load')
     assert page.evaluate('''async () => {
           await Promise.all([document.fonts.load('400 16px Inter'), document.fonts.load('600 20px Manrope')]);
+          await document.fonts.ready;
           return ['Inter','Manrope'].every(name => [...document.fonts].some(font => font.family === name && font.status === 'loaded'));
         }'''), 'Canonical fonts did not load'
     assert not _BROWSER_ERRORS.get(page.context.browser), _BROWSER_ERRORS.get(page.context.browser)
@@ -108,7 +111,7 @@ def validate_contract():
         assert not re.search(r'data-(?:singular|plural|play|pause)=',source),name
     assert all((ROOT/'assets'/path).is_file() for spec in DEPENDENCIES['lottie']['animations'].values() for path in ([spec['file']] if 'file' in spec else spec['variants'].values()))
     # Header and Footer are consumers, not preference or animation loaders.
-    for name in ('header','footer'):
+    for name in ('header','animated-icons'):
         source = (ROOT/'scripts'/f'{name}.js').read_text()
         assert not re.search(r'\b(?:fetch|loadAnimation|document\.documentElement\.lang)\b',source),name
         css = (ROOT/'styles'/f'{name}.css').read_text()
@@ -117,6 +120,9 @@ def validate_contract():
     nav = json.loads((ROOT/'config/navigation.json').read_text())
     labels = dictionaries()['en']
     assert len({item['id'] for item in nav['sections']}) == len(nav['sections'])
+    assert sorted(item['role'] for item in nav['sections'] if 'role' in item) == ['about','home','portfolio']
+    assert [item['brand_key'] for item in nav['social']] == ['linkedin','github','email','discord']
+    assert brand['website'] != brand['legacy_website']
     for item in nav['sections']+nav['github']+nav['repositories']+nav['social']:
         if 'brand_key' in item: assert item['brand_key'] in brand,item
         if 'animation' in item: assert item['animation'] in DEPENDENCIES['lottie']['animations'],item

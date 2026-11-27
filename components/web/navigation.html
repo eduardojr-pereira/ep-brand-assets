@@ -38,3 +38,6 @@
 {% macro area_option(label, value, selected=false) -%}
 <button type="button" class="ui-link ui-dropdown__item" data-ui-filter-value="{{ value }}" aria-pressed="{{ 'true' if selected else 'false' }}">{{ weight(label) }}<span class="ui-area-check" aria-hidden="true" data-ui-check><svg class="ui-area-check__fallback" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="m6 12 4 4 8-8"/></svg><span data-ui-check-player></span></span></button>
 {%- endmacro %}
+{% macro landing_href(navigation, role, base='') -%}
+{{ base }}#{{ (navigation.sections|selectattr('role','defined')|selectattr('role','equalto',role)|first).id }}
+{%- endmacro %}
