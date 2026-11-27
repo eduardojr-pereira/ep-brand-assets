@@ -5,9 +5,6 @@
 
 .ui-interactive-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 :is(.ui-catalog,.ui-selected,.ui-marquee) [hidden] { display:none !important; }
-.ui-badges { display:flex; flex-wrap:wrap; align-items:center; gap:10px 15px; }
-.ui-badges .ui-badge-link { display:block; min-width:0; max-width:100%; }
-.ui-badges img { display:block; height:var(--ui-badge-height,22px); width:auto; max-width:100%; object-fit:contain; }
 .ui-catalog__controls { display:flex; align-items:center; gap:clamp(16px,2.2vw,34px); flex-wrap:wrap; padding-bottom:16px; border-bottom:1px solid var(--ui-color-border); margin-bottom:18px; }
 .ui-catalog__collections { display:flex; gap:clamp(8px,1.1vw,18px); flex-wrap:wrap; font-size:.84rem; }
 .ui-catalog__area { flex:0 1 230px; min-width:0; }

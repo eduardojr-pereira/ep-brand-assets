@@ -1271,7 +1271,8 @@
         "id": "ep-muted-pastel",
         "index": 0
       },
-      "dark_contrast": 5.77
+      "dark_contrast": 5.77,
+      "legacy_only": true
     },
     {
       "id": "time_series_cv_pt_br",
@@ -1306,7 +1307,8 @@
         "id": "ep-muted-pastel",
         "index": 0
       },
-      "dark_contrast": 5.77
+      "dark_contrast": 5.77,
+      "legacy_only": true
     },
     {
       "id": "adobe_after_effects",
@@ -1503,7 +1505,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "supplementary_resources_pt_br",
@@ -1539,7 +1542,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "python_programming_en",
@@ -1575,7 +1579,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "python_programming_pt_br",
@@ -1611,7 +1616,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "data_analytics_en",
@@ -1647,7 +1653,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "data_analytics_pt_br",
@@ -1683,7 +1690,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "statistics_en",
@@ -1719,7 +1727,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "statistics_pt_br",
@@ -1755,7 +1764,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "relational_nosql_databases_en",
@@ -1791,7 +1801,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "relational_nosql_databases_pt_br",
@@ -1827,7 +1838,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "machine_learning_en",
@@ -1863,7 +1875,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "machine_learning_pt_br",
@@ -1899,7 +1912,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "natural_language_processing_en",
@@ -1935,7 +1949,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "natural_language_processing_pt_br",
@@ -1971,7 +1986,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "deep_learning_en",
@@ -2007,7 +2023,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "deep_learning_pt_br",
@@ -2043,7 +2060,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "image_analysis_classification_en",
@@ -2079,7 +2097,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "image_analysis_classification_pt_br",
@@ -2115,7 +2134,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "recommender_systems_en",
@@ -2151,7 +2171,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "recommender_systems_pt_br",
@@ -2187,7 +2208,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "big_data_distributed_processing_en",
@@ -2223,7 +2245,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     },
     {
       "id": "big_data_distributed_processing_pt_br",
@@ -2259,7 +2282,8 @@
         "id": "ep-lipari-adapted",
         "index": 4
       },
-      "dark_contrast": 6.49
+      "dark_contrast": 6.49,
+      "legacy_only": true
     }
   ]
 }

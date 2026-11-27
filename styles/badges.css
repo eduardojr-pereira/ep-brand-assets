@@ -1,0 +1,7 @@
+/* Responsibility: Shared badge group geometry and informational method tags.
+ * Graphical badge artwork is generated offline; global theme owns semantic colors. */
+.ui-badges { display:flex; flex-wrap:wrap; align-items:center; gap:10px 15px; }
+.ui-badges .ui-badge-link { display:block; min-width:0; max-width:100%; }
+.ui-badges img { display:block; height:var(--ui-badge-height,22px); width:auto; max-width:100%; object-fit:contain; }
+.ui-method-badges { gap:var(--ui-space-2); }
+.ui-method-badge { display:inline-block; max-width:100%; padding:var(--ui-space-1) var(--ui-space-2); border:1px solid var(--ui-color-border); color:var(--ui-color-text); font:var(--ui-weight-medium) var(--ui-text-xs)/1.4 var(--ui-font-body); overflow-wrap:anywhere; }

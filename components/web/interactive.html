@@ -1,13 +1,11 @@
-{# Responsibility: Canonical Jinja structures for cards, badges, carousels and marquee.
+{# Responsibility: Canonical Jinja structures for cards, carousels and marquee.
    Consumer supplies project content and asset paths; shared labels use the global dictionary. #}
 
 {% import 'components/web/localization.html' as t %}
 {% import 'components/web/navigation.html' as n %}
 {% import 'components/web/buttons.html' as b %}
 {% import 'components/web/editorial.html' as e %}
-{% macro badges(items) -%}
-{% if items %}<div class="ui-badges">{% for item in items %}{% if item.href %}<a class="ui-badge-link" href="{{ item.href }}">{% endif %}<img src="{{ item.src }}" alt="{{ t.value(item.label) }}"{{ t.binding(item.label,"alt") }} {% if item.en_src and item.pt_br_src %} data-en-src="{{ item.en_src }}" data-pt-br-src="{{ item.pt_br_src }}"{% endif %}{% if item.light and item.dark %} data-light-src="{{ item.light }}" data-dark-src="{{ item.dark }}"{% endif %} loading="lazy" decoding="async">{% if item.href %}</a>{% endif %}{% endfor %}</div>{% endif %}
-{%- endmacro %}
+{% from 'components/web/badges.html' import badges %}
 {% macro project_card(project) -%}
 <article class="ui-project-card" data-ui-project data-collection="{{ project.collection }}" data-areas="{{ project.areas|join(' ') }}" data-search="{{ search_text([project.title, project.description, project.collection_label, project.search|default('')] + (project.topics|default([],true)|list) + (project.badges|default([],true)|map(attribute='label')|list) + (project.links|default([],true)|map(attribute='label')|list)) }}">
 <div class="ui-project-card__head">{{ e.eyebrow(project.collection_label) }}</div>

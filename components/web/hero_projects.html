@@ -3,11 +3,11 @@
 {% import 'components/web/localization.html' as t %}
 {% import 'components/web/editorial.html' as e %}
 {% import 'components/web/navigation.html' as n %}
-{% import 'components/web/interactive.html' as i %}
+{% from 'components/web/badges.html' import badges %}
 {% macro hero_projects(project, id='project-intro') -%}
 <section class="ui-project-hero" id="{{ id }}" data-ui-section aria-labelledby="{{ id }}-title">
 <div class="ui-project-hero__meta" data-motion="fade" data-scroll-trigger="once">
-{{ e.eyebrow(project.category) }}{{ i.badges(project.licenses|default([],true)) }}
+{{ e.eyebrow(project.category) }}{{ badges(project.licenses|default([],true)) }}
 </div>
 <div class="ui-project-hero__title" data-motion="reveal-up" data-scroll-trigger="once">{{ e.project_title(project.title,1,id+'-title') }}{{ e.project_subtitle(project.subtitle|default(none)) }}</div>
 <div class="ui-project-hero__details{% if not project.business_context and not project.objectives %} ui-project-hero__details--single{% endif %}">
@@ -20,6 +20,6 @@
 {% if project.objectives %}<div class="ui-project-hero__group">{{ e.minor_heading(message('shared.project.objectives')) }}<ul class="ui-project-description ui-project-hero__objectives">{% for objective in project.objectives %}<li{{ t.binding(objective) }}>{{ t.value(objective) }}</li>{% endfor %}</ul></div>{% endif %}
 </div>{% endif %}
 </div>
-{% if project.technologies %}<div class="ui-project-hero__technologies" data-motion="fade" data-scroll-trigger="once">{{ e.minor_heading(message('shared.project.technologies')) }}{{ i.badges(project.technologies) }}</div>{% endif %}
+{% if project.technologies %}<div class="ui-project-hero__technologies" data-motion="fade" data-scroll-trigger="once">{{ e.minor_heading(message('shared.project.technologies')) }}{{ badges(project.technologies) }}</div>{% endif %}
 </section>
 {%- endmacro %}

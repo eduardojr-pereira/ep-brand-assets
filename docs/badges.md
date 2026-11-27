@@ -4,7 +4,7 @@
 
 This library supports educational documentation, technology identification and noncommercial portfolio projects.
 
-81 SVG badges: 48 technologies, 3 licenses, 6 localized statuses, 22 localized topics and 2 localized methods. The 44 prepared PNG icons live in `assets/icons/technologies/`; original source files are preserved in its `originals/` subdirectory for provenance and future regeneration. They are not additional badge libraries.
+81 preserved SVGs: 57 active (48 technologies, 3 licenses, 6 localized statuses) and 24 compatibility-only assets (22 localized topics, 2 localized methods). Compatibility-only entries are not used in new report composition and are retained until all existing consumers have migrated and their references are verified. The 44 prepared PNG icons live in `assets/icons/technologies/`; original source files are preserved in its `originals/` subdirectory for provenance and future regeneration. They are not additional badge libraries.
 
 ## Visual specification
 
@@ -12,7 +12,7 @@ Flat-square SVG, height 20 px, icon box 14 × 14 px, 11 px Verdana/DejaVu Sans t
 
 ## Usage and maintenance
 
-The generated SVGs and their prepared icons are preserved. The former badge generator was removed with the legacy web implementation; regeneration requires a canonical tool before it can be performed again. Original sources, SHA-256 hashes, crop parameters and rights-review state are recorded in that manifest. Do not edit generated SVGs manually.
+The generated SVGs and their prepared icons are preserved. `config/badges.json` is the source of metadata and provenance. `tools/badge_catalog.py` validates IDs/paths and owns technology ordering. `tools/render_badges.py` generates SVGs from the catalog and prepared PNGs; original sources, SHA-256 hashes, crop parameters and rights-review state remain recorded. Do not edit generated SVGs manually.
 
 Markdown: `![Python](relative/path/to/assets/badges/technologies/python.svg)` (adjust relative path for the consumer). Cross-repository references must use the canonical published paths. HTML: `<img src="relative/path/to/assets/badges/technologies/python.svg" alt="Python" height="20">`; standalone builds may embed the canonical SVG as a data URI. Do not maintain independent copies as sources.
 
@@ -111,7 +111,7 @@ Source attribution does not constitute a grant of additional rights.
 
 ## Website integration
 
-The current library contains 81 SVG badges.
+The current library preserves 81 SVGs (57 active and 24 compatibility-only). The following inventory records the preserved paths, not a requirement to render every category.
 
 | Category | Badge | Path |
 |---|---|---|
@@ -140,7 +140,7 @@ The current library contains 81 SVG badges.
 | topics | Big Data & Distributed Processing | `assets/badges/topics/big_data_distributed_processing_en.svg` |
 | topics | Big Data e Processamento Distribuído | `assets/badges/topics/big_data_distributed_processing_pt_br.svg` |
 
-The shared `badges(items)` macro in `components/web/interactive.html` consumes canonical asset paths. The shared asset service applies explicit image variants. The future builder resolves canonical catalog paths and standalone embedding where required.
+The shared `badges(items)` and `method_badges(items)` macros in `components/web/badges.html` consume canonical paths and localized labels. The shared asset service applies explicit image variants. The future builder resolves catalog paths and standalone embedding where required.
 
 Generated HTML is a consumer of the canonical library,
 not an independent source of badge artwork.
@@ -148,67 +148,47 @@ not an independent source of badge artwork.
 <!-- EP-BADGES-LOTE-20261124 -->
 Revisão visual local: imagens diretas (incluindo PyTorch), ícones PyPI genéricos e cinco ícones de ferramentas; Surprise tipográfico. Direitos de uso das marcas pendentes.
 
-## Approved category rules
+## Current category rules (7C)
 
-| Category | READMEs | Showcase and report HTML | Current SVG count |
+| Category | READMEs | New report/showcase composition | Preserved SVGs |
 |---|---|---|---:|
-| Technologies | Yes | Yes | 48 |
-| Licenses | Yes | Yes | 3 |
-| Status | Yes | Yes | 6 |
-| Topics | No | Yes | 22 |
-| Methods | No | Yes | 2 |
-| Total | | | 81 |
+| Technologies | Yes | Graphical badges; report Hero | 48 |
+| Licenses | Yes | Graphical links; code/content in Hero, data in Data Source | 3 |
+| Status | Yes | Graphical badges only for evidenced status | 6 |
+| Topics | No | Text links to Knowledge Base, without arrows | 22 compatibility-only |
+| Methods | No | Informational text tags via canonical HTML/CSS | 2 compatibility-only |
+| Total | | 57 active | 81 |
 
-Topics are limited to the eleven official Knowledge Base areas (00–10), with EN/PT-BR pairs. Numbers identify areas in the catalog, not in badge labels. Keep the existing `data_analytics` path for area 02. Methods describe actual methods used in a project; create EN/PT-BR pairs only as needed. Technologies and Methods are extensible without a predetermined limit. Do not add Topics or Methods to README badge displays. The inventory above describes the approved baseline, not a maximum.
+The retained Topics/Methods SVGs and catalog metadata are marked `legacy_only`; `active_entry()` refuses them for new graphical badge selection. They are not candidates for new generation. Retain the existing assets until consumer migration and reference validation permit removal. No SVG is deleted or rewritten by 7C. The eleven KB areas (00–10) remain the source of Topic links; the stable `data_analytics` ID/path remains intact in the compatibility inventory. Old embedded graphics and historical releases cannot be proven absent using textual reference searches alone. Review actual published consumers in the migration/publication phase before authorizing removal.
 
-### Approved color specification
+### Approved graphical style
 
-Each cell lists background / foreground. Colors are case-insensitive hex values.
+- Flat-square SVG, height 20 px, text 11 px Verdana/DejaVu Sans, variable width recorded per entry. Verify text fit before adding/changing widths.
+- Icon + name: 24 px white tile, 14 × 14 px icon box, existing original/prepared artwork and approved per-entry colors. Direct image: 18 px high area with 2 px side padding, white background, no repeated text; preserve artwork proportions. The five approved direct artwork entries remain unchanged. Surprise is the approved text-only technology (copper `#9D603B`, white text). Other text-only choices require explicit approval.
+- The generic PyPI artwork is explicitly approved for ipykernel, ipywidgets, nbformat and NLTK; it is not their official logo. Other ecosystem substitutions require approval and provenance. Preserve distinct Apache Spark and PySpark IDs even when their artwork is identical.
+- Licenses use the approved mineral blue pair (`#505B7A` / `#FFFFFF` light; `#9EA7C4` / `#242424` dark) and inverse monochrome prefix. Status colors are unchanged in the manifest. Data license never implies a license for authored code or content.
+- Contrast at least 4.5:1 for rendered text, including both adaptive variants and license prefixes. Direct artwork is not a text badge. Rights-review entries remain unchanged and unresolved rights require review before public use.
 
-| Element | Light | Dark | Origin |
-|---|---|---|---|
-| License identifier (all licenses) | `#505B7A` / `#FFFFFF` | `#9EA7C4` / `#242424` | EP LipariS Adapted, index 4 (zero-based) |
-| License prefix | `#000000` / `#FFFFFF` | `#FFFFFF` / `#000000` | Inverse monochrome |
-| Topics | `#505B7A` / `#FFFFFF` | `#9EA7C4` / `#242424` | EP LipariS Adapted, index 4 |
-| Methods | `#427C83` / `#FFFFFF` | `#7CA5A8` / `#242424` | EP Muted Pastel, index 0 |
-| Passed / Aprovado | `#26733C` / `#FFFFFF` | `#26733C` / `#FFFFFF` | Existing semantic status color |
-| Partial / Parcial | `#E8D58A` / `#242424` | `#E8D58A` / `#242424` | Approved exception to analytical colormaps |
-| Pending / Pendente | `#D86E5E` / `#242424` | `#D86E5E` / `#242424` | EP LipariS Adapted, dark index 5 |
-| Text-only technology | `#9D603B` / `#FFFFFF` | `#9D603B` / `#FFFFFF` | EP copper |
+### Consumption and ordering
 
-All license identifiers use mineral blue; Code License, Content License and Data License distinguish their scope. The Data License badge CC BY 4.0 applies only to the dataset, not to the project’s original content or code. Technologies with artwork retain their individually approved colors from `config/badges.json`. The icon tile is white. Direct artwork uses a white background. Do not extend the copper rule to Licenses, Topics, Methods or Status.
+Resolve `technology_ids(ids)` to deduplicate by canonical ID and stably partition artwork first, text-only last, preserving relative order. This applies to both HTML and Markdown. `active_entry(id)` resolves active metadata without introducing a builder. The HTML renderer receives resolved ordered `{src,label}` items, with optional `href`, `en_src`/`pt_br_src` or `light`/`dark` image pairs. Use `message(key)` for translated references; no additional preference handler. `method_badges(items)` receives a list of localized message references, renders neutral informational text, and uses theme tokens rather than per-method SVGs. Methods do not receive links. Topic links use the existing text-link primitive, and are composed in References (7E). Standalone SVGs retain `prefers-color-scheme`; explicit theme and language switching follows [presentation](presentation.md). No theme or language preference is owned by badges.
 
-### Technology formats and order
+### Maintenance commands
 
-- **Icon + name (42):** preferred when suitable artwork exists. Use a 24 px white tile and a 14 × 14 px icon box; preserve artwork proportions and approved colors. The existing manifest modes include `original`, `compacto`, `recorte de teste` and `cropped artwork`.
-- **Direct image (5):** `image_direct`; use the approved complete artwork without repeating the name as rendered text. Current entries: BeautifulSoup, openpyxl, PyTorch, scikit-learn and spaCy. Preserve proportions; the SVG is 20 px high and the image is contained within an 18 px high area with padding. Keep an accessible text label in metadata.
-- **Text only (1):** `text`; no icon, EP copper and white text. Use when no suitable logo or authorized generic symbol is available and the text-only design is approved. Surprise is the current example.
+```sh
+python tools/render_badges.py --check
+python tools/render_badges.py --check --id python
+python tools/render_badges.py --write --id python
+python tools/render_badges.py --write --all
+python tests/test_badges.py
+```
 
-The generic PyPI symbol is explicitly approved for ipykernel, ipywidgets, nbformat and NLTK; it is not their official logo. Other ecosystem substitutions require explicit approval and provenance. Joblib uses the isolated grey gear plus its name, not the previous direct image. The original artwork is retained.
+The default and `--check` are read-only. Without IDs, checks cover every preserved SVG including compatibility assets. `--write` requires `--id` or `--all`, prevalidates the selected active entries, then writes only those generated SVG paths. It never writes original/prepared artwork or changes the manifest; it does not generate legacy-only categories. `--all` explicitly selects the active catalog. No automatic regeneration during a website build. Rendering uses prepared PNG bytes and preserves the approved SVG structure; a mismatch is reported instead of silently overwriting existing artwork. Verification checks metadata, source hashes, embedded PNGs, geometry, contrast, locale pairs and catalog/path parity; visual fit, trademark rights and publication are separate checks. Use the exact generated path, do not maintain copied source assets in consumers.
 
-Deduplicate technologies by canonical ID. Stably partition the input list into entries with artwork (including direct images), followed by entries without artwork. Preserve the original relative order within both groups; do not alphabetize or use CSS ordering. Apply this same rule when preparing badge items for the HTML macro and README lists.
+### Adding or changing an active badge
 
-### Themes, localization and consumers
+1. Reuse existing canonical ID if possible. For a new technology, obtain suitable traceable artwork and confirm rights; store original under `assets/icons/technologies/originals/` and prepared PNG under `assets/icons/technologies/`. Record original hash, crop, provenance, approval and rights state using the manifest schema.
+2. Enter the approved format, dimensions and colors in `config/badges.json` (same schema as comparable active entry). For text-only technology, explicit approval, `mode: text`, `icon: null`, `approved_text_only: true`; for direct image, `mode: image_direct`. Preserve source files and stable IDs. Do not invent aliases or change an existing ID. Verify font fit and image geometry.
+3. Generate that ID with `--write --id`, verify the catalog with `--check` and run `tests/test_badges.py`; review the diff, theme and locale behavior and affected consumer paths. Update provenance/rights documentation when adding or changing artwork. Only regenerate all by deliberate choice. Publish only authorized changes and verify public asset references. No new Topic/Method SVG is needed.
 
-Standalone SVGs use `prefers-color-scheme`. `UI.assets` selects explicit light/dark or EN/PT-BR source pairs. Localized badges use `_en` and `_pt_br` IDs/paths; supply canonical resolved `src`, `label` and optional `en_src`/`pt_br_src` or `light`/`dark` pairs to `badges(items)`. The builder will resolve paths from the same library version. Never maintain an independent source of artwork in a consumer. Regenerate embedded HTML after catalog changes. README references retain canonical published paths; updates depend on publication and caching. GitHub's selected theme may differ from the browser color scheme: validate both after publication; this is not yet confirmed. No existing README paths are removed.
-
-## Adding or updating a badge
-
-1. Search `config/badges.json` for the canonical ID, label, aliases and path before creating an entry. Reuse an existing badge when possible. Identify the category and the allowed consumers. Add Methods or Technologies only when needed; do not expand the official Topics list without an approved area change.
-2. Select the appropriate technology format or localized category. Obtain suitable artwork from a traceable source. Check the license and trademark terms before public use; a source URL alone does not grant rights. Preserve the original under `assets/icons/technologies/originals/` and the prepared PNG under `assets/icons/technologies/`. Record the original SHA-256, any crop and the rights-review status. Do not misrepresent generic artwork as an official logo.
-3. Follow the visual specification and category colors above. Keep a 20 px SVG height, suitable variable width and 11 px text; avoid clipping, distortion and redundant names. For text-only technology, set `icon` to null, `mode` to `text`, and `approved_text_only` to true only after approval. For direct artwork, use `image_direct` and a prepared PNG. For localized Topics, Methods and Status, preserve paired EN/PT-BR entries.
-4. Add or update the manifest entry, using the same schema as a comparable existing entry: `id`, `category`, `path`, `label`, `background`, `foreground`, `contrast`, `width`, `icon`, `mode`, `source`, `source_path`, `source_sha256`, `visible_icon_size_px`, `crop`, `note`, `rights_review`, `approved_text_only`. For adaptive colors also use `theme_colors`, `theme_palette` and `dark_contrast`; for split licenses use `prefix`, `prefix_width` and `theme_prefix`; Topics include `area`. Calculate contrast from actual colors, not copied metadata. Keep IDs and paths stable and unique. Do not silently rename a published badge.
-5. Regeneration is pending a canonical badge maintenance tool and its dedicated validation. Do not regenerate or hand-edit the preserved SVGs using the removed legacy scripts. Verify any authorized changes with the current repository checks.
-
-6. Check the generated SVGs against the manifest, including uniqueness of IDs, labels and paths, 20 px height, artwork proportions, text fit, readable foreground/background contrast (at least 4.5:1 for text), light/dark variants, and localized pairs. Preview both themes and languages where applicable. Check stable ordering and aliases. Review all affected README and HTML references, rebuild HTML consumers, and test their actual theme/language switches.
-7. Update this document's inventory, source/rights table and category details as applicable. Extend regression tests if a new rule, alias or format needs coverage; future dedicated badge tests should iterate over manifest entries and enforce the official eleven-area Topics set. Review any other fixed-count validation in packaging scripts rather than treating the baseline count as a permanent limit.
-8. Obtain visual approval, resolve rights issues before public use, and commit only the approved catalog, original/prepared assets, generated SVGs, relevant tests/documentation and necessary consumer changes. Coordinate publication of the central assets before dependent references. Verify public URLs and both GitHub themes after publication. Do not publish or push without authorization.
-
-## Report references and reproducibility — approved reusable layout
-
-- In the introduction, render only the applicable linked code/content license badges after the description (`render_report_licenses`). Do not place technology or method badges there.
-- Render the data source in its own card, including a linked dataset-license badge when the actual license is known. Never imply the dataset license applies to code or authored analysis.
-- The adjacent Technical References card uses `render_references` with `technical_tabs: true`, `knowledge_base` (bilingual labels and HTTPS area links), `methods` (canonical localized base IDs), and `technologies` (canonical technology names, preferably from project metadata). Topics are clickable without arrows; methods and technologies are informational. Only nonempty tabs are rendered. Order: Topics, Methods, Technologies (PT-BR: Tópicos, Métodos, Tecnologias). The Topics tab retains links to the Knowledge Base; only the visible tab label changes. A project without data/source cards uses the full width.
-- The shared `references.css` and `references.js` implement responsive tabs beside the Technical References heading where space permits, a copper sliding indicator, and a continuous 5-second rotation through nonempty tabs. Badges enter together with scale 85% → 100% and opacity 0 → 100% over 250 ms, without staggering or elastic overshoot. Rotation pauses on pointer hover, keyboard focus, explicit pause, an inactive browser tab or an off-screen card; reduced-motion preferences disable both automatic rotation and transitions. The bilingual pause/resume control and keyboard navigation remain available as applicable. All panels remain readable without scripting; on narrow screens the tabs wrap below the heading and cards stack. Do not copy the component into projects.
-- Reproducibility remains outside the tabs, at full width; documentation and source-code links are adjacent. Preserve actual installation and generation instructions. Use Status only in an appropriate validation section and only when supported by actual results.
-- Regenerate the report to refresh embedded badge variants from the central catalog; publish shared CSS/JS through the existing asset builder. Verify both themes and languages. This layout applies to reports, not the showcase cards (their redesign is deferred).
+Report usage: the Hero presents linked original code/content licenses and Technologies. Data Source presents the actual linked dataset license when known. Technical References presents text Topic links and Methods tags (no tabs, automatic rotation, technology duplication or repeated Reproducibility section); implementation is 7E. Full reproducibility instructions remain in the linked project documentation. Historical SVGs remain intact until migration and removal are separately validated.

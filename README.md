@@ -54,7 +54,7 @@ The animation library includes the following Lottie assets for the new editorial
 
 ### Badge Library
 
-The centralized library contains 81 SVG badges: 48 technologies, 3 licenses, 6 statuses, 22 topics and 2 methods. Technologies, Licenses and Status may be used in READMEs and HTML; Topics and Methods are reserved for showcase and report HTML. See the [badge library documentation](./docs/badges.md).
+The centralized library preserves 81 SVGs: 57 active (48 technologies, 3 licenses, 6 statuses) and 24 compatibility-only Topics/Methods assets awaiting consumer migration. New reports use Topic text links and informational Method tags. The canonical generator is `tools/render_badges.py`. See the [badge library documentation](./docs/badges.md).
 
 > [!NOTE]
 > The asset library is versioned; integration into the new architecture is still in progress. Integrated consumer validation and coordinated publication remain pending.
@@ -147,7 +147,8 @@ ep-brand-assets/
 │       ├── animated_icons.html
 │       ├── social.html
 │       ├── editorial.html
-│       └── hero_projects.html
+│       ├── hero_projects.html
+│       └── badges.html
 ├── config/
 │   ├── badges.json
 │   ├── brand.json
@@ -176,12 +177,15 @@ ep-brand-assets/
 │   ├── footer.css
 │   ├── animated-icons.css
 │   ├── social.css
-│   └── editorial.css
+│   ├── editorial.css
+│   └── badges.css
 ├── tests/
 │   ├── support.py
 │   └── test_*.py
 ├── tools/
-│   └── presentation.py
+│   ├── presentation.py
+│   ├── badge_catalog.py
+│   └── render_badges.py
 ├── LICENSE-BRAND.md
 ├── LICENSE-CODE.txt
 ├── LICENSE-CONTENT.md
