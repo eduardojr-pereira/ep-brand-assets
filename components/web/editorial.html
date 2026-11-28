@@ -1,10 +1,11 @@
 {# Responsibility: Compose shared editorial headings, labels and project typography.
    Boundaries: Consumers supply translated references; animation uses global motion primitives. #}
 {% import 'components/web/localization.html' as t %}
-{% macro section_heading(title, description=none, id=none, level=2) -%}
+{% import 'components/web/motion.html' as motion %}
+{% macro section_heading(title, description=none, id=none, level=2, section_motion=false) -%}
 <header class="ui-section-heading">
-{% set tag = 'h1' if level == 1 else 'h2' %}<{{ tag }} class="ui-section-heading__title"{% if id %} id="{{ id }}"{% endif %} data-motion="reveal-up" data-scroll-trigger="repeat"{{ t.binding(title) }}>{{ t.value(title) }}</{{ tag }}>
-{% if description %}<p class="ui-section-heading__description" data-motion="fade" data-scroll-trigger="repeat"{{ t.binding(description) }}>{{ t.value(description) }}</p>{% endif %}
+{% set tag = 'h1' if level == 1 else 'h2' %}<{{ tag }} class="ui-section-heading__title"{% if id %} id="{{ id }}"{% endif %}{% if section_motion %}{{ motion.section() }}{% else %} data-motion="reveal-up" data-scroll-trigger="repeat"{% endif %}{{ t.binding(title) }}>{{ t.value(title) }}</{{ tag }}>
+{% if description %}<p class="ui-section-heading__description"{% if section_motion %}{{ motion.section(order=1) }}{% else %} data-motion="fade" data-scroll-trigger="repeat"{% endif %}{{ t.binding(description) }}>{{ t.value(description) }}</p>{% endif %}
 </header>
 {%- endmacro %}
 {% macro eyebrow(label) -%}

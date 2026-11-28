@@ -46,6 +46,20 @@ class RoutingTests(unittest.TestCase):
     def test_external_links_are_not_fetched(self):
         validate_links({'index.html': '<a href="https://example.com">x</a><a href="mailto:test@example.com">y</a>'}, set())
 
+    def test_complete_site_absolute_destinations(self):
+        base = 'https://example.com/portfolio/'
+        pages = {'index.html': '<a href="https://example.com/portfolio/reports/demo/#overview">Report</a>',
+                 'reports/demo/index.html': '<main id="overview"><a href="https://example.com/portfolio/">Home</a></main>'}
+        validate_links(pages, set(), site_base=base)
+        for href in ('https://example.com/portfolio/missing.html',
+                     'https://example.com/portfolio/reports/demo/#missing',
+                     'https://example.com/portfolio/../outside.html',
+                     'https://example.com/portfolio/reports/demo/?q=1',
+                     'https://example.com/portfolio/%2e%2e/index.html'):
+            with self.subTest(href=href), self.assertRaises(ValueError):
+                validate_links({**pages, 'index.html': f'<a href="{href}">x</a>'}, set(), site_base=base)
+        validate_links({'index.html': '<a href="https://example.com/other/">Other</a>'}, set(), site_base=base)
+
     def test_local_poster_cite_and_svg_fragment(self):
         html = '<video poster="media/poster.png"></video><q cite="source.html">x</q><svg><path id="ring"/><use xlink:href="#ring"/></svg>'
         validate_links({'index.html': html, 'source.html': '<p>Source</p>'}, {'media/poster.png'})

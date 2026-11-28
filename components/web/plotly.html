@@ -7,3 +7,6 @@
 {% if fallback %}<div class="ui-plotly__fallback" data-ui-plotly-fallback{{ t.binding(fallback) }}>{{ t.value(fallback) }}</div>{% endif %}
 </div>
 {%- endmacro %}
+{% macro prepared_chart(spec) -%}
+{{ chart(spec.id,spec.label,spec.fallback) }}{{ spec.payload }}
+{%- endmacro %}

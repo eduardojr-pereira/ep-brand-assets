@@ -247,30 +247,6 @@
       "approved_text_only": false
     },
     {
-      "id": "java",
-      "category": "technologies",
-      "path": "assets/badges/technologies/java.svg",
-      "label": "Java",
-      "background": "#a63e31",
-      "foreground": "#ffffff",
-      "contrast": 6.26,
-      "width": 57,
-      "icon": "assets/icons/technologies/java.png",
-      "mode": "compacto",
-      "source": "https://github.com/devicons/devicon/blob/master/icons/java/java-original.svg",
-      "source_path": "assets/icons/technologies/originals/java.svg",
-      "source_sha256": "7582e518a9c02425f97155e5a3bd39d1a3a7d421b78caf9c8df7443dad3edc5d",
-      "visible_icon_size_px": [
-        10.33,
-        14.0
-      ],
-      "crop": null,
-      "note": "Direitos Oracle pendentes; não publicar sem conferência.",
-      "rights_review": "pending",
-      "approved_text_only": false,
-      "source_review_evidence": "Exact Devicon original Git blob match: 051bf254ad782820627890ef2b0e06fbae63dc6e; trademark rights separate."
-    },
-    {
       "id": "joblib",
       "category": "technologies",
       "path": "assets/badges/technologies/joblib.svg",

@@ -1,0 +1,78 @@
+{# Responsibility: Compose the portfolio landing using canonical components and consumer-owned content.
+   Boundaries: No hardcoded project metadata, analytical computation, preference ownership or submission service. #}
+{% import 'components/web/localization.html' as t %}
+{% import 'components/web/motion.html' as motion %}
+{% import 'components/web/editorial.html' as e %}
+{% import 'components/web/interactive.html' as i %}
+{% import 'components/web/navigation.html' as n %}
+{% import 'components/web/buttons.html' as b %}
+{% import 'components/web/disclosure.html' as d %}
+{% import 'components/web/social.html' as s %}
+{% set c=landing['copy'] %}
+<section class="ui-landing-hero" id="home" data-ui-section aria-labelledby="landing-hero-title">
+  <div class="ui-landing-hero__main">
+    <h1 id="landing-hero-title" class="ui-landing-hero__headline">
+      {% for key in ['one','two','three'] %}<span data-motion="{{ 'reveal-right' if loop.index==2 else 'reveal-left' }}" data-scroll-trigger="load"{{ t.binding(c['hero.'+key]) }}>{{ t.value(c['hero.'+key]) }}</span>{% endfor %}
+    </h1>
+    {% if landing.selected %}<div class="ui-landing-hero__orbit" data-motion="fade" data-scroll-trigger="load">{{ b.orbit_link('hero-selected',message('shared.action.selected'),message('shared.action.selected_ring'),'#selected-works') }}</div>{% endif %}
+  </div>
+  <div class="ui-landing-hero__bottom" data-motion="fade" data-scroll-trigger="load"><span>{{ brand.name }}</span><p{{ t.binding(c['hero.description']) }}>{{ t.value(c['hero.description']) }}</p></div>
+</section>
+<section class="ui-landing-section ui-landing-selected" id="selected-works" data-ui-section aria-labelledby="landing-selected-title">
+  {{ e.section_heading(message('shared.action.selected'),c['selected.description'],'landing-selected-title',section_motion=true) }}
+  {{ i.selected_projects(landing.selected,true) }}
+</section>
+<section class="ui-landing-section ui-landing-catalog" id="all-projects" data-ui-section aria-labelledby="landing-catalog-title">
+  {{ e.section_heading(message('shared.nav.all_projects'),c['catalog.description'],'landing-catalog-title',section_motion=true) }}
+  {{ i.catalog('landing-catalog',landing.projects,landing.areas,true) }}
+  <p class="ui-landing-catalog__note"{{ motion.section(order=1) }}{{ t.binding(c['catalog.foot']) }}>{{ t.value(c['catalog.foot']) }}</p>
+</section>
+{{ i.marquee(brand.email,'#contact',true) }}
+<section class="ui-landing-section ui-landing-about" id="about" data-ui-section aria-labelledby="landing-about-title">
+  {{ e.section_heading(message('shared.nav.about'),c['about.description'],'landing-about-title',section_motion=true) }}
+  <div class="ui-landing-about__composition">
+    <div class="ui-landing-about__portrait"{{ motion.section('reveal-left',order=1,entry='in-view') }}><img src="{{ landing.media.portrait }}" alt="{{ t.value(c['about.alt']) }}"{{ t.binding(c['about.alt'],'alt') }} loading="lazy" decoding="async" width="1089" height="1445"></div>
+    <div class="ui-landing-about__panels" data-ui-disclosure-required{{ motion.section(order=2) }}>
+      {% for panel in landing.about %}{% call d.indexed_item(loop.index,panel.label,loop.first,'landing-about') %}
+      <div class="ui-landing-about__copy">{{ e.eyebrow(panel.eyebrow) }}<h3{{ t.binding(panel.title) }}>{{ t.value(panel.title) }}</h3><p{{ t.binding(panel.body) }}>{{ t.value(panel.body) }}</p><small{{ t.binding(panel.detail) }}>{{ t.value(panel.detail) }}</small>{% if panel.link %}{{ n.diagonal(panel.link,brand.knowledge_base) }}{% endif %}</div>
+      {% endcall %}{% endfor %}
+    </div>
+  </div>
+</section>
+<section class="ui-landing-cta" id="cta" aria-labelledby="landing-cta-title" data-landing-cta data-ui-nav-neutral>
+  <div class="ui-landing-cta__sticky">
+    <h2 id="landing-cta-title" class="ui-landing-cta__title"{{ t.binding(c['cta.title']) }}>{{ t.value(c['cta.title']) }}</h2>
+    <div class="ui-landing-cta__stage" data-landing-stage>
+      <video data-landing-video muted loop playsinline preload="metadata" poster="{{ landing.media.poster }}" aria-label="{{ t.value(c['cta.alt']) }}"{{ t.binding(c['cta.alt'],'aria-label') }}><source src="{{ landing.media.video }}" type="video/mp4"></video>
+      <svg aria-hidden="true" class="ui-landing-cta__curtain" viewBox="0 0 1200 600" preserveAspectRatio="none" data-landing-curtain><defs><mask id="landing-cta-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="600"><rect width="1200" height="600" fill="white" data-landing-mask-base/><g fill="black" data-landing-zoom><path data-landing-vector="0"/><path data-landing-vector="1"/></g></mask></defs><rect width="1200" height="600" class="ui-landing-cta__cover" mask="url(#landing-cta-mask)" data-landing-cover/></svg>
+      <span hidden data-landing-line="0"{{ t.binding(c['cta.line1']) }}>{{ t.value(c['cta.line1']) }}</span><span hidden data-landing-line="1"{{ t.binding(c['cta.line2']) }}>{{ t.value(c['cta.line2']) }}</span>
+      <p class="ui-landing-cta__error" data-landing-video-error hidden{{ t.binding(c['cta.error']) }}>{{ t.value(c['cta.error']) }}</p>
+      <div class="ui-landing-cta__controls">
+        <div class="ui-landing-cta__reveal" data-landing-reveal>{{ b.orbit_link('cta-contact',message('shared.action.hello'),message('shared.action.hello_ring'),'#contact','cta') }}</div>
+        <div class="ui-landing-cta__play" data-landing-video-control hidden>{{ b.radial_button(c['cta.play']) }}</div>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" id="landing-cta-outlines">{{ landing.outlines }}</script>
+</section>
+<section class="ui-landing-contact" id="contact" data-ui-section aria-labelledby="landing-contact-title" data-landing-contact>
+  <div class="ui-landing-contact__plates" aria-hidden="true"><img src="{{ landing.media.contact_base }}" alt="" decoding="async" loading="lazy" class="ui-landing-contact__base"><img src="{{ landing.media.contact_lit }}" alt="" decoding="async" loading="lazy" class="ui-landing-contact__lit"><div class="ui-landing-contact__scrim"></div></div>
+  <svg class="ui-landing-contact__beam" aria-hidden="true" data-landing-beam preserveAspectRatio="none"><defs><linearGradient gradientUnits="userSpaceOnUse" id="landing-beam-gradient"><stop offset="0" stop-color="#fff0c7" stop-opacity=".98"/><stop offset=".16" stop-color="#ffc27b" stop-opacity=".86"/><stop offset=".58" stop-color="#e9a06a" stop-opacity=".42"/><stop offset="1" stop-color="#c98d62" stop-opacity="0"/></linearGradient><filter id="landing-beam-blur" x="-20%" y="-100%" width="150%" height="300%"><feGaussianBlur stdDeviation="7"/></filter><filter id="landing-beam-core-blur" x="-20%" y="-100%" width="150%" height="300%"><feGaussianBlur stdDeviation="2.2"/></filter></defs><path data-landing-cone fill="url(#landing-beam-gradient)" filter="url(#landing-beam-blur)"/><path data-landing-core fill="url(#landing-beam-gradient)" filter="url(#landing-beam-core-blur)" opacity=".78"/></svg>
+  <div class="ui-landing-contact__grid">
+    <div class="ui-landing-contact__social"{{ motion.section(order=1,trigger='once') }}>{{ s.follow_connect(brand,navigation,'contact') }}</div>
+    <div class="ui-landing-contact__form">
+      <h2 id="landing-contact-title"{{ motion.section(trigger='once') }}{{ t.binding(c['contact.title']) }}>{{ t.value(c['contact.title']) }}</h2><p class="ui-landing-contact__intro"{{ motion.section(order=1,trigger='once') }}{{ t.binding(c['contact.intro']) }}>{{ t.value(c['contact.intro']) }}</p>
+      {# This preview validates inputs locally; no endpoint and no confirmed delivery state. #}
+      <form method="post" data-landing-form novalidate>
+        <fieldset disabled data-landing-form-fields>
+          {% for key,typ,limit in [('name','text',120),('email','email',254),('subject','text',160),('message','textarea',4000)] %}
+          <div class="ui-landing-contact__field"{{ motion.section(order=loop.index0,trigger='once') }}><label for="landing-{{ key }}"{{ t.binding(c['contact.'+key]) }}>{{ t.value(c['contact.'+key]) }}</label><div class="ui-landing-contact__control ui-underline" data-ui-focus-within>{% if typ=='textarea' %}<textarea id="landing-{{ key }}" required maxlength="{{ limit }}" placeholder="{{ t.value(c['contact.'+key+'Ph']) }}"{{ t.binding(c['contact.'+key+'Ph'],'placeholder') }} aria-describedby="landing-{{ key }}-error" rows="4"></textarea>{% else %}<input id="landing-{{ key }}" type="{{ typ }}" required maxlength="{{ limit }}"{% if key in ['name','email'] %} autocomplete="{{ key }}"{% endif %} placeholder="{{ t.value(c['contact.'+key+'Ph']) }}"{{ t.binding(c['contact.'+key+'Ph'],'placeholder') }} aria-describedby="landing-{{ key }}-error">{% endif %}</div><span id="landing-{{ key }}-error" class="ui-landing-contact__error"></span></div>
+          {% endfor %}
+          <div class="ui-landing-contact__send"{{ motion.section(order=4,trigger='once') }}>{{ b.send_action() }}</div>
+        </fieldset>
+        <p data-landing-form-status role="status" aria-live="polite"></p>
+        <p class="ui-landing-contact__note"{{ t.binding(c['contact.note']) }}>{{ t.value(c['contact.note']) }}</p>{{ n.text_link(brand.email,'mailto:'+brand.email) }}
+      </form>
+    </div>
+  </div>
+</section>

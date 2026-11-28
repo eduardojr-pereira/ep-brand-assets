@@ -1,6 +1,7 @@
 {# Responsibility: Compose optional analytical primitives, semantic figures, metrics and tables.
    Boundaries: Consumers own evidence, numbers, translations and interactive application content. #}
 {% import 'components/web/localization.html' as t %}
+{% import 'components/web/motion.html' as motion %}
 {% import 'components/web/assets.html' as assets %}
 {% import 'components/web/editorial.html' as e %}
 {% macro surface() -%}
@@ -9,8 +10,8 @@
 {% macro grid(columns=2) -%}
 <div class="ui-grid{% if columns == 3 %} ui-grid--three{% elif columns == 2 %} ui-grid--two{% endif %}">{{ caller() }}</div>
 {%- endmacro %}
-{% macro metrics(items, compact=false) -%}
-{% if items %}<div class="ui-metrics{% if compact %} ui-metrics--compact{% endif %}">{% for metric in items %}<div class="ui-metric"><strong{{ t.binding(metric.value) }}>{{ t.value(metric.value) }}</strong><span{{ t.binding(metric.label) }}>{{ t.value(metric.label) }}</span></div>{% endfor %}</div>{% endif %}
+{% macro metrics(items, compact=false, section_motion=false) -%}
+{% if items %}<div class="ui-metrics{% if compact %} ui-metrics--compact{% endif %}"{% if section_motion %}{{ motion.section(order=3) }}{% endif %}>{% for metric in items %}<div class="ui-metric"><strong{{ t.binding(metric.value) }}>{{ t.value(metric.value) }}</strong><span{{ t.binding(metric.label) }}>{{ t.value(metric.label) }}</span></div>{% endfor %}</div>{% endif %}
 {%- endmacro %}
 {% macro divider() -%}<hr class="ui-divider">{%- endmacro %}
 {% macro prose() -%}<div class="ui-prose">{{ caller() }}</div>{%- endmacro %}

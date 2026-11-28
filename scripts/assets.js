@@ -92,9 +92,10 @@
     function images() {
         const light = UI.theme.current() === 'light';
         const portuguese = UI.i18n.current() === 'pt-BR';
-        document.querySelectorAll('[data-light-src], [data-dark-src], [data-en-src], [data-pt-br-src]').forEach(image => {
+        document.querySelectorAll('[data-light-src], [data-dark-src], [data-en-src], [data-pt-br-src], [data-dark-en-src]').forEach(image => {
             const localized = portuguese ? image.getAttribute('data-pt-br-src') : image.getAttribute('data-en-src');
-            const next = localized || (light ? image.dataset.lightSrc : image.dataset.darkSrc);
+            const combined = image.getAttribute(`data-${light ? 'light' : 'dark'}-${portuguese ? 'pt' : 'en'}-src`);
+            const next = combined || localized || (light ? image.dataset.lightSrc : image.dataset.darkSrc);
             if (next && image.getAttribute('src') !== next) image.src = next;
         });
     }

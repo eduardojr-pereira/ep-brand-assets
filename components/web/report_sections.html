@@ -6,6 +6,9 @@
 {% import 'components/web/disclosure.html' as d %}
 {% import 'components/web/navigation.html' as n %}
 {% import 'components/web/badges.html' as b %}
+{% macro section(section, level=2) -%}
+<section id="{{ section.id }}" data-ui-section aria-labelledby="{{ section.id }}-title">{{ e.section_heading(message(section.title),message(section.description) if section.description else none,section.id+'-title',level) }}{{ caller() }}</section>
+{%- endmacro %}
 {% macro artifact_explorer(id,files) -%}
 {% if files %}<div class="ui-artifact-explorer" data-ui-artifact-explorer>
 {{ d.search_control(id,message('shared.artifacts.search'),message('shared.artifacts.close_search'),message('shared.artifacts.placeholder')) }}

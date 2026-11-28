@@ -13,8 +13,42 @@ def load(page, theme='dark', scripts=True):
     load_page(page, html, theme, css='section{margin:20px;min-width:0}#contact{min-height:300px}', scripts=scripts)
 
 
+def search_focus(page):
+    field=page.get_by_role('searchbox')
+    control=page.locator('.ui-catalog__search')
+    assert control.evaluate('e=>e.classList.contains("ui-underline") && e.hasAttribute("data-ui-focus-within")')
+    page.mouse.move(0,0)
+    field.focus()
+    page.wait_for_function('''e=>Math.abs(new DOMMatrix(getComputedStyle(e,'::after').transform).a-1)<.001''',arg=control.element_handle())
+    assert field.evaluate('e=>getComputedStyle(e).outlineStyle')=='none'
+    assert field.evaluate('e=>getComputedStyle(e).fontSize')=='16px'
+    assert control.locator('svg').evaluate('e=>getComputedStyle(e).color')==control.evaluate('e=>getComputedStyle(e).color')
+    field.fill('forca')
+    assert page.locator('[data-ui-project]:visible').count()==1
+    control.locator('[data-ui-clear-search]').click()
+    assert field.input_value()=='' and page.locator('[data-ui-project]:visible').count()==2
+    assert field.evaluate('e=>e===document.activeElement')
+    page.mouse.move(0,0)
+    field.blur()
+    page.wait_for_function('''e=>Math.abs(new DOMMatrix(getComputedStyle(e,'::after').transform).a)<.001''',arg=control.element_handle())
+
+
+def selected_action(page, hover=False):
+    link=page.locator('[data-ui-slide]').first.get_by_role('link',name='View Project')
+    assert link.get_attribute('href')=='#bike'
+    assert link.evaluate('e=>e.classList.contains("ui-action--pill") && !e.classList.contains("ui-underline")')
+    assert link.locator('.ui-action__fill').count()==1
+    assert link.locator('.ui-link__arrow').count()==1
+    assert link.evaluate('e=>e.getBoundingClientRect().width<=e.closest(".ui-feature__copy").getBoundingClientRect().width')
+    if hover:
+        link.hover()
+        page.wait_for_function('e=>Math.abs(new DOMMatrix(getComputedStyle(e).transform).a-1)<.001',arg=link.locator('.ui-action__fill').element_handle())
+        page.mouse.move(0,0)
+
+
 def desktop(page, theme):
     load(page,theme)
+    search_focus(page)
     cards=page.locator('[data-ui-project]:visible');assert cards.count()==2
     page.get_by_role('button',name='Learning Labs').click();assert cards.count()==1 and 'Hangman' in cards.first.inner_text()
     page.get_by_role('searchbox').fill('forca');assert cards.count()==1
@@ -25,6 +59,7 @@ def desktop(page, theme):
     link=cards.first.get_by_role('link',name='View Project');link.hover();page.wait_for_timeout(600)
     matrix=lambda loc: loc.evaluate('(e)=>{const m=new DOMMatrix(getComputedStyle(e).transform);return [m.m41,m.m42]}')
     assert matrix(link.locator('.ui-link__move'))==[8,0] and matrix(link.locator('.ui-link__arrow'))==[3,-3]
+    selected_action(page,hover=True)
     sel=page.locator('[data-ui-carousel]');assert sel.get_by_role('button',name='Previous project').is_disabled()
     sel.get_by_role('button',name='Next project').click();page.wait_for_timeout(800);assert sel.locator('[data-ui-carousel-count]').inner_text()=='02 / 02';assert sel.get_by_role('button',name='Next project').is_disabled()
     sel.get_by_role('button',name='Previous project').click();page.wait_for_timeout(800);assert sel.locator('[data-ui-carousel-count]').inner_text()=='01 / 02'
@@ -50,6 +85,8 @@ def main():
         desktop(page,'dark');page.close()
         page=new_page(browser, viewport={'width':1280,'height':900});desktop(page,'light');page.close()
         mobile=new_page(browser, viewport={'width':390,'height':844},is_mobile=True,has_touch=True,reduced_motion='reduce');load(mobile)
+        search_focus(mobile)
+        selected_action(mobile)
         assert mobile.locator('[data-ui-marquee]').get_attribute('data-ui-running') is None
         assert mobile.locator('[data-ui-evidence-toggle]').is_disabled()
         assert mobile.evaluate('document.documentElement.scrollWidth<=innerWidth')

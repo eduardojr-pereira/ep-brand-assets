@@ -8,6 +8,8 @@
     const root = document.documentElement;
     const selector = '[data-motion]:is([data-scroll-trigger="load"], [data-scroll-trigger="once"], [data-scroll-trigger="repeat"])';
     const state = 'data-ui-motion-state';
+    const inViewThreshold = .25;
+    const editorialRepeats = '[data-motion][data-motion-profile="editorial"][data-scroll-trigger="repeat"]';
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     let observer = null;
     let active = false;
@@ -38,6 +40,7 @@
                 for (const entry of entries) {
                     const element = entry.target;
                     if (entry.isIntersecting) {
+                        if (element.dataset.motionEntry === 'in-view' && entry.intersectionRatio < inViewThreshold) continue;
                         entered.add(element);
                         reveal(element);
                     } else if ((!resuming || entered.has(element)) && element.dataset.scrollTrigger === 'repeat' &&
@@ -50,7 +53,7 @@
                         }
                     }
                 }
-            }, { threshold: 0 });
+            }, { threshold: [0, inViewThreshold] });
             for (const element of document.querySelectorAll(selector)) {
                 if (element.matches(':focus-within, :target')) {
                     showImmediately(element);
@@ -99,10 +102,21 @@
     // The caller owns any fade-out and must perform the text change first.
     window.UI ??= {};
     window.UI.motion = Object.freeze({
-        replay(scope) {
+        replay(scope, { visibleEditorial = false, top = 0 } = {}) {
             if (!active || reduced.matches) return;
-            const targets = Array.from(scope.querySelectorAll('[data-motion][data-scroll-trigger="load"]'));
-            if (scope.matches?.('[data-motion][data-scroll-trigger="load"]')) targets.unshift(scope);
+            const replaySelector = visibleEditorial ? editorialRepeats : '[data-motion][data-scroll-trigger="load"]';
+            let targets = Array.from(scope.querySelectorAll(replaySelector));
+            if (scope.matches?.(replaySelector)) targets.unshift(scope);
+            if (visibleEditorial) {
+                // Do not reveal unreached content, restart offscreen sections or hide keyboard focus.
+                targets = targets.filter(element => {
+                    if (!element.hasAttribute(state) || element.matches(':focus-within, :target')) return false;
+                    const box = element.getBoundingClientRect();
+                    return box.width > 0 && box.height > 0 && box.bottom > top && box.top < innerHeight &&
+                        box.right > 0 && box.left < innerWidth && getComputedStyle(element).visibility === 'visible';
+                });
+            }
+            if (!targets.length) return;
             for (const element of targets) element.removeAttribute(state);
             // Force the reset once for the group, not once per element.
             void root.offsetWidth;

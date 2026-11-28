@@ -189,15 +189,16 @@
         }).filter(group => group.items.length);
         if (!groups.length) return;
         let frame = 0, locked = null, timer = 0;
-        const footer = document.querySelector('[data-ui-footer]');
+        const neutralAreas = [...document.querySelectorAll('[data-ui-footer], [data-ui-nav-neutral]')];
         const header = document.querySelector('[data-ui-header]');
-        function footerDominates() {
-            if (!footer) return false;
-            const offset = Math.min(innerHeight, Math.max(0, parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ui-sticky-offset')) || 0));
+        const usableOffset = () => Math.min(innerHeight, Math.max(0, parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ui-sticky-offset')) || 0));
+        function visibleHeight(area, offset) {
+            const rect = area.getBoundingClientRect();
+            return Math.max(0, Math.min(rect.bottom, innerHeight) - Math.max(rect.top, offset));
+        }
+        function neutralDominates(offset) {
             const usable = innerHeight - offset;
-            const rect = footer.getBoundingClientRect();
-            const visible = Math.max(0, Math.min(rect.bottom, innerHeight) - Math.max(rect.top, offset));
-            return usable > 0 && visible > usable / 2;
+            return usable > 0 && neutralAreas.some(area => visibleHeight(area, offset) > usable / 2);
         }
         function activate(group, item) {
             for (const entry of group.items) {
@@ -215,12 +216,18 @@
         function update() {
             frame = 0;
             const bottom = Math.ceil(window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 2;
-            const footerActive = footerDominates();
+            const top = usableOffset();
+            const neutralActive = neutralDominates(top);
+            const transitionVisible = neutralAreas.some(area => area.hasAttribute('data-ui-nav-neutral') && visibleHeight(area, top) > 0);
             for (const group of groups) {
-                if (footerActive) { activate(group, null); continue; }
+                if (neutralActive) { activate(group, null); continue; }
                 if (locked) {
                     const match = group.items.find(entry => entry.section === locked);
                     if (match) { activate(group, match); continue; }
+                }
+                if (transitionVisible) {
+                    const dominant = group.items.find(entry => visibleHeight(entry.section, top) > (innerHeight - top) / 2);
+                    if (dominant) { activate(group, dominant); continue; }
                 }
                 const offset = parseFloat(getComputedStyle(group.items[0].section).scrollMarginTop) || 0;
                 const sorted = [...group.items].sort((a, b) => a.section.getBoundingClientRect().top - b.section.getBoundingClientRect().top);
@@ -252,7 +259,7 @@
         if ('ResizeObserver' in window) {
             const geometry = new ResizeObserver(schedule);
             geometry.observe(document.body);
-            if (footer) geometry.observe(footer);
+            for (const area of neutralAreas) geometry.observe(area);
             if (header) geometry.observe(header);
             for (const group of groups) for (const item of group.items) geometry.observe(item.section);
         }
@@ -265,6 +272,18 @@
         window.addEventListener('hashchange', schedule);
         update();
     }
+    function localizedLinks() {
+        const attribute = UI.i18n.current() === 'pt-BR' ? 'data-ui-href-pt-br' : 'data-ui-href-en';
+        document.querySelectorAll('a[data-ui-href-en][data-ui-href-pt-br]').forEach(link => {
+            const href = link.getAttribute(attribute);
+            link.setAttribute('href', href);
+            if (href.startsWith('https://')) { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+            else { link.removeAttribute('target'); link.removeAttribute('rel'); }
+        });
+    }
+    document.addEventListener('ui:languagechange', localizedLinks);
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', localizedLinks, {once:true});
+    else localizedLinks();
     window.UI ??= {};
     window.UI.navigation = Object.freeze({ select });
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });

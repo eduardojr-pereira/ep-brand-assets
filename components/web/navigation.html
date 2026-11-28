@@ -12,8 +12,8 @@
 {% macro diagonal(label, href, accent=true, spread=false, underline=true) -%}
 <a href="{{ href }}"{{ external_attributes(href) }} class="ui-link ui-link--diagonal{% if underline %} ui-underline{% endif %}{% if accent %} ui-link--accent{% endif %}{% if spread %} ui-link--spread{% endif %}"><span class="ui-link__move" data-ui-label{{ t.binding(label) }}>{{ t.value(label) }}</span>{{ arrow() }}</a>
 {%- endmacro %}
-{% macro text_link(label, href, muted=true) -%}
-<a class="ui-link ui-underline{% if muted %} ui-link--muted{% endif %}" href="{{ href }}"{{ external_attributes(href) }}{{ t.binding(label) }}>{{ t.value(label) }}</a>
+{% macro text_link(label, href, muted=true, href_pt=none) -%}
+<a class="ui-link ui-underline{% if muted %} ui-link--muted{% endif %}" href="{{ href }}"{{ external_attributes(href) }}{% if href_pt %} data-ui-href-en="{{ href }}" data-ui-href-pt-br="{{ href_pt }}"{% endif %}{{ t.binding(label) }}>{{ t.value(label) }}</a>
 {%- endmacro %}
 {% macro nav_link(label, href, current=false, muted=true, menu_arrow=false) -%}
 <a href="{{ href }}"{{ external_attributes(href) }} class="ui-link ui-underline ui-nav-link{% if muted %} ui-link--muted{% endif %}"{% if current %} aria-current="location"{% endif %}>{% if menu_arrow %}<span class="ui-link__move">{{ weight(label) }}</span>{{ arrow("section") }}{% else %}{{ weight(label) }}{% endif %}</a>

@@ -4,7 +4,7 @@
 
 This library supports educational documentation, technology identification and noncommercial portfolio projects.
 
-57 SVGs: 48 technologies, 3 licenses and 6 localized statuses. Topics use text links and Methods use informational HTML/CSS tags; neither category requires SVG assets. The 44 prepared PNG icons live in `assets/icons/technologies/`; original source files are preserved in its `originals/` subdirectory for provenance and future regeneration. They are not additional badge libraries.
+56 SVGs: 47 technologies, 3 licenses and 6 localized statuses. Topics use text links and Methods use informational HTML/CSS tags; neither category requires SVG assets. The 43 prepared PNG icons live in `assets/icons/technologies/`; original source files are preserved in its `originals/` subdirectory for provenance and future regeneration. They are not additional badge libraries.
 
 ## Visual specification
 
@@ -40,7 +40,6 @@ The EP badge compositions, layout, typography, colour selection and original ada
 | ![ipykernel](../assets/badges/technologies/ipykernel.svg) | Asset fornecido pelo autor | original; Ícone genérico PyPI; não representa o logotipo oficial desta biblioteca. | pending |
 | ![IPython](../assets/badges/technologies/ipython.svg) | [Source](https://ipython.org/ipython-logo.png) | original; Original source colors preserved. | pending |
 | ![ipywidgets](../assets/badges/technologies/ipywidgets.svg) | Asset fornecido pelo autor | original; Ícone genérico PyPI; não representa o logotipo oficial desta biblioteca. | pending |
-| ![Java](../assets/badges/technologies/java.svg) | [Source](https://github.com/devicons/devicon/blob/master/icons/java/java-original.svg) | compact; Subject to Oracle trademark terms. | pending |
 | ![joblib](../assets/badges/technologies/joblib.svg) | Asset fornecido pelo autor | cropped artwork; Large grey gear isolated; original retained. | pending |
 | ![JupyterLab](../assets/badges/technologies/jupyterlab.svg) | [Source](https://github.com/devicons/devicon/blob/master/icons/jupyter/jupyter-original.svg) | compact; Jupyter ecosystem symbol. | pending |
 | ![Keras](../assets/badges/technologies/keras.svg) | [Source](https://s3.amazonaws.com/webflow-prod-assets/65e8b43dbacbfb739916dc49/65eaa0b0d49c78b952e22d5d_keras-logo.svg) | original; Original source colors preserved. | pending |
@@ -111,7 +110,7 @@ Source attribution does not constitute a grant of additional rights.
 
 ## Website integration
 
-The current library contains 57 SVGs. The following inventory records the canonical graphical paths.
+The current library contains 56 SVGs. The following inventory records the canonical graphical paths.
 
 | Category | Badge | Path |
 |---|---|---|
@@ -128,12 +127,12 @@ Revisão visual local: imagens diretas (incluindo PyTorch), ícones PyPI genéri
 
 | Category | READMEs | New report/showcase composition | Preserved SVGs |
 |---|---|---|---:|
-| Technologies | Yes | Graphical badges; report Hero | 48 |
+| Technologies | Yes | Graphical badges; report Hero | 47 |
 | Licenses | Yes | Graphical links; code/content in Hero, data in Data Source | 3 |
 | Status | Yes | Graphical badges only for evidenced status | 6 |
 | Topics | No | Text links to Knowledge Base, without arrows | 0 |
 | Methods | No | Informational text tags via canonical HTML/CSS | 0 |
-| Total | | | 57 |
+| Total | | | 56 |
 
 The eleven Knowledge Base areas (00–10) remain the source of Topic links. The retired 22 Topic and 2 Method SVGs were removed from the checkpoint catalog and asset tree after the local textual reference audit and explicit approval. Historical Git revisions are preserved; actual published consumers still require verification before release.
 

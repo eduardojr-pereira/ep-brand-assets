@@ -5,8 +5,14 @@
 {% from 'components/web/navigation.html' import external_attributes %}
 {% from 'components/web/navigation.html' import arrow %}
 {% macro fill() -%}<span class="ui-action__fill" aria-hidden="true"></span>{%- endmacro %}
+{% macro radial_body(label, with_arrow=true) -%}
+<span class="ui-action__body">{{ fill() }}<span class="ui-link__move" data-ui-label{{ t.binding(label) }}>{{ t.value(label) }}</span>{% if with_arrow %}{{ arrow() }}{% endif %}</span>
+{%- endmacro %}
 {% macro radial_link(label, href) -%}
-<a class="ui-link ui-link--diagonal ui-action ui-action--pill" href="{{ href }}"{{ external_attributes(href) }}><span class="ui-action__body">{{ fill() }}<span class="ui-link__move" data-ui-label{{ t.binding(label) }}>{{ t.value(label) }}</span>{{ arrow() }}</span></a>
+<a class="ui-link ui-link--diagonal ui-action ui-action--pill" href="{{ href }}"{{ external_attributes(href) }}>{{ radial_body(label) }}</a>
+{%- endmacro %}
+{% macro radial_button(label, with_arrow=false) -%}
+<button type="button" class="ui-action ui-action--pill{% if with_arrow %} ui-link ui-link--diagonal{% endif %}">{{ radial_body(label,with_arrow) }}</button>
 {%- endmacro %}
 {% macro carousel_arrow(label, direction='next', disabled=false) -%}
 <button type="button" class="ui-action ui-action--carousel" aria-label="{{ t.value(label) }}"{{ t.binding(label,"aria-label") }} data-ui-carousel-action="{{ 'previous' if direction == 'previous' else 'next' }}"{% if disabled %} disabled{% endif %}><span class="ui-action__body">{{ fill() }}<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h16m-6-6 6 6-6 6"{% if direction == 'previous' %} transform="translate(24 0) scale(-1 1)"{% endif %}/></svg></span></button>

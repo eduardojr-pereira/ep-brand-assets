@@ -5,3 +5,5 @@
 {% import 'components/web/footer.html' as f %}
 {% block header %}{{ h.report_header(brand,navigation,report_sections,landing_href,logo_src) }}{% endblock %}
 {% block footer %}{{ f.footer(brand,navigation,landing_href,logo_src,privacy_href,terms_href,report=true) }}{% endblock %}
+{% block extra_head %}{% for href in report_styles|default([]) %}<link rel="stylesheet" href="{{ href }}">{% endfor %}{% if report_plotly_href %}<script defer src="{{ report_plotly_href }}"></script>{% endif %}{% for href in report_scripts|default([]) %}<script defer src="{{ href }}"></script>{% endfor %}{% endblock %}
+{% block content %}{% if report_content is defined %}{{ report_content }}{% else %}{{ super() }}{% endif %}{% endblock %}

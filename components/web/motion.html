@@ -1,0 +1,5 @@
+{# Responsibility: Declare optional shared editorial scroll-motion attributes.
+   Boundaries: No animation implementation, layout, state or preference ownership. #}
+{% macro section(origin='reveal-up', order=0, trigger='repeat', entry=none) -%}
+{{ ' ' }}data-motion="{{ origin }}" data-scroll-trigger="{{ trigger }}" data-motion-profile="editorial" data-motion-order="{{ order }}"{% if entry == 'in-view' %} data-motion-entry="in-view"{% endif %}
+{%- endmacro %}

@@ -43,6 +43,9 @@
     --ui-duration-slide-entry: 900ms;
     --ui-duration-evidence-cycle: 4500ms;
     --ui-distance-reveal: 24px;
+    --ui-distance-editorial-reveal: clamp(30px, 5vh, 52px);
+    --ui-duration-editorial-reveal: 1150ms;
+    --ui-delay-editorial-step: 130ms;
     --ui-scale-reveal: .96;
 }
 
@@ -55,6 +58,9 @@
         --ui-duration-underline: 0ms;
         --ui-duration-fill: 0ms;
         --ui-duration-reveal: 0ms;
+        --ui-distance-editorial-reveal: 0px;
+        --ui-duration-editorial-reveal: 0ms;
+        --ui-delay-editorial-step: 0ms;
         --ui-duration-section-title: 0ms;
         --ui-duration-section-copy: 0ms;
         --ui-delay-section-copy: 0ms;
@@ -95,6 +101,18 @@
 [data-motion="scale-in"] {
     --ui-motion-from-scale: var(--ui-motion-scale, var(--ui-scale-reveal));
 }
+
+/* Opt-in editorial entries, independent from hover, slide and disclosure transitions. */
+[data-motion][data-motion-profile="editorial"] {
+    --ui-motion-distance: var(--ui-distance-editorial-reveal);
+    --ui-motion-duration: var(--ui-duration-editorial-reveal);
+    --ui-motion-ease: var(--ui-ease-smooth);
+    --ui-motion-delay: var(--ui-delay-editorial-step);
+}
+[data-motion-profile="editorial"][data-motion-order="1"] { --ui-motion-delay: calc(var(--ui-delay-editorial-step) * 2); }
+[data-motion-profile="editorial"][data-motion-order="2"] { --ui-motion-delay: calc(var(--ui-delay-editorial-step) * 3); }
+[data-motion-profile="editorial"][data-motion-order="3"] { --ui-motion-delay: calc(var(--ui-delay-editorial-step) * 4); }
+[data-motion-profile="editorial"][data-motion-order="4"] { --ui-motion-delay: calc(var(--ui-delay-editorial-step) * 5); }
 
 /* Progressive enhancement: without the head bootstrap, content stays visible. */
 :root[data-ui-motion="active"] [data-motion]:is([data-scroll-trigger="load"], [data-scroll-trigger="once"], [data-scroll-trigger="repeat"]):not([data-ui-motion-state]) {

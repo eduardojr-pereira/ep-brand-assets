@@ -17,3 +17,5 @@ Contextual CSS properties include `--ui-link-gap`, `--ui-link-padding`, `--ui-li
 Run `python3 tests/test_navigation.py` with Jinja2, Playwright and a Chromium-compatible browser installed. Tests render the canonical macros in a fixture, not a new design preview. The local suite exercises the actual Lottie runtime and fonts; integrated visual fidelity and remote delivery remain pending.
 
 Header consumes the same scroll-navigation controller and disclosure macros. `nav_link(..., menu_arrow=true)` includes the canonical diagonal arrow for compact placement; the Header selects existing link classes based on layout, without duplicating the link or its effects. `disclosure(..., chevron=true)` is optional for GitHub. Nested link activation closes enclosing disclosures. See [Header and Footer](shell.md).
+
+An unlinked transition area may declare `data-ui-nav-neutral`; the same strict majority-of-usable-viewport rule as the footer clears the active section. `ui-underline[data-ui-focus-within]` reuses the underline primitive for a focusable descendant.

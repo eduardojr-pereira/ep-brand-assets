@@ -29,7 +29,8 @@
         if (player && !recolor) {
             if (changed && animate && !reduced.matches && !document.hidden) {
                 if (art.closest('.ui-indexed-item') && player.frameRate > 0) {
-                    const duration=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ui-duration-link'))/1000;
+                    const timing=getComputedStyle(art).getPropertyValue('--ui-disclosure-duration').trim() || getComputedStyle(art).getPropertyValue('--ui-duration-link').trim();
+                    const duration=parseFloat(timing)/(timing.endsWith('ms')?1000:1);
                     if (duration>0) player.setSpeed(player.totalFrames/(player.frameRate*duration));
                 }
                 player.setDirection(state.active?1:-1); player.play();
@@ -66,6 +67,13 @@
         const update=animate=>toggleArt(art,item.open,animate,'--ui-color-text');
         update(false);
         item.addEventListener('toggle',()=>update(true));
+        // A required-selection consumer uses native exclusive details, but
+        // activating the already selected summary must not empty the group.
+        if (item.name && item.parentElement?.hasAttribute('data-ui-disclosure-required')) {
+            item.querySelector(':scope > summary').addEventListener('click',event=>{
+                if (item.open) event.preventDefault();
+            });
+        }
     }
     const start=()=>{
         document.querySelectorAll('[data-ui-search-control]').forEach(searchControl);

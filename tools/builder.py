@@ -8,23 +8,26 @@ import tempfile
 from pathlib import Path
 from catalog import load_projects
 from style_guide import guide_context, validate_guide_sections
+from landing import landing_data, landing_context, asset_paths, badge_paths
 from validation import fields, localized, read_json, require
 from presentation import ROOT, environment, head_resources, validate_bindings
-from routing import page_path, relative_href, resource_base, validate_links, validate_page_routes
-from resources import resource_paths, copy_resources, shell_images
+from routing import page_path, project_report_path, relative_href, resource_base, validate_links, validate_page_routes
+from resources import resource_paths, copy_resources, shell_images, PLOTLY_RUNTIME
+from report_content import prepare_report, render_report
 
 
-def prepare(source, plan):
+def prepare(source, plan, *, complete_site=False):
     records = {r['path']: r for r in load_projects(source)}
     brand = read_json(ROOT / 'config/brand.json')
     navigation = read_json(ROOT / 'config/navigation.json')
-    fields(plan, {'schema_version', 'legal', 'pages'}, 'build plan')
+    fields(plan, {'schema_version', 'legal', 'pages'} | ({'landing_content'} if 'landing_content' in plan else set()), 'build plan')
+    landing = landing_data(source, plan)
     require(type(plan['schema_version']) is int and plan['schema_version'] == 1, 'Unsupported build plan')
     fields(plan['legal'], {'privacy', 'terms'}, 'legal')
     legal = {k: page_path(v) for k, v in plan['legal'].items()}
     require(legal['privacy'] != legal['terms'], 'Distinct legal routes required')
     require(isinstance(plan['pages'], list) and plan['pages'], 'No declared pages')
-    pages, report_projects = {}, set()
+    pages, report_projects, reports = {}, set(), {}
     nav = {item['id']: item['label'] for item in navigation['sections']}
     for item in plan['pages']:
         fields(item, {'route', 'kind', 'project', 'title', 'sections'}, 'page')
@@ -50,6 +53,19 @@ def prepare(source, plan):
                 local[lang][key] = value[lang]
             return key
         title_key = add('content.page.title', title)
+        if kind == 'report' and records[project]['schema_version'] == 2:
+            require(item['sections'] == [], 'Real report sections belong to project metadata, not the site plan')
+            record = records[project]
+            add('content.page.description', record['description'])
+            sections = []
+            for i, section in enumerate(record['sections']):
+                prefix = f'content.section.{i}.'
+                sections.append({'id': section['id'], 'label': add(prefix+'label', section['label']),
+                                 'title': add(prefix+'title', section['title']),
+                                 'description': add(prefix+'description', section['description']) if section['description'] is not None else None})
+            reports[route] = prepare_report(source, record, route, local, sections, brand)
+            pages[route] = (kind, local, title_key, sections)
+            continue
         require(isinstance(item['sections'], list) and item['sections'], 'No declared sections')
         sections, ids = [], []
         for i, section in enumerate(item['sections']):
@@ -74,16 +90,32 @@ def prepare(source, plan):
     require('index.html' in pages, 'Missing landing')
     for route in legal.values():
         require(route in pages and pages[route][0] == 'plain', 'Legal destination must be a declared plain page')
-    return pages, brand, navigation, legal
+    if complete_site:
+        require(landing is not None, 'Complete site requires actual landing content')
+        require(report_projects == set(records), 'Complete site requires a report for every registered project')
+        for item in plan['pages']:
+            if item['kind'] == 'report':
+                require(item['route'] == project_report_path(item['project']), 'Complete site must preserve canonical report routes')
+        require(legal == {'privacy': 'legal/privacy.html', 'terms': 'legal/terms.html'}, 'Complete site must preserve legal routes')
+        require(len(reports) == len(report_projects), 'Complete site requires real report content for every project')
+    return pages, brand, navigation, legal, reports
 
 
-def render(source, plan):
-    pages, brand, navigation, legal = prepare(source, plan)
+def _render(source, plan, *, complete_site=False):
+    pages, brand, navigation, legal, reports = prepare(source, plan, complete_site=complete_site)
+    report_routes = {item['project']: item['route'] for item in plan['pages'] if item['kind'] == 'report'}
     rendered = {}
+    landing = landing_data(source, plan)
     for route, (kind, local, title_key, sections) in pages.items():
-        env = environment(local)
         base = resource_base(route)
-        extra = guide_context(base,local,env) if kind == 'style_guide' else {}
+        extra = landing_context(source, landing, base, local, brand, report_routes) if kind == 'landing' else {}
+        env = environment(local)
+        if kind == 'style_guide':
+            extra = guide_context(base,local,env)
+        if route in reports:
+            report = reports[route]
+            extra = {'report_content': render_report(env, report), 'report_scripts': report['scripts'],
+                     'report_styles': report['styles'], 'report_plotly_href': base + PLOTLY_RUNTIME if report['context']['charts'] else None}
         html = env.get_template('templates/' + ('base' if kind == 'plain' else kind) + '.html').render(
             brand=brand, navigation=navigation, title_key=title_key, sections=sections, **extra,
             head=head_resources(base, local),
@@ -93,10 +125,14 @@ def render(source, plan):
             report_sections=[{'label': s['label'], 'href': '#' + s['id']} for s in sections])
         validate_bindings(html, local)
         rendered[route] = html
-    return rendered
+    return rendered, reports
 
 
-def build(source, plan, output):
+def render(source, plan, *, complete_site=False):
+    return _render(source, plan, complete_site=complete_site)[0]
+
+
+def build(source, plan, output, *, complete_site=False):
     source = Path(source).resolve(strict=True)
     requested = Path(output)
     if requested.exists() or requested.is_symlink():
@@ -105,13 +141,25 @@ def build(source, plan, output):
     for protected in (source, ROOT.resolve()):
         require(not output.is_relative_to(protected) and not protected.is_relative_to(output), 'Output must be isolated from source and brand')
     require(output.parent.is_dir(), 'Output parent must exist')
-    pages = render(source, plan)
+    pages, reports = _render(source, plan, complete_site=complete_site)
     guide = 'style-guide/index.html' in pages
-    paths = resource_paths(guide=guide, plotly_runtime=guide)
-    validate_links(pages, {'shared/' + name for name in paths})
+    landing = landing_data(source, plan)
+    media = sorted(set(asset_paths(source, landing)).union(*(r['files'] for r in reports.values())))
+    badges = badge_paths(source, landing)
+    report_badges = sorted(set().union(*(r['badges'] for r in reports.values())))
+    plotly_runtime = guide or any(r['context']['charts'] for r in reports.values())
+    paths = resource_paths(guide=guide, plotly_runtime=plotly_runtime, landing=landing is not None, badges=badges, report_badges=report_badges)
+    site_base = read_json(ROOT / 'config/brand.json')['website'] if complete_site else None
+    validate_links(pages, {'shared/' + name for name in paths} | set(media), site_base=site_base)
+    require(not set(media).intersection(pages), 'Consumer media collides with a page')
     stage = Path(tempfile.mkdtemp(prefix='.ui-build-', dir=output.parent))
     try:
-        copy_resources(stage, paths=paths, guide=guide, plotly_runtime=guide)
+        copy_resources(stage, paths=paths, guide=guide, plotly_runtime=plotly_runtime, landing=landing is not None, badges=badges, report_badges=report_badges)
+        for name in media:
+            target = stage / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with target.open('xb') as stream:
+                stream.write((source / name).read_bytes())
         for name, html in pages.items():
             target = stage / name
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -123,7 +171,7 @@ def build(source, plan, output):
     finally:
         if stage.exists():
             shutil.rmtree(stage)
-    return len(pages), len(paths)
+    return len(pages), len(paths) + len(media)
 
 
 def main():
@@ -131,9 +179,10 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--plan', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--complete-site', action='store_true', help='Require complete structural route coverage; not release authorization')
     args = parser.parse_args()
-    pages, resources = build(args.source, read_json(args.plan), args.output)
-    print(f'Build validated: {pages} pages, {resources} canonical files, no deployment')
+    pages, resources = build(args.source, read_json(args.plan), args.output, complete_site=args.complete_site)
+    print(f'Build validated: {pages} pages, {resources} resource files, no deployment')
 
 
 if __name__ == '__main__':

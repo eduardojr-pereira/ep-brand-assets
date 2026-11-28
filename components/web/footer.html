@@ -1,26 +1,27 @@
 {# Responsibility: Compose the shared footer using canonical editorial, action and return links.
    Boundaries: Institutional destinations come from brand/navigation configuration; legal and logo URLs are caller inputs. #}
 {% import 'components/web/localization.html' as t %}
+{% import 'components/web/motion.html' as motion %}
 {% from 'components/web/navigation.html' import external_attributes %}
 {% import 'components/web/navigation.html' as n %}
 {% import 'components/web/buttons.html' as b %}
 {% import 'components/web/animated_icons.html' as art %}
 {% import 'components/web/social.html' as s %}
 {% import 'components/web/editorial.html' as e %}
-{% macro footer(brand,navigation,landing_url,logo_src,privacy_href,terms_href,year=2026,report=false) -%}
+{% macro footer(brand,navigation,landing_url,logo_src,privacy_href,terms_href,year=2026,report=false,section_motion=false) -%}
 {% set base = (brand.website if landing_url is none else landing_url) if report else '' %}
 <footer class="ui-footer" data-ui-footer aria-label="{{ t.value(message('shared.footer.region')) }}"{{ t.binding(message('shared.footer.region'),'aria-label') }}>
 <div class="ui-footer__layout">
-<section class="ui-footer__about" aria-labelledby="ui-footer-about">
+<section class="ui-footer__about"{% if section_motion %}{{ motion.section() }}{% endif %} aria-labelledby="ui-footer-about">
 <a class="ui-footer__brand" href="{{ n.landing_href(navigation,'home',base) }}"{{ external_attributes(n.landing_href(navigation,'home',base)) }}><img src="{{ logo_src }}" alt="" width="70" height="70" loading="lazy"><span><strong>{{ brand.name }}</strong><span class="ui-footer__role"{{ t.binding(message('shared.brand.tagline')) }}>{{ t.value(message('shared.brand.tagline')) }}</span></span></a>
 {{ e.minor_heading(message('shared.nav.about'),'ui-footer-about') }}
 <div class="ui-footer__bio">{% for key in ['shared.footer.bio1','shared.footer.bio2','shared.footer.bio3'] %}<p{{ t.binding(message(key)) }}>{{ t.value(message(key)) }}</p>{% endfor %}</div>
 <div class="ui-footer__learn">{{ b.radial_link(message('shared.action.learn'),n.landing_href(navigation,'about',base)) }}</div>
 </section>
 <section class="ui-footer__editorial" aria-label="{{ t.value(message('shared.footer.editorial')) }}"{{ t.binding(message('shared.footer.editorial'),'aria-label') }}><span class="ui-footer__watermark" aria-hidden="true"{{ t.binding(message('shared.footer.explore')) }}>{{ t.value(message('shared.footer.explore')) }}</span>
-<div class="ui-footer__groups"><div>{{ e.minor_heading(message('shared.footer.navigation'),'ui-footer-navigation') }}<nav aria-labelledby="ui-footer-navigation">{% for item in navigation.sections %}{% call n.editorial(message(item.label),message(item.description),base+'#'+item.id) %}{{ art.icon(item.animation) }}{% endcall %}{% endfor %}</nav></div>
-<div>{{ e.minor_heading(message('shared.footer.repositories'),'ui-footer-repositories') }}<nav aria-labelledby="ui-footer-repositories">{% for item in navigation.repositories %}{% call n.editorial(message(item.label),message(item.description),brand[item.brand_key]) %}<span class="ui-footer__number">{{ '%02d'|format(loop.index) }}</span>{% endcall %}{% endfor %}</nav>{% if report %}{{ s.follow_connect(brand,navigation) }}{% endif %}</div></div></section>
+<div class="ui-footer__groups"><div{% if section_motion %}{{ motion.section(order=1) }}{% endif %}>{{ e.minor_heading(message('shared.footer.navigation'),'ui-footer-navigation') }}<nav aria-labelledby="ui-footer-navigation">{% for item in navigation.sections %}{% call n.editorial(message(item.label),message(item.description),base+'#'+item.id) %}{{ art.icon(item.animation) }}{% endcall %}{% endfor %}</nav></div>
+<div{% if section_motion %}{{ motion.section(order=2) }}{% endif %}>{{ e.minor_heading(message('shared.footer.repositories'),'ui-footer-repositories') }}<nav aria-labelledby="ui-footer-repositories">{% for item in navigation.repositories %}{% call n.editorial(message(item.label),message(item.description),brand[item.brand_key]) %}<span class="ui-footer__number">{{ '%02d'|format(loop.index) }}</span>{% endcall %}{% endfor %}</nav>{% if report %}{{ s.follow_connect(brand,navigation) }}{% endif %}</div></div></section>
 </div>
-<div class="ui-footer__bottom"><small>© {{ year }} {{ brand.name }}</small><nav class="ui-footer__legal" aria-label="{{ t.value(message('shared.footer.legal')) }}"{{ t.binding(message('shared.footer.legal'),'aria-label') }}>{{ n.text_link(message('shared.footer.privacy'),privacy_href) }}{{ n.text_link(message('shared.footer.terms'),terms_href) }}{% if report %}{{ n.return_link(message('shared.nav.top'),'#top',true) }}{% endif %}</nav></div>
+<div class="ui-footer__bottom"{% if section_motion %}{{ motion.section(order=1) }}{% endif %}><small>© {{ year }} {{ brand.name }}</small><nav class="ui-footer__legal" aria-label="{{ t.value(message('shared.footer.legal')) }}"{{ t.binding(message('shared.footer.legal'),'aria-label') }}>{{ n.text_link(message('shared.footer.privacy'),privacy_href) }}{{ n.text_link(message('shared.footer.terms'),terms_href) }}{% if report %}{{ n.return_link(message('shared.nav.top'),'#top',true) }}{% endif %}</nav></div>
 </footer>
 {%- endmacro %}

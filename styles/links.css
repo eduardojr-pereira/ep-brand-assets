@@ -42,6 +42,7 @@
     pointer-events: none;
 }
 .ui-underline:is(:hover, :focus-visible, [aria-current]:not([aria-current="false"]), [aria-pressed="true"], [aria-expanded="true"])::after,
+.ui-underline[data-ui-focus-within]:focus-within::after,
 .ui-underline--always::after {
     transform: scaleX(1);
     transform-origin: left center;

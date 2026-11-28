@@ -30,8 +30,21 @@ def load_projects(source, badge_data=None):
         seen.add(path)
         meta_file = local_file(root, path + '/project.json')
         data = read_json(meta_file)
-        fields(data, {'schema_version','name','description','topics','technologies','documentation','notebook'}, path)
-        require(type(data['schema_version']) is int and data['schema_version'] == 1, f'Unsupported project schema: {path}')
+        base_fields = {'schema_version','name','description','topics','technologies','documentation','notebook'}
+        require(isinstance(data, dict) and type(data.get('schema_version')) is int and data['schema_version'] in (1, 2), f'Unsupported project schema: {path}')
+        fields(data, base_fields | ({'sections', 'report'} if data['schema_version'] == 2 else set()), path)
+        if data['schema_version'] == 2:
+            require(isinstance(data['sections'], list) and data['sections'], 'Report sections required')
+            section_ids = set()
+            for section in data['sections']:
+                fields(section, {'id', 'label', 'title', 'description'}, 'project section')
+                ident = section['id']
+                require(isinstance(ident, str) and re.fullmatch(r'[a-z][a-z0-9_-]*', ident) and ident != 'top' and ident not in section_ids, 'Invalid/duplicate project section ID')
+                section_ids.add(ident)
+                for key in ('label', 'title'):
+                    localized(section[key], ident + '/' + key)
+                if section['description'] is not None:
+                    localized(section['description'], ident + '/description')
         for key in ('name', 'description'):
             localized(data[key], path + '/' + key)
         require(isinstance(data['topics'], list), f'Invalid topics: {path}')

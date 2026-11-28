@@ -2,4 +2,5 @@
    Boundaries: No theme, locale, URL resolution or file provenance. #}
 {% macro image_variants(image) -%}
 {% if image.light %} data-light-src="{{ image.light }}"{% endif %}{% if image.dark %} data-dark-src="{{ image.dark }}"{% endif %}{% if image.en_src and image.pt_br_src %} data-en-src="{{ image.en_src }}" data-pt-br-src="{{ image.pt_br_src }}"{% endif %}
+{% if image.dark_en and image.dark_pt and image.light_en and image.light_pt %}{% for variant in ['dark_en','dark_pt','light_en','light_pt'] %} data-{{ variant|replace('_','-') }}-src="{{ image[variant] }}"{% endfor %}{% endif %}
 {%- endmacro %}

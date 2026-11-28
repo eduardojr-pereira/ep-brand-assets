@@ -18,7 +18,7 @@ def shell_images(asset_root):
     return {key: asset + "/" + path_name(name) for key, name in _SHELL_IMAGES.items()}
 
 
-def resource_paths(root=ROOT, *, guide=False, plotly_runtime=False):
+def resource_paths(root=ROOT, *, guide=False, plotly_runtime=False, landing=False, badges=(), report_badges=()):
     root = Path(root)
     ui = read_json(local_file(root, 'config/ui.json'))
     brand = read_json(local_file(root, 'config/brand.json'))
@@ -58,6 +58,19 @@ def resource_paths(root=ROOT, *, guide=False, plotly_runtime=False):
               'THIRD-PARTY-NOTICES.md', 'docs/LICENSE-SCIENTIFIC-COLOUR-MAPS.txt']
     if plotly_runtime:
         paths.append(PLOTLY_RUNTIME)
+    if landing:
+        paths.extend(['landing/layout.css', 'landing/behavior.js'])
+        permitted = {e['path'] for e in load_catalog(root)['entries'] if e['category'] == 'technologies'}
+        if not set(badges).issubset(permitted):
+            raise ValueError('Unexpected landing badge')
+        paths.extend(badges)
+    elif badges:
+        raise ValueError('Landing badge selection requires landing content')
+    if report_badges:
+        permitted = {e['path'] for e in load_catalog(root)['entries']}
+        if not set(report_badges).issubset(permitted):
+            raise ValueError('Unexpected report badge')
+        paths.extend(report_badges)
     if guide:
         paths.extend(['style_guide/layout.css','style_guide/demo.js','style_guide/samples/observations.csv','style_guide/samples/summary.json'])
         paths.extend(entry['path'] for entry in load_catalog(root)['entries'])
@@ -68,8 +81,8 @@ def resource_paths(root=ROOT, *, guide=False, plotly_runtime=False):
     return result
 
 
-def copy_resources(output, root=ROOT, paths=None, *, guide=False, plotly_runtime=False):
-    allowed = resource_paths(root, guide=guide, plotly_runtime=plotly_runtime)
+def copy_resources(output, root=ROOT, paths=None, *, guide=False, plotly_runtime=False, landing=False, badges=(), report_badges=()):
+    allowed = resource_paths(root, guide=guide, plotly_runtime=plotly_runtime, landing=landing, badges=badges, report_badges=report_badges)
     paths = allowed if paths is None else list(paths)
     if len(paths) != len(set(paths)) or not set(paths).issubset(allowed):
         raise ValueError("Unexpected or duplicate canonical resource")

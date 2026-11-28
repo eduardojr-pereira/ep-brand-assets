@@ -44,6 +44,24 @@ def fixture(source):
         page('legal/fixture-two.html', 'plain', bilingual('Fixture only'), [section('example', bilingual('Fixture only'))])]}
 
 
+def report_fixture(source, ident):
+    """Upgrade a synthetic v1 registry entry to the generic report contract."""
+    project = source / ident
+    meta = read_json(project / 'project.json')
+    meta['schema_version'] = 2
+    meta['sections'] = [{'id': 'overview', 'label': bilingual('Overview','Visão geral'), 'title': bilingual('Fixture report','Relatório de teste'), 'description': None}]
+    meta['report'] = {'files': [], 'charts': [], 'badges': []}
+    write_json(project / 'translations.json', {'en': {}, 'pt-BR': {}})
+    (project / 'content').mkdir(exist_ok=True)
+    (project / 'content/project_content.html').write_text("""{# Responsibility: Compose the technical specimen.
+Boundaries: No preferences, analytics or publication. #}
+{% import 'components/web/report_sections.html' as r %}
+{% import 'components/web/localization.html' as t %}
+{% macro content(sections, report) %}{% call r.section(sections[0],1) %}<p{{ t.binding(report.description) }}>{{ t.value(report.description) }}</p>{% endcall %}{% endmacro %}""", encoding='utf-8')
+    write_json(project / 'project.json', meta)
+    return meta
+
+
 def inventory(root):
     return {p.relative_to(root).as_posix(): p.read_bytes() for p in root.rglob('*') if p.is_file()}
 
@@ -81,6 +99,32 @@ class BuilderTests(unittest.TestCase):
         self.assertIn('Relatório de teste', report)
         self.assertEqual(report.count('id="ui-config"'), 1)
         self.assertIn('href="#top"', report)
+
+    def test_complete_site_requires_landing_and_reports(self):
+        from builder import prepare
+        with self.assertRaisesRegex(ValueError, 'actual landing content'):
+            prepare(self.source, self.plan, complete_site=True)
+        write_json(self.source / 'landing/content.json', {
+            'schema_version': 1, 'copy': {}, 'about': [], 'media': {},
+            'outlines': {}, 'featured': {}})
+        self.plan['landing_content'] = 'landing/content.json'
+        report = self.plan['pages'].pop(1)
+        with self.assertRaisesRegex(ValueError, 'report for every registered project'):
+            prepare(self.source, self.plan, complete_site=True)
+        self.plan['pages'].insert(1, report)
+        with self.assertRaisesRegex(ValueError, 'canonical report routes'):
+            prepare(self.source, self.plan, complete_site=True)
+        report['route'] = 'learning_labs/demo/reports/index.html'
+        with self.assertRaisesRegex(ValueError, 'legal routes'):
+            prepare(self.source, self.plan, complete_site=True)
+        self.plan['legal'] = {'privacy': 'legal/privacy.html', 'terms': 'legal/terms.html'}
+        self.plan['pages'][2]['route'] = self.plan['legal']['privacy']
+        self.plan['pages'][3]['route'] = self.plan['legal']['terms']
+        with self.assertRaisesRegex(ValueError, 'real report content'):
+            prepare(self.source, self.plan, complete_site=True)
+        report_fixture(self.source, report['project'])
+        report['sections'] = []
+        prepare(self.source, self.plan, complete_site=True)
 
     def test_reject_route_collision_during_prepare(self):
         from builder import prepare
