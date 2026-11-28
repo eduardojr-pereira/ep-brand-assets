@@ -2,38 +2,39 @@
    Boundaries: No inline styles, scripts or translation dictionaries. #}
 
 {% import 'components/web/localization.html' as t %}
-{% macro arrow() -%}
-<svg class="ui-link__arrow" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19 19 5M6 5h13v13"/></svg>
+{% macro external_attributes(href) %}{% if href is string and href[:8]|lower == 'https://' %} target="_blank" rel="noopener noreferrer"{% endif %}{%- endmacro %}
+{% macro arrow(variant="diagonal") -%}
+<svg class="ui-link__arrow" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">{% if variant == 'section' %}<path d="M4 4v7a4 4 0 0 0 4 4h12m-5-5 5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/>{% else %}<path d="M5 19 19 5M6 5h13v13"/>{% endif %}</svg>
 {%- endmacro %}
 {% macro weight(label) -%}
 <span class="ui-link__weight"><span class="ui-link__regular" data-ui-label{{ t.binding(label) }}>{{ t.value(label) }}</span><span class="ui-link__semibold" aria-hidden="true" data-ui-label{{ t.binding(label) }}>{{ t.value(label) }}</span></span>
 {%- endmacro %}
 {% macro diagonal(label, href, accent=true, spread=false, underline=true) -%}
-<a href="{{ href }}" class="ui-link ui-link--diagonal{% if underline %} ui-underline{% endif %}{% if accent %} ui-link--accent{% endif %}{% if spread %} ui-link--spread{% endif %}"><span class="ui-link__move" data-ui-label{{ t.binding(label) }}>{{ t.value(label) }}</span>{{ arrow() }}</a>
+<a href="{{ href }}"{{ external_attributes(href) }} class="ui-link ui-link--diagonal{% if underline %} ui-underline{% endif %}{% if accent %} ui-link--accent{% endif %}{% if spread %} ui-link--spread{% endif %}"><span class="ui-link__move" data-ui-label{{ t.binding(label) }}>{{ t.value(label) }}</span>{{ arrow() }}</a>
 {%- endmacro %}
 {% macro text_link(label, href, muted=true) -%}
-<a class="ui-link ui-underline{% if muted %} ui-link--muted{% endif %}" href="{{ href }}"{{ t.binding(label) }}>{{ t.value(label) }}</a>
+<a class="ui-link ui-underline{% if muted %} ui-link--muted{% endif %}" href="{{ href }}"{{ external_attributes(href) }}{{ t.binding(label) }}>{{ t.value(label) }}</a>
 {%- endmacro %}
 {% macro nav_link(label, href, current=false, muted=true, menu_arrow=false) -%}
-<a href="{{ href }}" class="ui-link ui-underline ui-nav-link{% if muted %} ui-link--muted{% endif %}"{% if current %} aria-current="location"{% endif %}>{% if menu_arrow %}<span class="ui-link__move">{{ weight(label) }}</span>{{ arrow() }}{% else %}{{ weight(label) }}{% endif %}</a>
+<a href="{{ href }}"{{ external_attributes(href) }} class="ui-link ui-underline ui-nav-link{% if muted %} ui-link--muted{% endif %}"{% if current %} aria-current="location"{% endif %}>{% if menu_arrow %}<span class="ui-link__move">{{ weight(label) }}</span>{{ arrow("section") }}{% else %}{{ weight(label) }}{% endif %}</a>
 {%- endmacro %}
 {% macro filter_button(label, value, selected=false) -%}
 <button type="button" class="ui-link ui-underline ui-nav-link" data-ui-filter-value="{{ value }}" aria-pressed="{{ 'true' if selected else 'false' }}">{{ weight(label) }}</button>
 {%- endmacro %}
 {% macro editorial(label, description, href) -%}
-<a href="{{ href }}" class="ui-link ui-link--diagonal ui-underline ui-editorial-link"><span class="ui-editorial-link__art" aria-hidden="true">{{ caller() }}</span><span class="ui-editorial-link__content ui-link__move"><span class="ui-editorial-link__title" data-ui-label{{ t.binding(label) }}>{{ t.value(label) }}</span><span class="ui-editorial-link__description"{{ t.binding(description) }}>{{ t.value(description) }}</span></span>{{ arrow() }}</a>
+<a href="{{ href }}"{{ external_attributes(href) }} class="ui-link ui-link--diagonal ui-underline ui-editorial-link"><span class="ui-editorial-link__art" aria-hidden="true">{{ caller() }}</span><span class="ui-editorial-link__content ui-link__move"><span class="ui-editorial-link__title" data-ui-label{{ t.binding(label) }}>{{ t.value(label) }}</span><span class="ui-editorial-link__description"{{ t.binding(description) }}>{{ t.value(description) }}</span></span>{{ arrow() }}</a>
 {%- endmacro %}
 {% macro return_link(label, href, vertical=false) -%}
-<a href="{{ href }}" class="ui-link ui-underline ui-link--muted ui-return ui-return--{{ 'vertical ui-underline--always' if vertical else 'horizontal' }}"><span class="ui-return__clip"><span class="ui-return__current" data-ui-label{{ t.binding(label) }}>{{ t.value(label) }}</span><span class="ui-return__next" data-ui-label aria-hidden="true"{{ t.binding(label) }}>{{ t.value(label) }}</span></span></a>
+<a href="{{ href }}"{{ external_attributes(href) }} class="ui-link ui-underline ui-link--muted ui-return ui-return--{{ 'vertical' if vertical else 'horizontal' }}"><span class="ui-return__clip"><span class="ui-return__current" data-ui-label{{ t.binding(label) }}>{{ t.value(label) }}</span><span class="ui-return__next" data-ui-label aria-hidden="true"{{ t.binding(label) }}>{{ t.value(label) }}</span></span></a>
 {%- endmacro %}
 {% macro disclosure(label, filter_name='', align_end=false, default_value='all', chevron=false) -%}
 <details class="ui-dropdown{% if align_end %} ui-dropdown--end{% endif %}" data-ui-dropdown{% if filter_name %} data-ui-filter="{{ filter_name }}" data-ui-default="{{ default_value }}"{% endif %}>
-<summary class="ui-link ui-underline ui-nav-link">{{ weight(label) }}{% if filter_name %}<svg class="ui-dropdown__icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>{% elif chevron %}<svg class="ui-dropdown__icon ui-dropdown__chevron" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>{% endif %}</summary>
+<summary class="ui-link ui-underline ui-nav-link">{{ weight(label) }}{% if filter_name %}<svg class="ui-dropdown__icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>{% elif chevron %}<span class="ui-dropdown__back-label"{{ t.binding(message('shared.nav.submenu_back')) }}>{{ t.value(message('shared.nav.submenu_back')) }}</span><svg class="ui-dropdown__icon ui-dropdown__chevron" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>{% endif %}</summary>
 <div class="ui-dropdown__panel">{{ caller() }}</div>
 </details>
 {%- endmacro %}
 {% macro menu_link(label, href) -%}
-<a class="ui-link ui-link--diagonal ui-dropdown__item" href="{{ href }}"><span class="ui-link__move">{{ weight(label) }}</span>{{ arrow() }}</a>
+<a class="ui-link ui-link--diagonal ui-dropdown__item" href="{{ href }}"{{ external_attributes(href) }}><span class="ui-link__move">{{ weight(label) }}</span>{{ arrow() }}</a>
 {%- endmacro %}
 {% macro area_option(label, value, selected=false) -%}
 <button type="button" class="ui-link ui-dropdown__item" data-ui-filter-value="{{ value }}" aria-pressed="{{ 'true' if selected else 'false' }}">{{ weight(label) }}<span class="ui-area-check" aria-hidden="true" data-ui-check><svg class="ui-area-check__fallback" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="m6 12 4 4 8-8"/></svg><span data-ui-check-player></span></span></button>

@@ -1,6 +1,7 @@
 {# Responsibility: Compose the shared footer using canonical editorial, action and return links.
    Boundaries: Institutional destinations come from brand/navigation configuration; legal and logo URLs are caller inputs. #}
 {% import 'components/web/localization.html' as t %}
+{% from 'components/web/navigation.html' import external_attributes %}
 {% import 'components/web/navigation.html' as n %}
 {% import 'components/web/buttons.html' as b %}
 {% import 'components/web/animated_icons.html' as art %}
@@ -11,7 +12,7 @@
 <footer class="ui-footer" data-ui-footer aria-label="{{ t.value(message('shared.footer.region')) }}"{{ t.binding(message('shared.footer.region'),'aria-label') }}>
 <div class="ui-footer__layout">
 <section class="ui-footer__about" aria-labelledby="ui-footer-about">
-<a class="ui-footer__brand" href="{{ n.landing_href(navigation,'home',base) }}"><img src="{{ logo_src }}" alt="" width="70" height="70" loading="lazy"><span><strong>{{ brand.name }}</strong><span class="ui-footer__role"{{ t.binding(message('shared.brand.tagline')) }}>{{ t.value(message('shared.brand.tagline')) }}</span></span></a>
+<a class="ui-footer__brand" href="{{ n.landing_href(navigation,'home',base) }}"{{ external_attributes(n.landing_href(navigation,'home',base)) }}><img src="{{ logo_src }}" alt="" width="70" height="70" loading="lazy"><span><strong>{{ brand.name }}</strong><span class="ui-footer__role"{{ t.binding(message('shared.brand.tagline')) }}>{{ t.value(message('shared.brand.tagline')) }}</span></span></a>
 {{ e.minor_heading(message('shared.nav.about'),'ui-footer-about') }}
 <div class="ui-footer__bio">{% for key in ['shared.footer.bio1','shared.footer.bio2','shared.footer.bio3'] %}<p{{ t.binding(message(key)) }}>{{ t.value(message(key)) }}</p>{% endfor %}</div>
 <div class="ui-footer__learn">{{ b.radial_link(message('shared.action.learn'),n.landing_href(navigation,'about',base)) }}</div>

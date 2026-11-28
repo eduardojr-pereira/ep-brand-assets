@@ -4,7 +4,7 @@
 
 ## Integration contract
 
-The canonical structural builder is implemented; real chart integration must supply one compatible Plotly.js runtime per page with graphs, from the project dependency (e.g. the installed Python Plotly bundle). The current structural build does not distribute a chart runtime. The shared adapter does not fetch a CDN, ship another Plotly runtime, or load it on pages without graphs. Use the shared editorial headings and analytical figure/surface primitives outside the mount. Give each chart a unique ID. Example:
+The canonical builder supports one optional, shared Plotly.js runtime per page with graphs. The Style Guide explicitly selects the pinned bundle; the actual project reports will select it during their migration. Ordinary builds without a declared chart consumer do not copy the runtime. The adapter does not fetch a CDN or introduce another runtime. Use the shared editorial headings and analytical figure/surface primitives outside the mount. Give each chart a unique ID. Example:
 
 ```python
 import json
@@ -54,3 +54,5 @@ After initial `newPlot`, theme and text changes use `Plotly.relayout` and `Plotl
 ## Validation
 
 Run `python tests/test_plotly.py` in the existing environment with Plotly, Jinja2, Playwright and a Chromium-compatible browser. The suite loads the actual installed Plotly.js bundle after DOM ready; it covers native modebar translation, localized hover, theme palette, category identities, repeated switches, selection/zoom/menu/visibility, failure isolation, responsive width and no-JS fallback. Run `test_presentation.py` because the shared formatter now excludes native `%{...}` syntax. Validate real Bike Sharing figures, all 16 chart translations and responsive layouts after builder integration; do not claim integrated visual acceptance yet.
+
+The shared optional runtime is `assets/vendor/plotly/plotly.min.js` (4.1.1, exact bytes from Plotly.py 7.1.0). `resource_paths(..., plotly_runtime=True)` selects it; `copy_resources` requires the same selection. Consumers must explicitly include its resolved URL. Builds without charts do not need the runtime. The guide currently selects it; real reports will select it during migration. The existing vendor MIT license matches the tagged upstream license. The adapter normalizes the pinned runtime’s modebar logo link and removes its unreferenced repeated decorative group ID after plots and redraws, without changing vendor code or branding.

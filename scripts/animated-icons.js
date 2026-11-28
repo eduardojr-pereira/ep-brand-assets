@@ -24,8 +24,8 @@
         function mount(retry = false) {
             if (mounted && !retry) return;
             mounted = true;
-            if (!UI.assets.get(rest)) UI.assets.mount(rest,{id,variant:restVariant,onReady:last});
-            if (!UI.assets.get(hover)) UI.assets.mount(hover,{id,variant:hoverVariant,onReady:sync});
+            if (!UI.assets.get(rest)) UI.assets.mount(rest,{id,variant:restVariant,...(id==='initials'?{colorToken:'--ui-color-text'}:{}),onReady:last});
+            if (!UI.assets.get(hover)) UI.assets.mount(hover,{id,variant:hoverVariant,...(id==='initials'?{colorToken:'--ui-color-accent'}:{}),onReady:sync});
         }
         link.addEventListener('pointerenter', e => { if(e.pointerType === 'mouse') { pointer=true; mount(true); sync(); } });
         link.addEventListener('pointerleave', () => { pointer=false; sync(); });

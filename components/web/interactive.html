@@ -2,6 +2,7 @@
    Boundaries: Consumer supplies content and asset paths; shared labels use the global dictionary. #}
 
 {% import 'components/web/localization.html' as t %}
+{% from 'components/web/navigation.html' import external_attributes %}
 {% import 'components/web/assets.html' as assets %}
 {% import 'components/web/navigation.html' as n %}
 {% import 'components/web/buttons.html' as b %}
@@ -49,7 +50,7 @@
 </div>{% endif %}
 {%- endmacro %}
 {% macro marquee(email, href) -%}
-<div class="ui-marquee" data-ui-marquee><a class="ui-marquee__link" href="{{ href }}" aria-label="{{ t.value(message("shared.marquee.label")) }}"{{ t.binding(message("shared.marquee.label"),"aria-label") }} data-ui-lens>
+<div class="ui-marquee" data-ui-marquee><a class="ui-marquee__link" href="{{ href }}"{{ external_attributes(href) }} aria-label="{{ t.value(message("shared.marquee.label")) }}"{{ t.binding(message("shared.marquee.label"),"aria-label") }} data-ui-lens>
 <div class="ui-marquee__lanes" aria-hidden="true">{% for word in [message("shared.marquee.heading"),email] %}<div class="ui-marquee__lane{% if loop.last %} ui-marquee__lane--email{% endif %}"><div class="ui-marquee__track"><span class="ui-marquee__unit"><span{{ t.binding(word) }}>{{ t.value(word) }}</span>{{ n.arrow() }}</span></div></div>{% endfor %}</div>
 </a><div class="ui-marquee__control"><button class="ui-link" type="button" data-ui-marquee-toggle aria-label="{{ t.value(message("shared.marquee.pause")) }}"{{ t.binding(message("shared.marquee.pause"),"aria-label") }}>Ⅱ</button></div></div>
 {%- endmacro %}

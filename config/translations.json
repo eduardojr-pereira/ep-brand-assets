@@ -1,5 +1,6 @@
 {
   "en": {
+    "shared.nav.submenu_back": "Back",
     "shared.nav.home": "Home",
     "shared.nav.projects": "Projects",
     "shared.nav.contact": "Contact",
@@ -63,7 +64,7 @@
     "shared.footer.bio1": "Economist by training and data scientist by practice. I combine econometrics, machine learning, and business knowledge to turn data into decisions.",
     "shared.footer.bio2": "My work spans statistical analysis, predictive modeling, and interactive dashboards built with Python, SQL, and Power BI/Tableau. I focus on questions where analytical rigor meets business impact, such as forecasting, pricing, and customer analytics.",
     "shared.footer.bio3": "Open to connecting with teams that value data-driven decision-making.",
-    "shared.brand.tagline": "Economics · Data Science · Analytics",
+    "shared.brand.tagline": "Economics · Data Science · Business Intelligence",
     "shared.nav.profile": "Profile",
     "shared.nav.sections": "Sections",
     "shared.nav.region": "Page navigation",
@@ -102,6 +103,7 @@
     "shared.references.methods": "Methods"
   },
   "pt-BR": {
+    "shared.nav.submenu_back": "Voltar",
     "shared.nav.home": "Início",
     "shared.nav.projects": "Projetos",
     "shared.nav.contact": "Contato",
@@ -165,7 +167,7 @@
     "shared.footer.bio1": "Economista por formação e cientista de dados pela prática. Combino econometria, aprendizado de máquina e conhecimento de negócios para transformar dados em decisões.",
     "shared.footer.bio2": "Meu trabalho abrange análise estatística, modelagem preditiva e dashboards interativos desenvolvidos com Python, SQL e Power BI/Tableau. Meu foco está em questões que conectam rigor analítico e impacto nos negócios, como previsão, precificação e análise de clientes.",
     "shared.footer.bio3": "Aberto a conexões com equipes que valorizam decisões orientadas por dados.",
-    "shared.brand.tagline": "Economia · Ciência de Dados · Analytics",
+    "shared.brand.tagline": "Economia · Ciência de Dados · Inteligência de Negócios",
     "shared.nav.profile": "Perfil",
     "shared.nav.sections": "Seções",
     "shared.nav.region": "Navegação da página",

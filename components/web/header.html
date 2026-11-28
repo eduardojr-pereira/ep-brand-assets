@@ -1,11 +1,13 @@
 {# Responsibility: Compose the shared header for landing and report navigation.
    Boundaries: Caller supplies destinations and report sections; preferences and links remain canonical. #}
 {% import 'components/web/localization.html' as t %}
+{% from 'components/web/navigation.html' import external_attributes %}
 {% import 'components/web/navigation.html' as n %}
-{% macro header(brand, navigation, sections, home_href, back_href=none) -%}
-<header class="ui-header" data-ui-header id="top">
+{% macro header(brand, navigation, sections, home_href, logo_src, back_href=none) -%}
+<div id="top" aria-hidden="true"></div>
+<header class="ui-header" data-ui-header>
 <div class="ui-header__entry" data-motion="fade" data-scroll-trigger="load">
-<a class="ui-header__logo" href="{{ home_href }}" aria-label="{{ t.value(message('shared.header.home')) }}"{{ t.binding(message('shared.header.home'),'aria-label') }}>EP.</a>
+<a class="ui-header__logo" href="{{ home_href }}"{{ external_attributes(home_href) }} aria-label="{{ t.value(message('shared.header.home')) }}"{{ t.binding(message('shared.header.home'),'aria-label') }}><img src="{{ logo_src }}" alt="" width="44" height="44" decoding="async"></a>
 <nav class="ui-header__nav" data-ui-scroll-nav aria-label="{{ t.value(message('shared.nav.region')) }}"{{ t.binding(message('shared.nav.region'),'aria-label') }}>
 <div class="ui-header__desktop"><div class="ui-header__links">{% for item in sections %}{{ n.nav_link(message(item.label),item.href,loop.first,menu_arrow=true) }}{% endfor %}
 {% call n.disclosure('GitHub',align_end=true,chevron=true) %}{% for item in navigation.github %}{{ n.menu_link(message(item.label),brand[item.brand_key]) }}{% endfor %}{% endcall %}
@@ -20,9 +22,9 @@
 </button></div></div>
 </header>
 {%- endmacro %}
-{% macro landing_header(brand,navigation) -%}
-{% set sections = [] %}{% for item in navigation.sections %}{% set _ = sections.append({'label':item.label,'href':'#'+item.id}) %}{% endfor %}{{ header(brand,navigation,sections,n.landing_href(navigation,'home')) }}
+{% macro landing_header(brand,navigation,logo_src) -%}
+{% set sections = [] %}{% for item in navigation.sections %}{% set _ = sections.append({'label':item.label,'href':'#'+item.id}) %}{% endfor %}{{ header(brand,navigation,sections,n.landing_href(navigation,'home'),logo_src) }}
 {%- endmacro %}
-{% macro report_header(brand,navigation,sections,landing_url=none) -%}
-{% set base = brand.website if landing_url is none else landing_url %}{{ header(brand,navigation,sections,n.landing_href(navigation,'home',base),n.landing_href(navigation,'portfolio',base)) }}
+{% macro report_header(brand,navigation,sections,landing_url,logo_src) -%}
+{% set base = brand.website if landing_url is none else landing_url %}{{ header(brand,navigation,sections,n.landing_href(navigation,'home',base),logo_src,n.landing_href(navigation,'portfolio',base)) }}
 {%- endmacro %}

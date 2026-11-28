@@ -11,3 +11,4 @@
 .ui-icon-art[data-ui-playing]:has([data-ui-icon-hover][data-ui-lottie-ready]) :is([data-ui-icon-rest],.ui-icon-art__fallback) { visibility:hidden; }
 .ui-icon-art[data-ui-playing] [data-ui-icon-hover][data-ui-lottie-ready] { visibility:visible; }
 .ui-icon-art__fallback svg { width:84%; height:84%; }
+.ui-icon-art[data-ui-icon-animation="knowledge"][data-ui-icon-tone="editorial"] { --ui-icon-optical-scale:1.18; }

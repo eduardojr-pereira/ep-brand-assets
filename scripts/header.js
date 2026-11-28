@@ -45,6 +45,7 @@
                 items.forEach(a => { a.classList.remove('ui-underline'); a.classList.add('ui-link--diagonal','ui-dropdown__item'); });
                 if (!was) details.open = false;
             } else if (was) details.open = false;
+            if (was !== narrow) for (const menu of links.querySelectorAll('[data-ui-dropdown][open]')) menu.open=false;
             if (inside && document.activeElement !== focused) {
                 if (narrow && !details.open) details.querySelector('summary').focus({preventScroll:true});
                 else focused.focus({preventScroll:true});

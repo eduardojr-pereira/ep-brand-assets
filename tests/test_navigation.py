@@ -61,13 +61,20 @@ def test(page, theme):
     assert page.evaluate('window.lastFilter') == {'name': 'area', 'value': 'analytics'}
     areas.locator('summary').click(); page.locator('#back').click(position={'x': 500,'y': 5})
     assert areas.get_attribute('open') is None
-    back = page.locator('#back a'); back.hover(); page.wait_for_timeout(600)
-    assert translate(back.locator('.ui-return__current'))[0] < 0
-    assert translate(back.locator('.ui-return__next')) == [0, 0]
-    top = page.locator('#top a')
-    assert top.evaluate("e=>getComputedStyle(e,'::after').transform") == 'matrix(1, 0, 0, 1, 0, 0)'
-    top.hover(); page.wait_for_timeout(600)
-    assert translate(top.locator('.ui-return__current'))[1] < 0
+    # Both links share the same directional underline and accent, independent of text axis.
+    def rule(link):
+        return link.evaluate("e=>{const r=getComputedStyle(e,'::after');return [new DOMMatrix(r.transform).m11,r.backgroundColor,getComputedStyle(e.querySelector('.ui-return__next')).color,r.transformOrigin,r.transitionDuration]}")
+    for selector,axis in (('#back a',0),('#top a',1)):
+        link=page.locator(selector)
+        page.locator('#back').hover(position={'x':500,'y':5}); page.wait_for_timeout(650)
+        idle=rule(link); assert abs(idle[0])<.01 and idle[1]==idle[2],idle
+        link.hover(); page.wait_for_timeout(650)
+        active=rule(link); assert abs(active[0]-1)<.01 and active[1]==active[2],active
+        assert translate(link.locator('.ui-return__current'))[axis]<0
+        assert translate(link.locator('.ui-return__next'))==[0,0]
+        assert idle[3]!=active[3] and idle[4]==active[4],(idle,active)
+        page.locator('#back').hover(position={'x':500,'y':5}); page.wait_for_timeout(650)
+        final=rule(link); assert abs(final[0])<.01 and final[1]==final[2] and final[3]==idle[3],final
     page.locator('#editorial a').hover(); page.wait_for_timeout(600)
     assert translate(page.locator('.ui-editorial-link__content')) == [8, 0]
     title = page.locator('.ui-editorial-link__title').bounding_box()
@@ -79,6 +86,27 @@ def test(page, theme):
     page.evaluate("window.scrollTo(0, document.documentElement.scrollHeight)")
     page.wait_for_function("document.querySelector('nav a[href=\"#contact\"]').getAttribute('aria-current')==='location'")
     print(f'PASS: {theme} links, arrow, underline, stable nav, filters, dropdowns, return links, editorial layout, scroll state')
+
+
+def test_footer_dominance(page):
+    body = '<nav data-ui-scroll-nav><a href="#first" aria-current="location">First</a><a href="#last">Last</a></nav><section id="first" data-ui-section>First</section><section id="last" data-ui-section>Last</section><footer data-ui-footer>Footer</footer>'
+    load_page(page,body,css=':root{--ui-sticky-offset:70px}nav{position:sticky;top:0;height:70px;background:var(--ui-color-bg)}section{height:1000px}footer{height:600px}')
+    page.evaluate("document.documentElement.removeAttribute('data-ui-smooth-scroll')")
+    def scroll_to_visible(fraction):
+        page.evaluate("fraction=>{const footer=document.querySelector('[data-ui-footer]');const top=footer.getBoundingClientRect().top+scrollY;const offset=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ui-sticky-offset'));window.scrollTo({top:top-innerHeight+(innerHeight-offset)*fraction,behavior:'instant'})}",fraction)
+    def expect(href):
+        page.wait_for_function("href=>{const active=[...document.querySelectorAll('[data-ui-scroll-nav] a[aria-current]')];return href===null?active.length===0:active.length===1&&active[0].getAttribute('href')===href}",arg=href)
+    for width,height in ((1000,700),(390,844)):
+        page.set_viewport_size({'width':width,'height':height})
+        scroll_to_visible(.25);expect('#last')
+        scroll_to_visible(.50);expect('#last')
+        scroll_to_visible(.75);expect(None)
+        page.evaluate("window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'})");expect(None)
+        scroll_to_visible(.25);expect('#last')
+        page.evaluate("window.scrollTo({top:0,behavior:'instant'})");expect('#first')
+    # Reaching the page bottom is not sufficient to clear selection if the footer is short.
+    page.evaluate("document.querySelector('[data-ui-footer]').style.height='150px';window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'})");expect('#last')
+    print('PASS: strict footer majority, sticky header offset, short footer, desktop/mobile, reverse scroll and top recovery')
 
 
 def test_geometry(page):
@@ -143,6 +171,8 @@ if __name__ == '__main__':
         test_check_adapter(page); page.close()
         page = new_page(browser, viewport={'width':1000,'height':700})
         test_geometry(page); page.close()
+        page = new_page(browser, viewport={'width':1000,'height':700})
+        test_footer_dominance(page); page.close()
         page = new_page(browser, viewport={'width':390,'height':844}, reduced_motion='reduce')
 
         load(page)

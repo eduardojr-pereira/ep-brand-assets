@@ -3,5 +3,5 @@
 {% extends 'templates/base.html' %}
 {% import 'components/web/header.html' as h %}
 {% import 'components/web/footer.html' as f %}
-{% block header %}{{ h.landing_header(brand,navigation) }}{% endblock %}
+{% block header %}{{ h.landing_header(brand,navigation,logo_src) }}{% endblock %}
 {% block footer %}{{ f.footer(brand,navigation,'',logo_src,privacy_href,terms_href) }}{% endblock %}

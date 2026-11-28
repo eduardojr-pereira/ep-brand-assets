@@ -6,8 +6,10 @@ import posixpath
 import re
 from validation import local_file, read_json
 from routing import path_name
+from badge_catalog import load_catalog
 
 ROOT = Path(__file__).resolve().parents[1]
+PLOTLY_RUNTIME = "assets/vendor/plotly/plotly.min.js"
 
 _SHELL_IMAGES = {"logo_src": "logos/logo_initials.png", "favicon_src": "logos/favicon.png"}
 
@@ -16,7 +18,7 @@ def shell_images(asset_root):
     return {key: asset + "/" + path_name(name) for key, name in _SHELL_IMAGES.items()}
 
 
-def resource_paths(root=ROOT):
+def resource_paths(root=ROOT, *, guide=False, plotly_runtime=False):
     root = Path(root)
     ui = read_json(local_file(root, 'config/ui.json'))
     brand = read_json(local_file(root, 'config/brand.json'))
@@ -54,14 +56,20 @@ def resource_paths(root=ROOT):
                 paths.append(posixpath.dirname(target) + '/OFL.txt')
     paths += ['LICENSE-BRAND.md', 'LICENSE-CODE.txt', 'LICENSE-CONTENT.md',
               'THIRD-PARTY-NOTICES.md', 'docs/LICENSE-SCIENTIFIC-COLOUR-MAPS.txt']
+    if plotly_runtime:
+        paths.append(PLOTLY_RUNTIME)
+    if guide:
+        paths.extend(['style_guide/layout.css','style_guide/demo.js','style_guide/samples/observations.csv','style_guide/samples/summary.json'])
+        paths.extend(entry['path'] for entry in load_catalog(root)['entries'])
+        paths.extend(['style_guide/samples/palette-nuuk-shared.svg', 'style_guide/samples/palette-lipari-shared.svg', 'style_guide/samples/palette-vik-shared.svg', 'style_guide/samples/palette-delphi-shared.svg', 'style_guide/samples/palette-ston-shared.svg', 'style_guide/samples/palette-fes-shared.svg', 'style_guide/samples/palette-vikO-shared.svg', 'style_guide/samples/palette-ep-muted-pastel-dark.svg', 'style_guide/samples/palette-ep-muted-pastel-light.svg', 'style_guide/samples/palette-ep-lipari-adapted-dark.svg', 'style_guide/samples/palette-ep-lipari-adapted-light.svg', 'style_guide/samples/evidence-line-dark.svg', 'style_guide/samples/evidence-bar-dark.svg', 'style_guide/samples/evidence-line-light.svg', 'style_guide/samples/evidence-bar-light.svg'])
     result = sorted(set(paths))
     for name in result:
         local_file(root, name)
     return result
 
 
-def copy_resources(output, root=ROOT, paths=None):
-    allowed = resource_paths(root)
+def copy_resources(output, root=ROOT, paths=None, *, guide=False, plotly_runtime=False):
+    allowed = resource_paths(root, guide=guide, plotly_runtime=plotly_runtime)
     paths = allowed if paths is None else list(paths)
     if len(paths) != len(set(paths)) or not set(paths).issubset(allowed):
         raise ValueError("Unexpected or duplicate canonical resource")

@@ -43,9 +43,17 @@ def load_runtime(page):
     page.evaluate('UI.plotly.refresh()')
     page.wait_for_function("document.querySelectorAll('[data-ui-plotly-ready]').length===2")
     assert page.evaluate('window.localeRequests')==1
+    check_modebar_contract(page)
+
+
+def check_modebar_contract(page):
+    assert page.locator('[data-ui-plotly] a.modebar-btn--logo').count()==2
+    assert page.evaluate("""() => [...document.querySelectorAll('[data-ui-plotly] a.modebar-btn--logo')].every(a=>a.target==='_blank' && a.relList.contains('noopener') && a.relList.contains('noreferrer') && !a.querySelector('g[id=symbol]'))""")
+    assert page.evaluate("""() => {const ids=[...document.querySelectorAll('[id]')].map(e=>e.id);return ids.length===new Set(ids).size}""")
 
 
 def check_locale(page, locale, theme):
+    check_modebar_contract(page)
     pt=locale=='pt-BR'; info=page.evaluate("() => {const g=document.getElementById('demand');return {title:g.layout.title.text,x:g.layout.xaxis.title.text,y:g.layout.yaxis.title.text,ticks:g.layout.xaxis.ticktext,menu:g.layout.updatemenus[0].buttons[0].label,name:g.data[0].name,traceText:g.data[0].text,hover:g.data[0].hovertemplate,locale:g._context.locale,separators:g.layout.separators,bg:g.layout.paper_bgcolor,color:g.data[0].marker.color,modebar:[...g.querySelectorAll('.modebar-btn')].map(e=>e.getAttribute('data-title'))}}")
     assert info['title']==('Demanda horária' if pt else 'Hourly demand'),info
     assert info['x']==('Hora' if pt else 'Hour') and info['y']==('Aluguéis' if pt else 'Rentals'),info

@@ -1,0 +1,65 @@
+/*
+ * Responsibility: Arrange the single-page editorial Style Guide and its illustrative specimens.
+ * Boundaries: No shared component overrides, new theme values, motion behavior, preference state or consumer layout.
+ */
+.guide-layout { padding-inline:var(--ui-page-gutter); max-width:1920px; margin-inline:auto; }
+.guide-section { padding-block:clamp(var(--ui-space-12),8vw,var(--ui-space-24)); scroll-margin-top:var(--ui-sticky-offset,0px); min-width:0; }
+.guide-section + .guide-section { border-top:1px solid var(--ui-color-border); }
+.guide-cover { padding-block:clamp(var(--ui-space-12),9vw,var(--ui-space-24)); }
+.guide-cover-grid { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); align-items:stretch; gap:var(--ui-space-8); }
+.guide-cover-copy { display:grid; align-content:space-between; gap:var(--ui-space-8); min-width:0; }
+.guide-cover-art { display:grid; place-items:center; min-width:0; min-height:clamp(240px,32vw,490px); background:var(--ui-color-surface); border:1px solid var(--ui-color-border); }
+.guide-cover-art img { display:block; width:min(52%,230px); height:auto; }
+.guide-index { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--ui-space-6); }
+.guide-index-entry { display:grid; gap:var(--ui-space-2); border-top:1px solid var(--ui-color-border); padding-top:var(--ui-space-3); min-width:0; }
+.guide-number,.guide-chapter-number,.guide-font-label { font-family:var(--ui-font-body); color:var(--ui-color-accent); font-size:var(--ui-text-xs); font-weight:var(--ui-weight-semibold); font-variant-numeric:tabular-nums; }
+.guide-chapter-number { margin-bottom:var(--ui-space-4); }
+.guide-palette-primary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--ui-space-2); margin-bottom:var(--ui-space-8); }
+.guide-swatches { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:var(--ui-space-4); }
+.guide-swatch { display:grid; gap:var(--ui-space-2); min-width:0; }
+.guide-swatch code { font-size:var(--ui-text-xs); color:var(--ui-color-muted); overflow-wrap:anywhere; }
+.guide-color { min-height:var(--ui-space-16); border:1px solid var(--ui-color-border); }
+.guide-swatch--hero .guide-color { min-height:clamp(130px,22vw,300px); }
+.guide-type-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--ui-space-2); }
+.guide-type-specimen { display:grid; gap:var(--ui-space-4); min-width:0; padding:clamp(var(--ui-space-4),4vw,var(--ui-space-12)); background:var(--ui-color-surface); border:1px solid var(--ui-color-border); overflow:hidden; }
+.guide-type-heading { font-family:var(--ui-font-heading); }
+.guide-type-body { font-family:var(--ui-font-body); }
+.guide-type-large { font-size:clamp(72px,17vw,220px); line-height:1; font-weight:var(--ui-weight-medium); letter-spacing:-.065em; }
+.guide-alphabet { font-size:clamp(var(--ui-text-xs),2vw,var(--ui-text-xl)); line-height:1.5; overflow-wrap:anywhere; }
+.guide-type-hierarchy { display:grid; gap:var(--ui-space-4); padding-block:var(--ui-space-8); min-width:0; }
+.guide-stack { display:grid; justify-items:start; align-content:start; gap:var(--ui-space-6); min-width:0; }
+.guide-actions { display:flex; flex-wrap:wrap; align-items:center; gap:var(--ui-space-4); }
+.guide-motion-sample { min-width:0; min-height:180px; display:grid; align-content:space-between; padding:var(--ui-space-6); border:1px solid var(--ui-color-border); background:var(--ui-color-surface); }
+.guide-motion-mark { font-family:var(--ui-font-heading); font-size:var(--ui-text-4xl); color:var(--ui-color-accent); }
+@media(max-width:850px) { .guide-cover-grid { grid-template-columns:minmax(0,1fr); } .guide-swatches { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media(max-width:480px) { .guide-type-pair { grid-template-columns:minmax(0,1fr); } .guide-swatches { grid-template-columns:repeat(2,minmax(0,1fr)); } .guide-palette-primary { grid-template-columns:minmax(0,1fr); } .guide-index { grid-template-columns:minmax(0,1fr); } }
+.guide-color--bg { background:var(--ui-color-bg); }
+.guide-color--surface { background:var(--ui-color-surface); }
+.guide-color--border { background:var(--ui-color-border); }
+.guide-color--text { background:var(--ui-color-text); }
+.guide-color--muted { background:var(--ui-color-muted); }
+.guide-color--accent { background:var(--ui-color-accent); }
+.guide-color--focus { background:var(--ui-color-focus); }
+.guide-color--on-accent { background:var(--ui-color-on-accent); }
+.guide-color--success { background:var(--ui-color-success); }
+.guide-color--danger { background:var(--ui-color-danger); }
+.guide-color--link-hover { background:var(--ui-color-link-hover); }
+.guide-color--ink { background:var(--ui-color-ink); }
+.guide-color--on-ink { background:var(--ui-color-on-ink); }
+/* Guide composition: external labels consistently precede their specimens. */
+.guide-labeled-block { display:grid; gap:var(--ui-space-3); min-width:0; }
+.guide-stack > .guide-labeled-block { width:100%; }
+.guide-color-value { font-size:var(--ui-text-xs); color:var(--ui-color-text); font-variant-numeric:tabular-nums; }
+.guide-palettes { display:grid; gap:var(--ui-space-4); }
+.guide-palette-row { display:grid; grid-template-columns:minmax(9rem,1fr) minmax(0,3fr); align-items:center; gap:var(--ui-space-4); padding-block:var(--ui-space-2); border-bottom:1px solid var(--ui-color-border); }
+.guide-palette-row img { display:block; width:100%; height:auto; aspect-ratio:640 / 28; }
+.guide-palette-kind { display:block; color:var(--ui-color-muted); font-size:var(--ui-text-xs); }
+.guide-send-demo { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:var(--ui-space-6); align-items:start; }
+.guide-send-demo select { width:100%; color:var(--ui-color-text); background:var(--ui-color-bg); border:1px solid var(--ui-color-border); padding:var(--ui-space-3); font:inherit; }
+.guide-social-block { margin-top:var(--ui-space-8); }
+@media(max-width:650px) { .guide-palette-row,.guide-send-demo { grid-template-columns:minmax(0,1fr); } }
+/* Specimen grouping only: the canonical badge macros retain their own sizing. */
+.guide-badge-layout { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--ui-space-6) var(--ui-space-8); align-items:start; max-width:76rem; }
+.guide-badge-technologies { grid-column:1 / -1; }
+.guide-badge-status { display:flex; flex-wrap:wrap; align-items:flex-start; gap:var(--ui-space-4) var(--ui-space-6); }
+@media(max-width:850px) { .guide-badge-layout { grid-template-columns:minmax(0,1fr); } }

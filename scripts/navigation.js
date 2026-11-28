@@ -10,6 +10,65 @@
     const option = '[data-ui-filter-value]';
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const closeTimers = new WeakMap();
+    const submenus = new WeakMap();
+    const panelOf = el => el.querySelector(':scope > .ui-dropdown__panel');
+    const parentOf = el => el.parentElement?.closest(dropdown);
+    function clearSubmenu(el) {
+        const state = submenus.get(el);
+        if (!state) return;
+        const panel = panelOf(el);
+        if (panel.hasAttribute('popover')) {
+            if (panel.matches(':popover-open')) panel.hidePopover();
+            panel.removeAttribute('popover');
+        }
+        for (const key of ['left','top','--ui-submenu-shift']) panel.style.removeProperty(key);
+        for (const sibling of state.hidden) sibling.removeAttribute('data-ui-submenu-hidden');
+        if (state.mode==='stack') panelOf(state.parent).scrollTop=state.scrollTop;
+        el.removeAttribute('data-ui-submenu'); el.removeAttribute('data-ui-submenu-side');
+        submenus.delete(el);
+    }
+    function placeSubmenu(el) {
+        const parent = parentOf(el);
+        if (!el.open || !parent || !parent.open) { clearSubmenu(el); return; }
+        const panel = panelOf(el), outer = panelOf(parent), trigger = el.querySelector(':scope > summary');
+        const bounds = outer.getBoundingClientRect();
+        const left = bounds.left - 12, right = innerWidth - bounds.right - 12;
+        const side = left >= right ? 'left' : 'right';
+        const mode = typeof panel.showPopover === 'function' && Math.max(left,right) >= 328 ? 'flyout' : 'stack';
+        let state = submenus.get(el);
+        if (!state || state.mode !== mode || state.parent !== parent) {
+            clearSubmenu(el);
+            state = {mode,parent,hidden:[],scrollTop:outer.scrollTop}; submenus.set(el,state);
+            el.dataset.uiSubmenu = mode;
+            if (mode === 'flyout') {
+                panel.setAttribute('popover','manual'); panel.showPopover();
+            } else {
+                // Preserve the existing tree and hide only siblings along the submenu path.
+                for (let node=el; node && node!==outer; node=node.parentElement) {
+                    for (const sibling of node.parentElement.children) if (sibling!==node) {
+                        sibling.setAttribute('data-ui-submenu-hidden',''); state.hidden.push(sibling);
+                    }
+                }
+                outer.scrollTop=0;
+            }
+        }
+        if (mode === 'flyout') {
+            // Responsive relocation can remove a native popover from the top layer.
+            if (!panel.matches(':popover-open')) panel.showPopover();
+            const rect=panel.getBoundingClientRect(), y=trigger.getBoundingClientRect().top;
+            el.dataset.uiSubmenuSide=side;
+            panel.style.setProperty('--ui-submenu-shift',side==='left'?'6px':'-6px');
+            panel.style.left=`${Math.max(8,Math.min(innerWidth-rect.width-8,side==='left'?bounds.left-8-rect.width:bounds.right+8))}px`;
+            panel.style.top=`${Math.max(8,Math.min(innerHeight-rect.height-8,y))}px`;
+        }
+    }
+    let submenuFrame=0;
+    function scheduleSubmenus() {
+        if (!submenuFrame) submenuFrame=requestAnimationFrame(()=>{
+            submenuFrame=0;
+            for (const el of document.querySelectorAll(`${dropdown}[open]`)) placeSubmenu(el);
+        });
+    }
     const checkHost = item => item.querySelector('[data-ui-check-player]');
     function initChecks() {
         for (const item of document.querySelectorAll(`${option}:has([data-ui-check])`)) {
@@ -64,6 +123,7 @@
     function closeDisclosure(el, restore = false) {
         clearTimeout(closeTimers.get(el));
         el.open = false;
+        clearSubmenu(el);
         if (restore) el.querySelector('summary').focus();
     }
     function init() {
@@ -76,11 +136,19 @@
         document.addEventListener('toggle', event => {
             const el = event.target;
             if (!(el instanceof HTMLDetailsElement) || !el.matches(dropdown)) return;
-            if (!el.open) { clearTimeout(closeTimers.get(el)); return; }
+            if (!el.open) {
+                clearTimeout(closeTimers.get(el)); clearSubmenu(el);
+                for (const child of el.querySelectorAll(`${dropdown}[open]`)) closeDisclosure(child);
+                return;
+            }
             for (const other of document.querySelectorAll(`${dropdown}[open]`)) {
                 if (other !== el && !other.contains(el) && !el.contains(other)) closeDisclosure(other);
             }
+            placeSubmenu(el);
         }, true);
+        window.addEventListener('resize',scheduleSubmenus);
+        window.addEventListener('scroll',scheduleSubmenus,{capture:true,passive:true});
+        document.addEventListener('ui:languagechange',scheduleSubmenus);
         document.addEventListener('click', event => {
             const target = event.target.closest('a, button, summary');
             for (const el of document.querySelectorAll(`${dropdown}[open]`)) {
@@ -121,6 +189,16 @@
         }).filter(group => group.items.length);
         if (!groups.length) return;
         let frame = 0, locked = null, timer = 0;
+        const footer = document.querySelector('[data-ui-footer]');
+        const header = document.querySelector('[data-ui-header]');
+        function footerDominates() {
+            if (!footer) return false;
+            const offset = Math.min(innerHeight, Math.max(0, parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ui-sticky-offset')) || 0));
+            const usable = innerHeight - offset;
+            const rect = footer.getBoundingClientRect();
+            const visible = Math.max(0, Math.min(rect.bottom, innerHeight) - Math.max(rect.top, offset));
+            return usable > 0 && visible > usable / 2;
+        }
         function activate(group, item) {
             for (const entry of group.items) {
                 if (entry === item) {
@@ -137,7 +215,9 @@
         function update() {
             frame = 0;
             const bottom = Math.ceil(window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 2;
+            const footerActive = footerDominates();
             for (const group of groups) {
+                if (footerActive) { activate(group, null); continue; }
                 if (locked) {
                     const match = group.items.find(entry => entry.section === locked);
                     if (match) { activate(group, match); continue; }
@@ -172,6 +252,8 @@
         if ('ResizeObserver' in window) {
             const geometry = new ResizeObserver(schedule);
             geometry.observe(document.body);
+            if (footer) geometry.observe(footer);
+            if (header) geometry.observe(header);
             for (const group of groups) for (const item of group.items) geometry.observe(item.section);
         }
         window.addEventListener('scrollend', unlock);

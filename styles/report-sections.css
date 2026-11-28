@@ -18,3 +18,7 @@
 .ui-reference-topics { display:grid; gap:var(--ui-space-2); }
 .ui-artifact-explorer [hidden] { display:none!important; }
 @media(max-width:650px) { .ui-artifact-layout { grid-template-columns:minmax(0,1fr); } }
+.ui-reference-group { display:grid; grid-template-rows:auto 1fr; gap:var(--ui-space-3); min-width:0; }
+.ui-reference-source { display:grid; align-content:start; justify-items:start; gap:var(--ui-space-3); min-width:0; }
+.ui-reference-source > .ui-link { font-weight:var(--ui-weight-semibold); }
+.ui-reference-source > p { margin:0; color:var(--ui-color-muted); }

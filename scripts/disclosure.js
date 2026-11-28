@@ -1,5 +1,5 @@
 /*
- * Responsibility: Manage shared search controls, state-driven Search-to-X artwork and normalized matching.
+ * Responsibility: Manage indexed disclosures, search controls, state-driven Search-to-X artwork and normalized matching.
  * Boundaries: No independent locale, theme, preference or animation loader.
  */
 (() => {
@@ -28,6 +28,10 @@
         const player=UI.assets.get(host);
         if (player && !recolor) {
             if (changed && animate && !reduced.matches && !document.hidden) {
+                if (art.closest('.ui-indexed-item') && player.frameRate > 0) {
+                    const duration=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ui-duration-link'))/1000;
+                    if (duration>0) player.setSpeed(player.totalFrames/(player.frameRate*duration));
+                }
                 player.setDirection(state.active?1:-1); player.play();
             } else if (changed || !animate) settle(player);
         } else if (!state.mounted || changed || recolor) {
@@ -57,7 +61,16 @@
         input.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();setOpen(false);}});
         control.hidden=false;setOpen(false,false);
     }
-    const start=()=>document.querySelectorAll('[data-ui-search-control]').forEach(searchControl);
+    function indexedItem(item) {
+        const art=item.querySelector(':scope > summary [data-ui-toggle-art]');
+        const update=animate=>toggleArt(art,item.open,animate,'--ui-color-text');
+        update(false);
+        item.addEventListener('toggle',()=>update(true));
+    }
+    const start=()=>{
+        document.querySelectorAll('[data-ui-search-control]').forEach(searchControl);
+        document.querySelectorAll('.ui-indexed-item').forEach(indexedItem);
+    };
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start,{once:true});else start();
     const settleAll=()=>document.querySelectorAll('[data-ui-toggle-art]').forEach(art=>{
         const state=states.get(art);if(state) toggleArt(art,state.active,false,state.colorToken);

@@ -25,7 +25,7 @@ The individual source links and original source hashes are retained in the sourc
 
 - [Manrope OFL](assets/fonts/manrope/OFL.txt) and [Inter OFL](assets/fonts/inter/OFL.txt).
 - [Lottie-web MIT](assets/vendor/lottie/LICENSE.md), pinned version 5.12.2.
-- [Plotly locale MIT](assets/vendor/plotly/LICENSE), Portuguese locale; consumer Plotly.js runtime licensing is separate.
+- [Plotly.js and locale MIT](assets/vendor/plotly/LICENSE): JS runtime 4.1.1 extracted byte-for-byte from pinned Plotly.py 7.1.0; tagged [upstream license](https://github.com/plotly/plotly.js/blob/v4.1.1/LICENSE). The original JS copyright header is preserved. Runtime SHA-256: `3b6e15d45dbb7fca5bd2094291e961ddc5472cd887009e6009a56dab668d721f`. The runtime is copied only by explicit selection; Portuguese locale remains shared.
 - Scientific Colour Maps 9.0.0, Fabio Crameri, [MIT notice](docs/LICENSE-SCIENTIFIC-COLOUR-MAPS.txt), [DOI](https://doi.org/10.5281/zenodo.24343380). Preserve credit and licence when distributing derived palettes.
 
 ## MIT notices for artwork sources

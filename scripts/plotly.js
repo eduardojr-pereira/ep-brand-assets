@@ -77,6 +77,13 @@
         }
         return registered.get(runtime);
     }
+    function normalizeModebarLogo(node) {
+        for (const logo of node.querySelectorAll('a.modebar-btn--logo')) {
+            if (logo.target === '_blank') logo.relList.add('noopener','noreferrer');
+            // The pinned vendor logo's group ID is decorative and has no references.
+            logo.querySelector('svg g[id="symbol"]')?.removeAttribute('id');
+        }
+    }
     async function apply(node,state) {
         const runtime=window.Plotly;
         if (!runtime?.newPlot || !runtime?.relayout || !runtime?.restyle || !runtime?.react) return;
@@ -91,6 +98,9 @@
             for (const [path,value] of Object.entries(patch)) put(layout,path,value);
             for (const [index,update] of traces) for (const [path,value] of Object.entries(update)) put(data[index],path,value);
             await runtime.newPlot(node,data,layout,config);
+            // Also cover redraws initiated by the native Plotly toolbar or responsive layout.
+            node.on('plotly_afterplot',()=>normalizeModebarLogo(node));
+            normalizeModebarLogo(node);
             state.ready=true;
             node.setAttribute('data-ui-plotly-ready','');
             const fallback=node.closest('[data-ui-plotly-container]')?.querySelector('[data-ui-plotly-fallback]');
@@ -105,6 +115,7 @@
                 await runtime.restyle(node,values,[index]);
             }
         }
+        normalizeModebarLogo(node);
         state.theme=theme;state.locale=locale;
     }
     function schedule(node,state) {

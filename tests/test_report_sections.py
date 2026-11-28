@@ -3,7 +3,7 @@ Boundaries: No consumer report generation or publication.
 """
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 from support import environment, load_page, launch_browser, new_page, close_browser
 from presentation import validate_bindings
 from artifact_preview import prepare_artifact, MAX_BYTES, MAX_ROWS, MAX_COLUMNS
@@ -89,8 +89,8 @@ def browser_checks(html):
             assert page.locator('[data-ui-artifact-preview]:visible h4').inner_text()=='summary.json'
             assert page.locator('[data-ui-artifact-preview]:visible pre').inner_text()=='{"value":"<script>test</script>"}'
             assert toggle.get_attribute('aria-label')=='Fechar busca'
-            page.wait_for_function("document.querySelector('[data-ui-toggle-player]').hasAttribute('data-ui-lottie-ready')")
-            assert page.evaluate("Math.round(UI.assets.get(document.querySelector('[data-ui-toggle-player]')).currentFrame) >= 28")
+            page.wait_for_function("document.querySelector('[data-ui-search-control] [data-ui-toggle-player]').hasAttribute('data-ui-lottie-ready')")
+            assert page.evaluate("Math.round(UI.assets.get(document.querySelector('[data-ui-search-control] [data-ui-toggle-player]')).currentFrame) >= 28")
             for locale in ('en','pt-BR','en'):
                 page.evaluate('(locale)=>UI.i18n.set(locale)',locale);state_check(page,locale)
                 assert query.input_value()=='avaliacao json' and query.is_visible()
@@ -106,7 +106,7 @@ def browser_checks(html):
             page.evaluate("UI.i18n.set('pt-BR')");assert page.locator('[data-ui-artifact-empty]').inner_text()=='Nenhum arquivo encontrado.'
             query.press('Escape');assert not query.is_visible() and query.input_value()=='' and toggle.get_attribute('aria-expanded')=='false'
             assert page.locator('[data-ui-artifact-item]:visible').count()==4
-            page.wait_for_function("UI.assets.get(document.querySelector('[data-ui-toggle-player]'))?.currentFrame===0")
+            page.wait_for_function("UI.assets.get(document.querySelector('[data-ui-search-control] [data-ui-toggle-player]'))?.currentFrame===0")
             print('PASS: PT-BR cold startup, repeated locale/theme switches preserve query, selection and expansion; localized accessibility and real Lottie settling',flush=True)
             page.close()
             page=new_page(browser,viewport={'width':360,'height':740},reduced_motion='reduce');load_page(page,html,local=LOCAL,css='main{margin:12px;min-width:0}')
@@ -117,13 +117,28 @@ def browser_checks(html):
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
             assert len(page.locator('.ui-artifact-layout').evaluate('e=>getComputedStyle(e).gridTemplateColumns').split())==1
             print('PASS: mobile stacking, unsupported/missing image fallback and no overflow',flush=True);page.close()
-            page=new_page(browser,java_script_enabled=False,viewport={'width':360,'height':740});load_page(page,html,local=LOCAL,scripts=False)
-            page.locator('.ui-indexed-item').nth(2).locator('summary').click()
-            assert page.locator('[data-ui-artifact-preview]:visible').count()==4
-            assert page.locator('[data-ui-artifact-preview] a[download]:visible').count()==4
-            assert not page.locator('[data-ui-search-control]').is_visible()
-            assert page.locator('iframe,object,embed').count()==0
-            print('PASS: native disclosure and all authorized download links without JavaScript',flush=True);page.close()
+            for motion in ('no-preference','reduce'):
+                page=new_page(browser,java_script_enabled=False,viewport={'width':360,'height':740},reduced_motion=motion)
+                load_page(page,html,local=LOCAL,scripts=False)
+                row=page.locator('.ui-indexed-item').nth(2)
+                row.locator('summary').click()
+                expect(row).to_have_attribute('open','')
+                # Native CSS disclosure can still be transitioning after the click.
+                # Auto-retry the original visibility requirements; never relax them.
+                previews=page.locator('[data-ui-artifact-preview]')
+                downloads=page.locator('[data-ui-artifact-preview] a[download]')
+                expect(previews).to_have_count(4)
+                expect(downloads).to_have_count(4)
+                expect(page.locator('[data-ui-artifact-preview]:visible')).to_have_count(4,timeout=5000)
+                expect(page.locator('[data-ui-artifact-preview] a[download]:visible')).to_have_count(4,timeout=5000)
+                for item in downloads.all():
+                    expect(item).to_be_visible()
+                    item.scroll_into_view_if_needed()
+                    expect(item).to_be_in_viewport()
+                assert not page.locator('[data-ui-search-control]').is_visible()
+                assert page.locator('iframe,object,embed').count()==0
+                print(f'PASS: native disclosure and all authorized download links without JavaScript ({motion})',flush=True)
+                page.close()
         finally: close_browser(browser)
 
 def shared_search_checks():

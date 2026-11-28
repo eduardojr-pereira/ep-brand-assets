@@ -1,9 +1,10 @@
 {# Responsibility: Compose shared graphical badges and informational method tags.
    Boundaries: Asset paths, semantic IDs and localized labels come from the consumer or catalog. #}
 {% import 'components/web/localization.html' as t %}
+{% from 'components/web/navigation.html' import external_attributes %}
 {% import 'components/web/assets.html' as assets %}
 {% macro badges(items) -%}
-{% if items %}<div class="ui-badges">{% for item in items %}{% if item.href %}<a class="ui-badge-link" href="{{ item.href }}">{% endif %}<img src="{{ item.src }}" alt="{{ t.value(item.label) }}"{{ t.binding(item.label,"alt") }} {{ assets.image_variants(item) }} loading="lazy" decoding="async">{% if item.href %}</a>{% endif %}{% endfor %}</div>{% endif %}
+{% if items %}<div class="ui-badges">{% for item in items %}{% if item.href %}<a class="ui-badge-link" href="{{ item.href }}"{{ external_attributes(item.href) }}>{% endif %}<img src="{{ item.src }}" alt="{{ t.value(item.label) }}"{{ t.binding(item.label,"alt") }} {{ assets.image_variants(item) }} loading="lazy" decoding="async">{% if item.href %}</a>{% endif %}{% endfor %}</div>{% endif %}
 {%- endmacro %}
 {% macro method_badges(items) -%}
 {% if items %}<div class="ui-badges ui-method-badges">{% for label in items %}<span class="ui-method-badge"{{ t.binding(label) }}>{{ t.value(label) }}</span>{% endfor %}</div>{% endif %}

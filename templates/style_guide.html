@@ -1,0 +1,151 @@
+{# Responsibility: Demonstrate canonical foundations, editorial, analytical and action components in a guide composition.
+   Boundaries: No component implementation, preference ownership, project results, production legal content or deployment. #}
+{% extends 'templates/base.html' %}
+{% import 'components/web/localization.html' as t %}
+{% import 'components/web/editorial.html' as e %}
+{% import 'components/web/analytical.html' as a %}
+{% import 'components/web/navigation.html' as n %}
+{% import 'components/web/buttons.html' as b %}
+{% import 'components/web/disclosure.html' as d %}
+{% import 'components/web/header.html' as h %}
+{% import 'components/web/footer.html' as f %}
+{% import 'components/web/interactive.html' as i %}
+{% import 'components/web/badges.html' as badges %}
+{% import 'components/web/plotly.html' as p %}
+{% import 'components/web/report_sections.html' as r %}
+{% import 'components/web/animated_icons.html' as art %}
+{% import 'components/web/social.html' as social %}
+{% block extra_head %}<link rel="stylesheet" href="{{ guide_layout_href }}"><script defer src="{{ guide_runtime_href }}"></script><script defer src="{{ guide_demo_href }}"></script>{% endblock %}
+{% block header %}{{ h.report_header(brand,navigation,report_sections,landing_href,logo_src) }}{% endblock %}
+{% block content %}
+<div class="guide-layout">
+{% for section in sections %}
+<section class="guide-section{% if loop.first %} guide-cover{% endif %}" id="{{ section.id }}" data-ui-section aria-labelledby="{{ section.id }}-heading">
+{% set q = section.paragraphs %}
+{% if loop.first %}
+<div class="guide-cover-grid">
+<div class="guide-cover-copy">
+{{ e.eyebrow(message('shared.brand.tagline')) }}
+{{ e.section_heading(message(section.label),message(q[0]),section.id+'-heading',1) }}
+<div class="guide-index">
+{% for chapter in sections[1:] %}
+<div class="guide-index-entry"><span class="guide-number" aria-hidden="true">{{ '%02d'|format(loop.index) }}</span>{{ n.diagonal(message(chapter.label),'#'+chapter.id,true,true) }}</div>
+{% endfor %}
+</div>
+</div>
+<div class="guide-cover-art" aria-hidden="true"><img src="{{ logo_src }}" alt="" decoding="async"></div>
+</div>
+{% else %}
+<div class="guide-chapter-number" aria-hidden="true">{{ '%02d'|format(loop.index0) }}</div>
+{{ e.section_heading(message(section.label),message(q[0]),section.id+'-heading') }}
+{% endif %}
+{% if section.id == 'foundations' %}
+<div class="guide-palette-primary">
+{% for token in ['bg','text','accent'] %}
+<div class="guide-swatch guide-swatch--hero"><div class="guide-color guide-color--{{ token }}" aria-hidden="true"></div><code>--ui-color-{{ token }}</code><span class="guide-color-value" data-guide-color="--ui-color-{{ token }}"></span></div>
+{% endfor %}
+</div>
+<div class="guide-swatches">
+{% for token in ['surface','border','muted','focus','on-accent','success','danger','link-hover','ink','on-ink'] %}
+<div class="guide-swatch"><div class="guide-color guide-color--{{ token }}" aria-hidden="true"></div><code>--ui-color-{{ token }}</code><span class="guide-color-value" data-guide-color="--ui-color-{{ token }}"></span></div>
+{% endfor %}
+</div>
+{{ a.divider() }}
+<div class="guide-type-pair">
+<div class="guide-type-specimen guide-type-heading"><span class="guide-font-label">Manrope · 500</span><span class="guide-type-large" aria-hidden="true">Aa</span><span class="guide-alphabet" aria-hidden="true">ABCDEFGHIJKLM<br>NOPQRSTUVWXYZ<br>0123456789</span></div>
+<div class="guide-type-specimen guide-type-body"><span class="guide-font-label">Inter · 500</span><span class="guide-type-large" aria-hidden="true">Aa</span><span class="guide-alphabet" aria-hidden="true">abcdefghijklm<br>nopqrstuvwxyz<br>0123456789</span></div>
+</div>
+<div class="guide-type-hierarchy">
+{{ e.eyebrow(message(q[1])) }}
+{{ e.project_title(message(q[1])) }}
+{{ e.project_subtitle(message(q[2])) }}
+{{ e.project_description(message(q[3])) }}
+{% call a.prose() %}<p{{ t.binding(message(q[3])) }}>{{ t.value(message(q[3])) }}</p>{% endcall %}
+</div>
+{% elif section.id == 'actions' %}
+{% call a.grid(2) %}
+{% call a.surface() %}<div class="guide-stack">
+{{ n.diagonal(message(q[1]),'#analytical') }}
+{{ n.text_link(message(q[2]),'#motion',false) }}
+{{ n.return_link(message('shared.nav.back'),n.landing_href(navigation,'portfolio',landing_href)) }}
+{{ n.return_link(message('shared.nav.top'),'#top',true) }}
+{% call n.disclosure(message(q[3])) %}{{ n.menu_link(message('content.section.3.title'),'#analytical') }}{{ n.menu_link(message('content.section.4.title'),'#motion') }}{% endcall %}
+</div>{% endcall %}
+{% call a.surface() %}<div class="guide-stack">
+{{ b.radial_link(message('shared.action.learn'),n.landing_href(navigation,'about',landing_href)) }}
+<p{{ t.binding(message(q[4])) }}>{{ t.value(message(q[4])) }}</p>
+{{ b.orbit_link('guide-orbit',message('shared.action.selected'),message('shared.action.selected_ring'),landing_href+'#'+(navigation.sections|selectattr('label','equalto','shared.action.selected')|first).id) }}
+{{ b.orbit_link('guide-cta',message('shared.action.hello'),message('shared.action.hello_ring'),landing_href+'#'+(navigation.sections|selectattr('label','equalto','shared.nav.contact')|first).id,'cta') }}
+</div>{% endcall %}
+{% endcall %}
+{% elif section.id == 'analytical' %}
+{% set metrics = [{'label':message(q[1]),'value':'120'},{'label':message(q[2]),'value':'2'}] %}
+{% call a.grid(2) %}
+{% call a.surface() %}{{ a.metrics(metrics) }}{% endcall %}
+{% call a.surface() %}{{ a.metrics(metrics,true) }}{% endcall %}
+{% endcall %}
+{{ a.divider() }}
+{% call a.grid(2) %}
+{% call a.surface() %}{{ a.data_table(message(q[3]),[{'label':message(q[4]),'row_header':true},{'label':message(q[5]),'numeric':true}],[[message(q[6]),'80'],[message(q[7]),'40']]) }}{% endcall %}
+{% call a.surface() %}{{ a.image_figure({'src':guide_evidence.line.dark,'dark':guide_evidence.line.dark,'light':guide_evidence.line.light,'alt':message(q[8])},message(q[8])) }}{% endcall %}
+{% endcall %}
+{{ a.divider() }}
+{% call a.callout(message(q[9])) %}<p{{ t.binding(message(q[10])) }}>{{ t.value(message(q[10])) }}</p>{% endcall %}
+{% elif section.id == 'motion' %}
+{% call a.grid(2) %}
+{% for name in ['reveal-up','reveal-left','reveal-right','scale-in','fade'] %}
+<div class="guide-motion-sample" data-motion="{{ name }}" data-scroll-trigger="repeat"><span class="guide-motion-mark" aria-hidden="true">{{ ["↑","←","→","↗","○"][loop.index0] }}</span>{{ e.minor_heading(message(q[loop.index]),level=3) }}</div>
+{% endfor %}
+{% endcall %}
+{{ a.divider() }}
+{% for exclusive in [true,false] %}
+<div class="guide-labeled-block">{{ e.minor_heading(message(q[8] if exclusive else q[9]),level=3) }}
+<div class="ui-indexed-list">{% for j in [10,11] %}{% call d.indexed_item(loop.index,message(q[j]),false,'guide-exclusive' if exclusive else none) %}{% call a.prose() %}<p{{ t.binding(message(q[12] if exclusive else q[13])) }}>{{ t.value(message(q[12] if exclusive else q[13])) }}</p>{% endcall %}{% endcall %}{% endfor %}</div></div>
+{% endfor %}
+{% elif section.id == 'identity' %}
+<div class="guide-badge-layout">
+<div class="guide-labeled-block guide-badge-technologies">{{ e.minor_heading(message(q[1]),level=3) }}{{ badges.badges(guide_badges.technologies) }}</div>
+<div class="guide-labeled-block">{{ e.minor_heading(message(q[2]),level=3) }}{{ badges.badges(guide_badges.licenses) }}</div>
+<div class="guide-labeled-block">{{ e.minor_heading(message(q[3]),level=3) }}<div class="guide-badge-status">{% for label,items in [(q[7],guide_status_en),(q[8],guide_status_pt)] %}<div class="guide-labeled-block"><span{{ t.binding(message(label)) }}>{{ t.value(message(label)) }}</span>{{ badges.badges(items) }}</div>{% endfor %}</div></div>
+<div class="guide-labeled-block">{{ e.minor_heading(message(q[4]),level=3) }}{{ badges.method_badges([message(q[5]),message(q[6])]) }}</div>
+</div>
+{% elif section.id == 'components' %}
+{% set frames = [{'src':guide_evidence.line.dark,'dark':guide_evidence.line.dark,'light':guide_evidence.line.light,'alt':message(q[9]),'caption':message(q[9])},{'src':guide_evidence.bar.dark,'dark':guide_evidence.bar.dark,'light':guide_evidence.bar.light,'alt':message(q[10]),'caption':message(q[10])}] %}
+{% set sample_metrics = [{'label':message(q[14]),'value':guide_summary.observations|string},{'label':message(q[15]),'value':guide_summary.series|string}] %}
+{% set projects = [
+ {'title':message(q[1]),'subtitle':message(q[2]),'description':message(q[3]),'collection':'selected','collection_label':message('shared.catalog.selected'),'areas':['analysis'],'topics':[message(q[11])],'badges':guide_badges.technologies|selectattr('label','in',['Python','pandas','Plotly'])|list, 'href':'#analytical','links':[{'label':message(q[11]),'href':'#analytical','primary':true}], 'frames':frames,'metrics':sample_metrics},
+ {'title':message(q[4]),'subtitle':message(q[5]),'description':message(q[6]),'collection':'selected','collection_label':message('shared.catalog.selected'),'areas':['motion'],'topics':[message(q[12])],'badges':guide_badges.technologies|selectattr('label','in',['CSS','JavaScript'])|list, 'href':'#motion','links':[{'label':message(q[12]),'href':'#motion','primary':true}], 'frames':frames,'metrics':sample_metrics},
+ {'title':message(q[7]),'description':message(q[8]),'collection':'learning','collection_label':message('shared.catalog.learning'),'areas':['foundations'],'topics':[message(q[13])],'badges':guide_badges.technologies|selectattr('label','in',['Markdown','HTML5'])|list, 'href':'#foundations','links':[{'label':message(q[13]),'href':'#foundations','primary':true}], 'frames':[],'metrics':[]}
+] %}
+{{ i.selected_projects(projects[:2]) }}
+{{ a.divider() }}
+{{ i.catalog('guide-catalog',projects,[{'label':message(q[11]),'value':'analysis'},{'label':message(q[12]),'value':'motion'},{'label':message(q[13]),'value':'foundations'}]) }}
+{{ a.divider() }}
+{{ i.marquee(brand.email,landing_href+'#'+(navigation.sections|selectattr('label','equalto','shared.nav.contact')|first).id) }}
+{% elif section.id == 'visualization' %}
+{% call a.surface() %}{{ p.chart('guide-line',message(q[6]),message(q[9])) }}{{ guide_line }}{% endcall %}
+{{ a.divider() }}
+{% call a.surface() %}{{ p.chart('guide-heat',message(q[7]),message(q[9])) }}{{ guide_heat }}{% endcall %}
+{{ a.divider() }}
+<div class="guide-labeled-block">{{ e.minor_heading(message(q[8]),level=3) }}
+<div class="guide-palettes">{% for palette in guide_palettes %}<div class="guide-palette-row"><div><strong>{{ palette.name }}</strong><span class="guide-palette-kind"{{ t.binding(message(q[palette.kind_index])) }}>{{ t.value(message(q[palette.kind_index])) }}</span></div><img src="{{ palette.dark }}" data-dark-src="{{ palette.dark }}" data-light-src="{{ palette.light }}" alt="{{ palette.name }}" width="640" height="28" decoding="async"></div>{% endfor %}</div></div>
+{% elif section.id == 'report-content' %}
+{{ r.conclusion('guide-conclusion',[{'label':message('shared.conclusion.results'),'body':[message(q[2])]},{'label':message('shared.conclusion.limitations'),'body':[message(q[3])]},{'label':message('shared.conclusion.next_steps'),'body':[message(q[13])]}],guide_files) }}
+{{ a.divider() }}
+{{ r.references('guide-references',[{'label':message(q[4]),'href':guide_files[0].href,'description':message(q[7]),'overview':[{'label':message(q[8]),'value':guide_summary.observations|string},{'label':message(q[9]),'value':guide_summary.series|string}],'note':message(q[12])}],[{'label':message(q[5]),'href':'#foundations'},{'label':message(q[10]),'href':'#visualization'}],[message(q[6]),message(q[11])]) }}
+{% elif section.id == 'contact-states' %}
+{% call a.surface() %}<div class="guide-send-demo" data-guide-send-demo><div class="guide-labeled-block">
+<label for="guide-send-state"{{ t.binding(message(q[5])) }}>{{ t.value(message(q[5])) }}</label>
+<select id="guide-send-state" data-guide-send-choice>{% for state in ['idle','pending','success','error'] %}<option value="{{ state }}"{{ t.binding(message(q[loop.index])) }}>{{ t.value(message(q[loop.index])) }}</option>{% endfor %}</select>
+</div>{{ b.send_action() }}
+</div>{% endcall %}
+{{ a.divider() }}
+<div class="guide-labeled-block">{{ e.minor_heading(message(q[6]),level=3) }}
+{% call a.grid(2) %}{% call a.surface() %}{% call n.editorial(message(q[7]),message(q[9]),brand.knowledge_base) %}{{ art.icon('knowledge','KB') }}{% endcall %}{% endcall %}{% call a.surface() %}{% call n.editorial(message(q[8]),message(q[10]),'#guide-intro') %}{{ art.icon('initials','EP.') }}{% endcall %}{% endcall %}{% endcall %}
+</div><div class="guide-social-block">{{ social.follow_connect(brand,navigation) }}</div>
+{% endif %}
+</section>
+{% endfor %}
+</div>
+{% endblock %}
+{% block footer %}{{ f.footer(brand,navigation,landing_href,logo_src,privacy_href,terms_href,report=true) }}{% endblock %}

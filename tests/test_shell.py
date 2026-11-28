@@ -10,7 +10,7 @@ BRAND=json.loads((ROOT/'config/brand.json').read_text())
 NAV=json.loads((ROOT/'config/navigation.json').read_text())
 LOCAL={'en':{'content.overview':'Overview','content.results':'Results'},'pt-BR':{'content.overview':'Visão geral','content.results':'Resultados'}}
 FIXTURE='''{% import 'components/web/header.html' as h %}{% import 'components/web/footer.html' as f %}{% import 'components/web/social.html' as social %}
-{% if report %}{{ h.report_header(brand,navigation,[{'label':'content.overview','href':'#overview'},{'label':'content.results','href':'#results'}],'/portfolio/index.html') }}{% else %}{{ h.landing_header(brand,navigation) }}{% endif %}
+{% if report %}{{ h.report_header(brand,navigation,[{'label':'content.overview','href':'#overview'},{'label':'content.results','href':'#results'}],'/portfolio/index.html','/assets/logos/logo_initials.png') }}{% else %}{{ h.landing_header(brand,navigation,"/assets/logos/logo_initials.png") }}{% endif %}
 <main>{% for section in (['overview','results'] if report else navigation.sections|map(attribute='id')|list) %}<section id="{{ section }}" data-ui-section><h2>{{ section }}</h2></section>{% endfor %}{% if not report %}{{ social.follow_connect(brand,navigation,'contact') }}{% endif %}</main>
 {{ f.footer(brand,navigation,'/portfolio/index.html' if report else '', '/assets/logos/logo_initials.png','/privacy/','/terms/',report=report) }}'''
 

@@ -7,6 +7,7 @@ import shutil
 import tempfile
 from pathlib import Path
 from catalog import load_projects
+from style_guide import guide_context, validate_guide_sections
 from validation import fields, localized, read_json, require
 from presentation import ROOT, environment, head_resources, validate_bindings
 from routing import page_path, relative_href, resource_base, validate_links, validate_page_routes
@@ -29,8 +30,9 @@ def prepare(source, plan):
         fields(item, {'route', 'kind', 'project', 'title', 'sections'}, 'page')
         route = page_path(item['route'])
         kind = item['kind']
-        require(route not in pages and kind in ('landing', 'report', 'plain'), 'Duplicate route or invalid kind')
+        require(route not in pages and kind in ('landing', 'report', 'plain', 'style_guide'), 'Duplicate route or invalid kind')
         require((route == 'index.html') == (kind == 'landing'), 'Landing must be index.html')
+        require((route == 'style-guide/index.html') == (kind == 'style_guide'), 'Style Guide route is reserved')
         project = item['project']
         if kind == 'report':
             require(isinstance(project, str) and project in records and project not in report_projects, 'Invalid or duplicate report project')
@@ -65,6 +67,8 @@ def prepare(source, plan):
             sections.append({'id': ident, 'label': label, 'paragraphs': paragraphs})
         if kind == 'landing':
             require(ids == list(nav), 'Landing sections must match canonical order and IDs')
+        if kind == 'style_guide':
+            validate_guide_sections(ids, sections)
         pages[route] = (kind, local, title_key, sections)
     validate_page_routes(pages)
     require('index.html' in pages, 'Missing landing')
@@ -79,8 +83,9 @@ def render(source, plan):
     for route, (kind, local, title_key, sections) in pages.items():
         env = environment(local)
         base = resource_base(route)
+        extra = guide_context(base,local,env) if kind == 'style_guide' else {}
         html = env.get_template('templates/' + ('base' if kind == 'plain' else kind) + '.html').render(
-            brand=brand, navigation=navigation, title_key=title_key, sections=sections,
+            brand=brand, navigation=navigation, title_key=title_key, sections=sections, **extra,
             head=head_resources(base, local),
             **{key: base + path for key, path in shell_images(brand['asset_root']).items()},
             landing_href=relative_href(route, 'index.html'),
@@ -101,11 +106,12 @@ def build(source, plan, output):
         require(not output.is_relative_to(protected) and not protected.is_relative_to(output), 'Output must be isolated from source and brand')
     require(output.parent.is_dir(), 'Output parent must exist')
     pages = render(source, plan)
-    paths = resource_paths()
+    guide = 'style-guide/index.html' in pages
+    paths = resource_paths(guide=guide, plotly_runtime=guide)
     validate_links(pages, {'shared/' + name for name in paths})
     stage = Path(tempfile.mkdtemp(prefix='.ui-build-', dir=output.parent))
     try:
-        copy_resources(stage, paths=paths)
+        copy_resources(stage, paths=paths, guide=guide, plotly_runtime=guide)
         for name, html in pages.items():
             target = stage / name
             target.parent.mkdir(parents=True, exist_ok=True)
